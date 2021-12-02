@@ -25,11 +25,13 @@ import ru.glushko.dnkstockapp.viewmodels.MainViewModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var _mainActivityBinding: ActivityMainBinding
+    private lateinit var _mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         _mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        _mainActivityBinding.mainVM = MainViewModel.instance
+        _mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        _mainActivityBinding.mainVM = _mainViewModel
 
         setupRecyclerView()
 
@@ -41,8 +43,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         val itemRecyclerAdapter = ItemRecyclerAdapter()
 
-        MainViewModel.instance.getItemsLiveData().observe(this, {
-            itemRecyclerAdapter.items = it
+        _mainViewModel.getItemsLiveData().observe(this, {
+            itemRecyclerAdapter.submitList(it)
         })
 
         _mainActivityBinding.recyclerView.adapter = itemRecyclerAdapter
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupOnActionButtonClick(itemRecyclerAdapter: ItemRecyclerAdapter) {
         itemRecyclerAdapter.onPopupButtonClickListener = {
-            MainViewModel.instance.deleteItemFromDatabase(it)
+            _mainViewModel.deleteItemFromDatabase(it)
             Log.i("item", "Deleted Item: $it")
         }
     }
@@ -77,29 +79,23 @@ class MainActivity : AppCompatActivity() {
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(binding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
-                MainViewModel.instance.addItemToDatabase(
+                _mainViewModel.addItemToDatabase(
                     binding.itemNameEditText.text.toString(),
                     binding.itemCountEditText.text.toString(),
                     binding.itemDateEditText.text.toString(),
                     binding.itemUserEditText.text.toString()
                 )
 
-                MainViewModel.instance.getStateAddItemLiveData().observe(this, {
+                _mainViewModel.getStateAddItemLiveData().observe(this, {
                     when (it!!) {
                         Status.ERROR -> Snackbar.make(
-                            _mainActivityBinding.root,
-                            "Введите все данные.",
-                            Snackbar.LENGTH_SHORT
+                            _mainActivityBinding.root, "Введите все данные.", Snackbar.LENGTH_SHORT
                         ).show()
                         Status.SUCCESS -> Snackbar.make(
-                            _mainActivityBinding.root,
-                            "Данные успешно добавлены!",
-                            Snackbar.LENGTH_SHORT
+                            _mainActivityBinding.root, "Данные успешно добавлены!", Snackbar.LENGTH_SHORT
                         ).show()
                     }
                 })
             }.show()
     }
-
-
 }

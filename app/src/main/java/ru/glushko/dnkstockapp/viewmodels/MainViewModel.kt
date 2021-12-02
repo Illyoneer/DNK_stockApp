@@ -9,11 +9,6 @@ import ru.glushko.dnkstockapp.model.provider.ItemDao
 import ru.glushko.dnkstockapp.utils.Status
 
 class MainViewModel : ViewModel() {
-
-        companion object {
-                val instance = MainViewModel()
-        }
-
         private val _itemDao: ItemDao = AppInstance.instance.getDatabase().userDao()
         private val _itemsLiveData: LiveData<List<Item>> = _itemDao. loadAllItems()
         private val _stateAddItemLiveData = MutableLiveData<Status>()

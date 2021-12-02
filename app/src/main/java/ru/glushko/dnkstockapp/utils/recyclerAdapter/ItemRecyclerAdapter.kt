@@ -7,16 +7,12 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.glushko.dnkstockapp.databinding.RecyclerItemBinding
 import ru.glushko.dnkstockapp.model.Item
 
-class ItemRecyclerAdapter : RecyclerView.Adapter<ItemRecyclerAdapter.ItemViewHolder>() {
-    var items = listOf<Item>()
-        set(newList){
-            field = newList
-            notifyDataSetChanged()
-        }
+class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
 
     var onPopupButtonClickListener: ((Item) -> Unit)? = null
     var onHolderViewClickListener: ((Item) -> Unit)? = null
@@ -31,30 +27,26 @@ class ItemRecyclerAdapter : RecyclerView.Adapter<ItemRecyclerAdapter.ItemViewHol
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         Log.i("onBindViewHolder", "count: ${++count}")
-        val itemElement = items[position]
+        val itemElement = getItem(position)
         with(holder.recyclerItem) {
             itemName.text = itemElement.name
             countItem.text = itemElement.count + " шт."
             /*dateItem.text = itemElement.date
             userItem.text = itemElement.user*/
-            moreButton.setOnClickListener{
+            moreButton.setOnClickListener {
                 showPopupMenu(it, itemElement = itemElement)
             }
-            root.setOnClickListener{
+            root.setOnClickListener {
                 onHolderViewClickListener?.invoke(itemElement)
             }
         }
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
     }
 
     private fun showPopupMenu(view: View, itemElement: Item) {
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menu.add(0, 1, Menu.NONE, "Удалить")
         popupMenu.setOnMenuItemClickListener {
-            when(it.itemId){
+            when (it.itemId) {
                 1 -> {
                     onPopupButtonClickListener?.invoke(itemElement)
                 }
@@ -63,6 +55,4 @@ class ItemRecyclerAdapter : RecyclerView.Adapter<ItemRecyclerAdapter.ItemViewHol
         }
         popupMenu.show()
     }
-
-    class ItemViewHolder(val recyclerItem: RecyclerItemBinding) : RecyclerView.ViewHolder(recyclerItem.root)
 }
