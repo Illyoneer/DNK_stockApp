@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="addItemVM"
+            type="ru.glushko.dnkstockapp.viewmodels.AddItemFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/item_name_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:ems="10"
+            android:hint="@{addItemVM.nameHint}"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+            android:id="@+id/item_count_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@{addItemVM.countHint}"
+            android:inputType="number"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="@+id/item_name_editText"
+            app:layout_constraintStart_toStartOf="@+id/item_name_editText"
+            app:layout_constraintTop_toBottomOf="@+id/item_name_editText" />
+
+        <EditText
+            android:id="@+id/item_date_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@{addItemVM.dateHint}"
+            android:inputType="date"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="@+id/item_count_editText"
+            app:layout_constraintStart_toStartOf="@+id/item_count_editText"
+            app:layout_constraintTop_toBottomOf="@+id/item_count_editText" />
+
+        <EditText
+            android:id="@+id/item_user_editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@{addItemVM.userHint}"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="@+id/item_date_editText"
+            app:layout_constraintStart_toStartOf="@+id/item_date_editText"
+            app:layout_constraintTop_toBottomOf="@+id/item_date_editText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
+
