@@ -13,8 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_background"
-        android:paddingBottom="8dp"
-        android:layout_marginTop="6dp">
+        android:paddingBottom="8sp"
+        android:layout_marginTop="6sp"
+        android:layout_marginStart="6sp"
+        android:layout_marginEnd="6sp">
 
 
         <TextView
@@ -60,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Название"
+            android:text="@string/name_item"
             android:textColor="#979797"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Количество"
+            android:text="@string/count_item"
             android:textColor="#979797"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@+id/item_name"

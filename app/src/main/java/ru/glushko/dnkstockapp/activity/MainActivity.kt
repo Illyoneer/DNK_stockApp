@@ -1,21 +1,18 @@
 package ru.glushko.dnkstockapp.activity
 
-import android.content.ClipData
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.ActivityMainBinding
 import ru.glushko.dnkstockapp.databinding.FragmentAddItemBinding
-import ru.glushko.dnkstockapp.databinding.RecyclerItemBinding
+import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
 import ru.glushko.dnkstockapp.model.Item
 import ru.glushko.dnkstockapp.utils.Status
 import ru.glushko.dnkstockapp.utils.recyclerAdapter.ItemRecyclerAdapter
@@ -55,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupOnHolderViewClick(itemRecyclerAdapter: ItemRecyclerAdapter) {
         itemRecyclerAdapter.onHolderViewClickListener = {
-            Log.i("item", it.toString())
+            showInfoAboutItemRecordDialog(it)
         }
     }
 
@@ -96,6 +93,27 @@ class MainActivity : AppCompatActivity() {
                         ).show()
                     }
                 })
+            }.show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showInfoAboutItemRecordDialog(item:Item) {
+        val binding: FragmentItemInfoBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(this), R.layout.fragment_item_info,
+            null, false)
+
+        with(binding){
+            infoNameItem.text = item.name
+            infoCountItem.text = item.count + " шт."
+            infoDateItem.text = item.date
+            infoUserItem.text = item.user
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Информация о записи") //Добавление заголовка.
+            .setView(binding.root) //Присвоение View полученного ранее.
+            .setNegativeButton("Закрыть") { dialog, _ ->
+                dialog.cancel()
             }.show()
     }
 }
