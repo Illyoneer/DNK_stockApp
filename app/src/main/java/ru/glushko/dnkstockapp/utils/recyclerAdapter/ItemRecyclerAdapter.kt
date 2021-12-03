@@ -14,7 +14,7 @@ import ru.glushko.dnkstockapp.model.Item
 
 class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
 
-    var onPopupButtonClickListener: ((Item) -> Unit)? = null
+    var onPopupButtonClickListener: ((Item, View) -> Unit)? = null
     var onHolderViewClickListener: ((Item) -> Unit)? = null
     private var count = 0
 
@@ -34,25 +34,11 @@ class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()
             /*dateItem.text = itemElement.date
             userItem.text = itemElement.user*/
             moreButton.setOnClickListener {
-                showPopupMenu(it, itemElement = itemElement)
+                onPopupButtonClickListener?.invoke(itemElement, it)
             }
             root.setOnClickListener {
                 onHolderViewClickListener?.invoke(itemElement)
             }
         }
-    }
-
-    private fun showPopupMenu(view: View, itemElement: Item) {
-        val popupMenu = PopupMenu(view.context, view)
-        popupMenu.menu.add(0, 1, Menu.NONE, "Удалить")
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                1 -> {
-                    onPopupButtonClickListener?.invoke(itemElement)
-                }
-            }
-            return@setOnMenuItemClickListener true
-        }
-        popupMenu.show()
     }
 }

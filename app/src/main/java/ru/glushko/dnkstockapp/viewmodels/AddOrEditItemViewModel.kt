@@ -2,7 +2,7 @@ package ru.glushko.dnkstockapp.viewmodels
 
 import androidx.lifecycle.ViewModel
 
-class AddItemFragmentViewModel : ViewModel() {
+class AddOrEditItemViewModel : ViewModel() {
 
     var nameHint:String = "Название"
     var dateHint:String = "Дата выдачи"

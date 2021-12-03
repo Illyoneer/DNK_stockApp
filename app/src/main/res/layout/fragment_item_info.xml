@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/textview"
@@ -24,7 +24,7 @@
             android:id="@+id/textview3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/count_item"
             android:textColor="#979797"
             android:textSize="13sp"
@@ -37,7 +37,7 @@
             android:id="@+id/textview5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/user_item"
             android:textColor="#979797"
             android:textSize="13sp"
@@ -50,7 +50,7 @@
             android:id="@+id/textview4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/date_item"
             android:textColor="#979797"
             android:textSize="13sp"
@@ -63,49 +63,49 @@
             android:id="@+id/info_name_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            tools:text="Название"
+            android:layout_marginTop="4dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/textview"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textview"
-            app:layout_constraintTop_toBottomOf="@+id/textview" />
+            app:layout_constraintTop_toBottomOf="@+id/textview"
+            tools:text="Название" />
 
         <TextView
             android:id="@+id/info_count_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            tools:text="Название"
+            android:layout_marginTop="4dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/textview3"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textview3"
-            app:layout_constraintTop_toBottomOf="@+id/textview3" />
+            app:layout_constraintTop_toBottomOf="@+id/textview3"
+            tools:text="Название" />
 
         <TextView
             android:id="@+id/info_user_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            tools:text="Название"
+            android:layout_marginTop="4dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/textview5"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textview5"
-            app:layout_constraintTop_toBottomOf="@+id/textview5" />
+            app:layout_constraintTop_toBottomOf="@+id/textview5"
+            tools:text="Название" />
 
         <TextView
             android:id="@+id/info_date_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            tools:text="Название"
+            android:layout_marginTop="4dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/textview4"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textview4"
-            app:layout_constraintTop_toBottomOf="@+id/textview4" />
+            app:layout_constraintTop_toBottomOf="@+id/textview4"
+            tools:text="Название" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,5 +12,21 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/main</item>
     </style>
+
+    <style name="MyAlertDialogRoundedTheme" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+        <item name="colorSurface">@color/gray_background</item>
+        <item name="colorAccent">@color/main</item>
+        <item name="itemTextAppearance">@style/DialogTextAppearance</item>
+        <item name="android:itemTextAppearance">@style/DialogTextAppearance</item>
+        <item name="android:layout_height">300sp</item>
+    </style>
+
+    <style name="DialogTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/main</item>
+    </style>
+
 </resources>
