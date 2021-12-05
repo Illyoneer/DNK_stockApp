@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.presentation.utils.recyclerAdapter
+package ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapter
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.glushko.dnkstockapp.databinding.RecyclerItemBinding

@@ -1,13 +1,13 @@
 package ru.glushko.dnkstockapp.presentation.activity
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -18,20 +18,19 @@ import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
 import ru.glushko.dnkstockapp.domain.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.AddOrEditItemViewModel
 import ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel
-import ru.glushko.dnkstockapp.presentation.utils.Status
-import ru.glushko.dnkstockapp.presentation.utils.recyclerAdapter.ItemRecyclerAdapter
+import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapter.ItemRecyclerAdapter
+import ru.glushko.dnkstockapp.utils.Status
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var _mainActivityBinding: ActivityMainBinding
     private lateinit var _mainViewModel: MainViewModel
-    private val DELETE_ITEM = 0
-    private val EDIT_ITEM = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         _mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        _mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        _mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         _mainActivityBinding.mainVM = _mainViewModel
 
         setupRecyclerView()
@@ -91,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             LayoutInflater.from(this), R.layout.fragment_add_or_edit_item,
             null, false)
         val addItemFragmentViewModel =
-            ViewModelProvider(this).get(AddOrEditItemViewModel::class.java)
+            ViewModelProvider(this)[AddOrEditItemViewModel::class.java]
 
         binding.addItemVM = addItemFragmentViewModel
 
@@ -126,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             LayoutInflater.from(this), R.layout.fragment_add_or_edit_item,
             null, false)
         val addOrEditItemViewModel =
-            ViewModelProvider(this).get(AddOrEditItemViewModel::class.java)
+            ViewModelProvider(this)[AddOrEditItemViewModel::class.java]
 
         binding.addItemVM = addOrEditItemViewModel
 
@@ -182,5 +181,10 @@ class MainActivity : AppCompatActivity() {
             .setTitle("Информация о выдаче") //Добавление заголовка.
             .setView(binding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Закрыть") { dialog, _ -> dialog.cancel() }.show()
+    }
+
+    companion object {
+        private const val EDIT_ITEM = 1
+        private const val DELETE_ITEM = 0
     }
 }

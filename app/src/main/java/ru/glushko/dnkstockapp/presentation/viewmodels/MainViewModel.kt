@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.glushko.dnkstockapp.app.AppInstance
 import ru.glushko.dnkstockapp.data.ItemRepositoryImpl
 import ru.glushko.dnkstockapp.domain.Item
-import ru.glushko.dnkstockapp.domain.app.AppInstance
 import ru.glushko.dnkstockapp.domain.usecases.AddItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.DeleteItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.GetItemsListUseCase
 import ru.glushko.dnkstockapp.domain.usecases.UpdateItemUseCase
-import ru.glushko.dnkstockapp.presentation.utils.Status
+import ru.glushko.dnkstockapp.utils.Status
 
 class MainViewModel : ViewModel() {
 
@@ -27,17 +27,11 @@ class MainViewModel : ViewModel() {
     private val _stateEditItemLiveData = MutableLiveData<Status>()
 
 
-    fun getStateAddItemLiveData(): MutableLiveData<Status> {
-        return _stateAddItemLiveData
-    }
+    fun getStateAddItemLiveData(): MutableLiveData<Status> = _stateAddItemLiveData
 
-    fun getStateEditItemLiveData(): MutableLiveData<Status> {
-        return _stateEditItemLiveData
-    }
+    fun getStateEditItemLiveData(): MutableLiveData<Status> = _stateEditItemLiveData
 
-    fun getItemsList(): LiveData<List<Item>> {
-        return _getItemsListUseCase.getItemsList()
-    }
+    fun getItemsList(): LiveData<List<Item>> = _getItemsListUseCase.getItemsList()
 
     fun addItemToDatabase(name: String, count: String, date: String, user: String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
@@ -51,14 +45,15 @@ class MainViewModel : ViewModel() {
                     )
                 )
             }
-
-            _stateAddItemLiveData.value = Status.SUCCESS
+            _stateAddItemLiveData.postValue(Status.SUCCESS)
         } else {
-            _stateAddItemLiveData.value = Status.ERROR
+            _stateAddItemLiveData.postValue(Status.ERROR)
         }
     }
 
-    fun deleteItemFromDatabase(item: Item) = viewModelScope.launch { _deleteItemUseCase.deleteItem(item) }
+    fun deleteItemFromDatabase(item: Item) = viewModelScope.launch {
+        _deleteItemUseCase.deleteItem(item)
+    }
 
     fun updateItemInDatabase(id: Int, name: String, count: String, date: String, user: String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
@@ -73,10 +68,9 @@ class MainViewModel : ViewModel() {
                     )
                 )
             }
-
-            _stateEditItemLiveData.value = Status.SUCCESS
+            _stateEditItemLiveData.postValue(Status.SUCCESS)
         } else {
-            _stateEditItemLiveData.value = Status.ERROR
+            _stateEditItemLiveData.postValue(Status.ERROR)
         }
     }
 }

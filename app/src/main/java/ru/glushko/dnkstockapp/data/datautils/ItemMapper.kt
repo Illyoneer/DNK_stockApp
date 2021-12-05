@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.data
+package ru.glushko.dnkstockapp.data.datautils
 
 import ru.glushko.dnkstockapp.data.model.DBItem
 import ru.glushko.dnkstockapp.domain.Item
@@ -13,7 +13,7 @@ class ItemMapper {
         user = item.user
     )
 
-    fun mapDBItemToEntity(dbItem: DBItem) = Item(
+    private fun mapDBItemToEntity(dbItem: DBItem) = Item(
         id = dbItem.id,
         name = dbItem.name,
         count = dbItem.count,

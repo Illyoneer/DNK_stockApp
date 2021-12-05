@@ -2,9 +2,8 @@ package ru.glushko.dnkstockapp.domain.usecases
 
 import androidx.lifecycle.LiveData
 import ru.glushko.dnkstockapp.domain.Item
+import ru.glushko.dnkstockapp.domain.ItemRepository
 
 class GetItemsListUseCase (private val itemRepository: ItemRepository) {
-    fun getItemsList(): LiveData<List<Item>> {
-        return itemRepository.getItemsList()
-    }
+    fun getItemsList(): LiveData<List<Item>> = itemRepository.getItemsList()
 }

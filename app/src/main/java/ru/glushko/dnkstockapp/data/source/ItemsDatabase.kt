@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.data.provider
+package ru.glushko.dnkstockapp.data.source
 
 import android.app.Application
 import androidx.room.Database

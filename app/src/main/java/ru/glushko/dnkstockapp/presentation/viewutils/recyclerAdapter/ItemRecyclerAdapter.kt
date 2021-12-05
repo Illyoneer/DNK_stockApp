@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.presentation.utils.recyclerAdapter
+package ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

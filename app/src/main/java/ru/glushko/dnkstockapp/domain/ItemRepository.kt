@@ -1,7 +1,6 @@
-package ru.glushko.dnkstockapp.domain.usecases
+package ru.glushko.dnkstockapp.domain
 
 import androidx.lifecycle.LiveData
-import ru.glushko.dnkstockapp.domain.Item
 
 interface ItemRepository {
     fun getItemsList():LiveData<List<Item>>
