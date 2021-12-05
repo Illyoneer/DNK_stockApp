@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.glushko.dnkstockapp.databinding.RecyclerItemBinding
-import ru.glushko.dnkstockapp.data.Item
+import ru.glushko.dnkstockapp.domain.Item
 
 class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
 

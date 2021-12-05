@@ -1,7 +1,7 @@
 package ru.glushko.dnkstockapp.presentation.utils.recyclerAdapter
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.glushko.dnkstockapp.data.Item
+import ru.glushko.dnkstockapp.domain.Item
 
 class ItemDiffCallback : DiffUtil.ItemCallback<Item>() {
     override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {

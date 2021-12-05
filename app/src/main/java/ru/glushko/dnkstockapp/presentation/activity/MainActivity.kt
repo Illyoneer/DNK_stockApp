@@ -15,7 +15,7 @@ import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.ActivityMainBinding
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
-import ru.glushko.dnkstockapp.data.Item
+import ru.glushko.dnkstockapp.domain.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.AddOrEditItemViewModel
 import ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel
 import ru.glushko.dnkstockapp.presentation.utils.Status
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         val itemRecyclerAdapter = ItemRecyclerAdapter()
 
-        _mainViewModel.getItemsLiveData().observe(this, {
+        _mainViewModel.getItemsList().observe(this, {
             itemRecyclerAdapter.submitList(it)
         })
 

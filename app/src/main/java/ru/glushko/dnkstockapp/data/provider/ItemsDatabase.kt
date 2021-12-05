@@ -1,12 +1,12 @@
-package ru.glushko.dnkstockapp.data.model.provider
+package ru.glushko.dnkstockapp.data.provider
 
 import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ru.glushko.dnkstockapp.data.Item
+import ru.glushko.dnkstockapp.data.model.DBItem
 
-@Database(entities = [Item::class], version = 2, exportSchema = false)
+@Database(entities = [DBItem::class], version = 2, exportSchema = false)
 abstract class ItemsDatabase : RoomDatabase() {
 
     companion object {
