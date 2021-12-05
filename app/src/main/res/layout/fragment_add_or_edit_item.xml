@@ -6,7 +6,7 @@
     <data>
         <variable
             name="addItemVM"
-            type="ru.glushko.dnkstockapp.viewmodels.AddOrEditItemViewModel" />
+            type="ru.glushko.dnkstockapp.presentation.viewmodels.AddOrEditItemViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

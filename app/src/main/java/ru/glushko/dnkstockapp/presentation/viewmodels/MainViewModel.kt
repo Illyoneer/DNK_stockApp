@@ -1,16 +1,17 @@
-package ru.glushko.dnkstockapp.viewmodels
+package ru.glushko.dnkstockapp.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.glushko.dnkstockapp.app.AppInstance
-import ru.glushko.dnkstockapp.model.Item
-import ru.glushko.dnkstockapp.model.provider.ItemDao
-import ru.glushko.dnkstockapp.utils.Status
+import ru.glushko.dnkstockapp.data.Item
+import ru.glushko.dnkstockapp.data.model.provider.ItemDao
+import ru.glushko.dnkstockapp.data.model.provider.ItemsDatabase
+import ru.glushko.dnkstockapp.presentation.utils.Status
 
 class MainViewModel : ViewModel() {
 
-    private val _itemDao: ItemDao = AppInstance.instance.getDatabase().userDao()
+    private val _itemDao: ItemDao = ItemsDatabase.getInstance(AppInstance.instance).userDao()
     private val _itemsLiveData: LiveData<List<Item>> = _itemDao.loadAllItems()
     private val _stateAddItemLiveData = MutableLiveData<Status>()
     private val _stateEditItemLiveData = MutableLiveData<Status>()

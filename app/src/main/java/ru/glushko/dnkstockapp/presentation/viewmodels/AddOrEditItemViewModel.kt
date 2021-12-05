@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.viewmodels
+package ru.glushko.dnkstockapp.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 

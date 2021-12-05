@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.model
+package ru.glushko.dnkstockapp.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

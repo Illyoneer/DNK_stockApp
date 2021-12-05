@@ -1,8 +1,8 @@
-package ru.glushko.dnkstockapp.model.provider
+package ru.glushko.dnkstockapp.data.model.provider
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import ru.glushko.dnkstockapp.model.Item
+import ru.glushko.dnkstockapp.data.Item
 
 @Dao
 interface ItemDao {
@@ -17,6 +17,6 @@ interface ItemDao {
     fun deleteItem(item: Item)
 
     @Update
-    fun updateItem(item:Item)
+    fun updateItem(item: Item)
 
 }

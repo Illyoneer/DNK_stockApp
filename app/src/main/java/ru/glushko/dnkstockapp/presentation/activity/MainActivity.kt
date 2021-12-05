@@ -1,9 +1,8 @@
-package ru.glushko.dnkstockapp.activity
+package ru.glushko.dnkstockapp.presentation.activity
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -16,17 +15,11 @@ import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.ActivityMainBinding
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
-import ru.glushko.dnkstockapp.model.Item
-import ru.glushko.dnkstockapp.utils.Status
-import ru.glushko.dnkstockapp.utils.recyclerAdapter.ItemRecyclerAdapter
-import ru.glushko.dnkstockapp.viewmodels.AddOrEditItemViewModel
-import ru.glushko.dnkstockapp.viewmodels.MainViewModel
-import android.view.Gravity
-
-import android.widget.TextView
-
-
-
+import ru.glushko.dnkstockapp.data.Item
+import ru.glushko.dnkstockapp.presentation.viewmodels.AddOrEditItemViewModel
+import ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel
+import ru.glushko.dnkstockapp.presentation.utils.Status
+import ru.glushko.dnkstockapp.presentation.utils.recyclerAdapter.ItemRecyclerAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -128,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             }.setNegativeButton("Отмена"){dialog, _ -> dialog.cancel()}.show()
     }
 
-    private fun showEditItemRecordDialog(item:Item) {
+    private fun showEditItemRecordDialog(item: Item) {
         val binding: FragmentAddOrEditItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(this), R.layout.fragment_add_or_edit_item,
             null, false)
@@ -173,7 +166,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showInfoAboutItemRecordDialog(item:Item) {
+    private fun showInfoAboutItemRecordDialog(item: Item) {
         val binding: FragmentItemInfoBinding = DataBindingUtil.inflate(
             LayoutInflater.from(this), R.layout.fragment_item_info,
             null, false)

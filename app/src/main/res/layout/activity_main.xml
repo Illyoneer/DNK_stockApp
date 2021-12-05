@@ -7,14 +7,14 @@
     <data>
         <variable
             name="mainVM"
-            type="ru.glushko.dnkstockapp.viewmodels.MainViewModel" />
+            type="ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activity.MainActivity">
+        tools:context=".presentation.viewmodels.viewmodels.activity.MainActivity">
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
