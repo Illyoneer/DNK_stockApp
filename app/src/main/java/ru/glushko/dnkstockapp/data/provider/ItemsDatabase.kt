@@ -25,7 +25,6 @@ abstract class ItemsDatabase : RoomDatabase() {
                 }
             }
             val database = Room.databaseBuilder(application, ItemsDatabase::class.java, DB_NAME)
-                .allowMainThreadQueries()
                 .build()
 
             instance = database

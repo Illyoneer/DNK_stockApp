@@ -3,6 +3,8 @@ package ru.glushko.dnkstockapp.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.glushko.dnkstockapp.data.ItemRepositoryImpl
 import ru.glushko.dnkstockapp.domain.Item
 import ru.glushko.dnkstockapp.domain.app.AppInstance
@@ -39,14 +41,16 @@ class MainViewModel : ViewModel() {
 
     fun addItemToDatabase(name: String, count: String, date: String, user: String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
-            _addItemUseCase.addItem(
-                Item(
-                    name = name,
-                    count = count,
-                    date = date,
-                    user = user
+            viewModelScope.launch {
+                _addItemUseCase.addItem(
+                    Item(
+                        name = name,
+                        count = count,
+                        date = date,
+                        user = user
+                    )
                 )
-            )
+            }
 
             _stateAddItemLiveData.value = Status.SUCCESS
         } else {
@@ -54,19 +58,21 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun deleteItemFromDatabase(item: Item) = _deleteItemUseCase.deleteItem(item)
+    fun deleteItemFromDatabase(item: Item) = viewModelScope.launch { _deleteItemUseCase.deleteItem(item) }
 
     fun updateItemInDatabase(id: Int, name: String, count: String, date: String, user: String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
-            _updateItemUseCase.updateItem(
-                Item(
-                    id = id,
-                    name = name,
-                    count = count,
-                    date = date,
-                    user = user
+            viewModelScope.launch {
+                _updateItemUseCase.updateItem(
+                    Item(
+                        id = id,
+                        name = name,
+                        count = count,
+                        date = date,
+                        user = user
+                    )
                 )
-            )
+            }
 
             _stateEditItemLiveData.value = Status.SUCCESS
         } else {

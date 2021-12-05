@@ -13,20 +13,20 @@ class ItemRepositoryImpl(application: Application) : ItemRepository {
     private val _itemDao: ItemDao = ItemsDatabase.getInstance(application).userDao()
     private val _mapper = ItemMapper()
 
-    override fun getItemsList(): LiveData<List<Item>> = Transformations.map(_itemDao.loadAllItems()) {
-        _mapper.mapListDBItemToListEntity(it)
-    }
+    override fun getItemsList(): LiveData<List<Item>> =
+        Transformations.map(_itemDao.loadAllItems()) {
+            _mapper.mapListDBItemToListEntity(it)
+        }
 
-
-    override fun addItem(item: Item) {
+    override suspend fun addItem(item: Item) {
         _itemDao.addItem(_mapper.mapEntityToDBItem(item))
     }
 
-    override fun deleteItem(item: Item) {
+    override suspend fun deleteItem(item: Item) {
         _itemDao.deleteItem(_mapper.mapEntityToDBItem(item))
     }
 
-    override fun updateItem(item: Item) {
+    override suspend fun updateItem(item: Item) {
         _itemDao.updateItem(_mapper.mapEntityToDBItem(item))
     }
 }

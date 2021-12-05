@@ -5,7 +5,7 @@ import ru.glushko.dnkstockapp.domain.Item
 
 interface ItemRepository {
     fun getItemsList():LiveData<List<Item>>
-    fun addItem(item: Item)
-    fun deleteItem(item: Item)
-    fun updateItem(item: Item)
+    suspend fun addItem(item: Item)
+    suspend fun deleteItem(item: Item)
+    suspend fun updateItem(item: Item)
 }
