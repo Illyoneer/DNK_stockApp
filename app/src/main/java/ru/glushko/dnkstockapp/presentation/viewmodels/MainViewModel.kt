@@ -3,9 +3,9 @@ package ru.glushko.dnkstockapp.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.glushko.dnkstockapp.app.AppInstance
 import ru.glushko.dnkstockapp.data.ItemRepositoryImpl
 import ru.glushko.dnkstockapp.domain.Item
+import ru.glushko.dnkstockapp.domain.app.AppInstance
 import ru.glushko.dnkstockapp.domain.usecases.AddItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.DeleteItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.GetItemsListUseCase
@@ -41,7 +41,6 @@ class MainViewModel : ViewModel() {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
             _addItemUseCase.addItem(
                 Item(
-                    0,
                     name = name,
                     count = count,
                     date = date,

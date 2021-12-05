@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.app
+package ru.glushko.dnkstockapp.domain.app
 
 import android.app.Application
 
