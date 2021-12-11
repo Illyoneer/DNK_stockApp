@@ -5,23 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.glushko.dnkstockapp.app.AppInstance
-import ru.glushko.dnkstockapp.data.ItemRepositoryImpl
 import ru.glushko.dnkstockapp.domain.Item
 import ru.glushko.dnkstockapp.domain.usecases.AddItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.DeleteItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.GetItemsListUseCase
 import ru.glushko.dnkstockapp.domain.usecases.UpdateItemUseCase
-import ru.glushko.dnkstockapp.utils.Status
+import ru.glushko.dnkstockapp.presentation.viewutils.Status
 
-class MainViewModel : ViewModel() {
-
-    private val _repository = ItemRepositoryImpl(AppInstance.instance)
-
-    private val _getItemsListUseCase = GetItemsListUseCase(_repository)
-    private val _deleteItemUseCase = DeleteItemUseCase(_repository)
-    private val _updateItemUseCase = UpdateItemUseCase(_repository)
-    private val _addItemUseCase = AddItemUseCase(_repository)
+class MainViewModel constructor(
+    private val _getItemsListUseCase: GetItemsListUseCase,
+    private val _deleteItemUseCase:DeleteItemUseCase,
+    private val _updateItemUseCase: UpdateItemUseCase,
+    private val _addItemUseCase:AddItemUseCase
+) : ViewModel() {
 
     private val _stateAddItemLiveData = MutableLiveData<Status>()
     private val _stateEditItemLiveData = MutableLiveData<Status>()

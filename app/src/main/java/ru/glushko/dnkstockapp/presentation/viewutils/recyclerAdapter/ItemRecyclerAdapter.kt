@@ -23,6 +23,7 @@ class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val itemElement = getItem(position)
         with(holder.recyclerItem) {
+            countText.text = "${position+1}"
             itemName.text = itemElement.name
             countItem.text = itemElement.count + " шт."
             moreButton.setOnClickListener {

@@ -6,13 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.glushko.dnkstockapp.data.model.DBItem
 
-@Database(entities = [DBItem::class], version = 2, exportSchema = false)
+@Database(entities = [DBItem::class], version = 3, exportSchema = false)
 abstract class ItemsDatabase : RoomDatabase() {
 
     companion object {
         private var instance: ItemsDatabase? = null
         private val LOCK = Any()
-        private const val DB_NAME = "items_new"
+        private const val DB_NAME = "items_test"
 
         fun getInstance(application: Application): ItemsDatabase {
             instance?.let {

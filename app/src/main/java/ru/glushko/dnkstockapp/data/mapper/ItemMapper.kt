@@ -1,9 +1,9 @@
-package ru.glushko.dnkstockapp.data.datautils
+package ru.glushko.dnkstockapp.data.mapper
 
 import ru.glushko.dnkstockapp.data.model.DBItem
 import ru.glushko.dnkstockapp.domain.Item
 
-class ItemMapper {
+class ItemMapper constructor() {
 
     fun mapEntityToDBItem(item: Item) = DBItem(
         id = item.id,

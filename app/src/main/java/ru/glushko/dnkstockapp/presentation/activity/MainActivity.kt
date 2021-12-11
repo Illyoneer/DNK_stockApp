@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.ActivityMainBinding
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
@@ -18,19 +19,19 @@ import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
 import ru.glushko.dnkstockapp.domain.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.AddOrEditItemViewModel
 import ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel
+import ru.glushko.dnkstockapp.presentation.viewutils.Status
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapter.ItemRecyclerAdapter
-import ru.glushko.dnkstockapp.utils.Status
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var _mainActivityBinding: ActivityMainBinding
-    private lateinit var _mainViewModel: MainViewModel
+    private val _mainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         _mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        _mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
+        /*_mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]*/
         _mainActivityBinding.mainVM = _mainViewModel
 
         setupRecyclerView()
