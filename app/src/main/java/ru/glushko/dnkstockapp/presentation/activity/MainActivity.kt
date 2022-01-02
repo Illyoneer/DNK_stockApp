@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,33 +23,42 @@ import ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.Status
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapter.ItemRecyclerAdapter
 
+
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var _mainActivityBinding: ActivityMainBinding
-    private val _mainViewModel by viewModel<MainViewModel>()
+    private lateinit var _consumablesFragmentBinding: ActivityMainBinding
+    private val _consumablesViewModel by viewModel<MainViewModel>()
+    private val _types = arrayListOf("Расходник", "Оборудование")
+    private lateinit var _spinnerAdapter: ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        /*_mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]*/
-        _mainActivityBinding.mainVM = _mainViewModel
+        _consumablesFragmentBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        _consumablesFragmentBinding.mainVM = _consumablesViewModel
 
         setupRecyclerView()
 
-        _mainActivityBinding.addItemRecordButton.setOnClickListener {
+        _consumablesFragmentBinding.addItemRecordButton.setOnClickListener {
             showAddItemRecordDialog()
         }
+
+        _spinnerAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            _types
+        )
+        _spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
 
     private fun setupRecyclerView() {
         val itemRecyclerAdapter = ItemRecyclerAdapter()
 
-        _mainViewModel.getItemsList().observe(this, {
+        _consumablesViewModel.getItemsList().observe(this, {
             itemRecyclerAdapter.submitList(it)
         })
 
-        _mainActivityBinding.recyclerView.adapter = itemRecyclerAdapter
+        _consumablesFragmentBinding.recyclerView.adapter = itemRecyclerAdapter
 
         setupOnHolderViewClick(itemRecyclerAdapter)
         setupOnActionButtonClick(itemRecyclerAdapter)
@@ -75,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 DELETE_ITEM -> {
-                    _mainViewModel.deleteItemFromDatabase(itemElement)
+                    _consumablesViewModel.deleteItemFromDatabase(itemElement)
                 }
                 EDIT_ITEM -> {
                     showEditItemRecordDialog(itemElement)
@@ -94,26 +104,28 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this)[AddOrEditItemViewModel::class.java]
 
         binding.addItemVM = addItemFragmentViewModel
+        binding.itemTypeSpinner.adapter = _spinnerAdapter
 
         AlertDialog.Builder(this, R.style.MyAlertDialogRoundedTheme)
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(binding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
-                _mainViewModel.addItemToDatabase(
+                _consumablesViewModel.addItemToDatabase(
                     binding.itemNameEditText.text.toString(),
                     binding.itemCountEditText.text.toString(),
                     binding.itemDateEditText.text.toString(),
-                    binding.itemUserEditText.text.toString()
+                    binding.itemUserEditText.text.toString(),
+                    binding.itemTypeSpinner.selectedItem.toString()
                 )
 
-                _mainViewModel.getStateAddItemLiveData().observe(this, {
+                _consumablesViewModel.getStateAddItemLiveData().observe(this, {
                     when (it!!) {
                         Status.ERROR -> Snackbar.make(
-                            _mainActivityBinding.root, "Введите все данные.",
+                            _consumablesFragmentBinding.root, "Введите все данные.",
                             Snackbar.LENGTH_SHORT
                         ).show()
                         Status.SUCCESS -> Snackbar.make(
-                            _mainActivityBinding.root, "Запись успешно добавлена!",
+                            _consumablesFragmentBinding.root, "Запись успешно добавлена!",
                             Snackbar.LENGTH_SHORT
                         ).show()
                     }
@@ -129,12 +141,17 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this)[AddOrEditItemViewModel::class.java]
 
         binding.addItemVM = addOrEditItemViewModel
+        binding.itemTypeSpinner.adapter = _spinnerAdapter
 
         with(binding){
             itemNameEditText.setText(item.name)
             itemCountEditText.setText(item.count)
             itemDateEditText.setText(item.date)
             itemUserEditText.setText(item.user)
+            if(item.type == "Расходник")
+                itemTypeSpinner.setSelection(0)
+            else
+                itemTypeSpinner.setSelection(1)
         }
 
         AlertDialog.Builder(this, R.style.MyAlertDialogRoundedTheme)
@@ -142,22 +159,23 @@ class MainActivity : AppCompatActivity() {
             .setView(binding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
 
-                _mainViewModel.updateItemInDatabase(
+                _consumablesViewModel.updateItemInDatabase(
                     item.id,
                     binding.itemNameEditText.text.toString(),
                     binding.itemCountEditText.text.toString(),
                     binding.itemDateEditText.text.toString(),
-                    binding.itemUserEditText.text.toString()
+                    binding.itemUserEditText.text.toString(),
+                    binding.itemTypeSpinner.selectedItem.toString()
                 )
 
-                _mainViewModel.getStateEditItemLiveData().observe(this, {
+                _consumablesViewModel.getStateEditItemLiveData().observe(this, {
                     when (it!!) {
                         Status.ERROR -> Snackbar.make(
-                            _mainActivityBinding.root, "Ошибка!",
+                            _consumablesFragmentBinding.root, "Ошибка!",
                             Snackbar.LENGTH_SHORT
                         ).show()
                         Status.SUCCESS -> Snackbar.make(
-                            _mainActivityBinding.root, "Запись успешно обновлена!",
+                            _consumablesFragmentBinding.root, "Запись успешно обновлена!",
                             Snackbar.LENGTH_SHORT
                         ).show()
                     }
@@ -176,6 +194,7 @@ class MainActivity : AppCompatActivity() {
             infoCountItem.text = item.count + " шт."
             infoDateItem.text = item.date
             infoUserItem.text = item.user
+            infoTypeItem.text = item.type
         }
 
         AlertDialog.Builder(this, R.style.MyAlertDialogRoundedTheme)

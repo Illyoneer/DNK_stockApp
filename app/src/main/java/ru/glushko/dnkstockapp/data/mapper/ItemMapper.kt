@@ -10,7 +10,8 @@ class ItemMapper constructor() {
         name = item.name,
         count = item.count,
         date = item.date,
-        user = item.user
+        user = item.user,
+        type = item.type
     )
 
     private fun mapDBItemToEntity(dbItem: DBItem) = Item(
@@ -18,7 +19,8 @@ class ItemMapper constructor() {
         name = dbItem.name,
         count = dbItem.count,
         date = dbItem.date,
-        user = dbItem.user
+        user = dbItem.user,
+        type = dbItem.type
     )
 
     fun mapListDBItemToListEntity(list: List<DBItem>) = list.map{

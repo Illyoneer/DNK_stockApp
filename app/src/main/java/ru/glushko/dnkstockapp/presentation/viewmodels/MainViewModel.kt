@@ -29,7 +29,7 @@ class MainViewModel constructor(
 
     fun getItemsList(): LiveData<List<Item>> = _getItemsListUseCase.getItemsList()
 
-    fun addItemToDatabase(name: String, count: String, date: String, user: String) {
+    fun addItemToDatabase(name: String, count: String, date: String, user: String, type: String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
             viewModelScope.launch {
                 _addItemUseCase.addItem(
@@ -37,7 +37,8 @@ class MainViewModel constructor(
                         name = name,
                         count = count,
                         date = date,
-                        user = user
+                        user = user,
+                        type = type
                     )
                 )
             }
@@ -51,7 +52,7 @@ class MainViewModel constructor(
         _deleteItemUseCase.deleteItem(item)
     }
 
-    fun updateItemInDatabase(id: Int, name: String, count: String, date: String, user: String) {
+    fun updateItemInDatabase(id: Int, name: String, count: String, date: String, user: String, type:String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
             viewModelScope.launch {
                 _updateItemUseCase.updateItem(
@@ -60,7 +61,8 @@ class MainViewModel constructor(
                         name = name,
                         count = count,
                         date = date,
-                        user = user
+                        user = user,
+                        type = type
                     )
                 )
             }

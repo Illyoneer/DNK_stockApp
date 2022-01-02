@@ -13,7 +13,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.fragment.ConsumablesFragment">
+        tools:context=".presentation.fragment.HardwareFragment">
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
