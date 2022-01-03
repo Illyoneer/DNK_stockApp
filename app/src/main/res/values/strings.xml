@@ -10,6 +10,9 @@
     <string name="hardware_menu_text">Оборудование</string>
     <string name="consumables_menu_text">Расходники</string>
     <string name="addItemRecord">Добавить запись</string>
+    <string name="management_menu_text">Управление</string>
+    <string name="review_menu_text">Обзор</string>
+    <string name="home_menu_text">Главная</string>
 
     <string-array name="spinnerTypes">
         <item>Расходник</item>

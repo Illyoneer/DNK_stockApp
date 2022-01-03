@@ -36,7 +36,6 @@ class ConsumablesFragment : Fragment() {
         _consumablesFragmentBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_consumables, container, false
         )
-        _consumablesFragmentBinding.mainVM = _mainViewModel
 
         setupRecyclerView()
 

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/consumables"
-        android:title="@string/consumables_menu_text"
-        android:icon="@drawable/consumables_white_icon"/>
+    <item android:id="@+id/home"
+        android:title="@string/home_menu_text"
+        android:icon="@drawable/home_icon"/>
 
-    <item android:id="@+id/hardware"
-        android:title="@string/hardware_menu_text"
-        android:icon="@drawable/hardware_white_icon"/>
+    <item android:id="@+id/review"
+        android:title="@string/review_menu_text"
+        android:icon="@drawable/review_icon"/>
+
+    <item android:id="@+id/management"
+        android:title="@string/management_menu_text"
+        android:icon="@drawable/management_icon"/>
 
 </menu>

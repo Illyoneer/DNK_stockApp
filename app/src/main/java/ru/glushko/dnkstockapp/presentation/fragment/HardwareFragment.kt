@@ -36,7 +36,6 @@ class HardwareFragment : Fragment() {
         _hardwareFragmentBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_hardware, container, false
         )
-        _hardwareFragmentBinding.mainVM = _mainViewModel
 
         setupRecyclerView()
 
