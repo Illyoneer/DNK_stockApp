@@ -6,7 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.glushko.dnkstockapp.data.model.DBItem
 
-@Database(entities = [DBItem::class], version = 3, exportSchema = false)
+@Database(
+    entities = [DBItem::class],
+    version = 4
+)
 abstract class ItemsDatabase : RoomDatabase() {
 
     companion object {
@@ -25,6 +28,7 @@ abstract class ItemsDatabase : RoomDatabase() {
                 }
             }
             val database = Room.databaseBuilder(application, ItemsDatabase::class.java, DB_NAME)
+                .fallbackToDestructiveMigration()
                 .build()
 
             instance = database

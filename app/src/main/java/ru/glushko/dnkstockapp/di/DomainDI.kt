@@ -1,10 +1,7 @@
 package ru.glushko.dnkstockapp.di
 
 import org.koin.dsl.module
-import ru.glushko.dnkstockapp.domain.usecases.AddItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.DeleteItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.GetItemsListUseCase
-import ru.glushko.dnkstockapp.domain.usecases.UpdateItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.*
 
 val domainModule = module {
 
@@ -22,5 +19,13 @@ val domainModule = module {
 
     factory {
         UpdateItemUseCase(itemRepository = get())
+    }
+
+    factory {
+        GetConsumablesItemsUseCase(itemRepository = get())
+    }
+
+    factory {
+        GetHardwareItemsUseCase(itemRepository = get())
     }
 }

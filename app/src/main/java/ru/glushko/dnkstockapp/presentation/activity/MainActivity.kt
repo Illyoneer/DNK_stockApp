@@ -1,95 +1,53 @@
 package ru.glushko.dnkstockapp.presentation.activity
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.ActivityMainBinding
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
-import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
-import ru.glushko.dnkstockapp.domain.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.AddOrEditItemViewModel
 import ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.Status
-import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapter.ItemRecyclerAdapter
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var _mainActivityBinding: ActivityMainBinding
     private val _mainViewModel by viewModel<MainViewModel>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         _mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        /*_mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]*/
-        _mainActivityBinding.mainVM = _mainViewModel
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
+        _mainActivityBinding.bottomNavView.setupWithNavController(navController)
 
-        setupRecyclerView()
+        _mainActivityBinding.bottomNavView.background = null
 
-        _mainActivityBinding.addItemRecordButton.setOnClickListener {
-            showAddItemRecordDialog()
+        _mainActivityBinding.addItemRecordButton.setOnClickListener{
+            if(navController.currentDestination?.label.contentEquals("ConsumablesFragment"))
+                showAddConsumablesItemRecordDialog()
+            else
+                showAddHardwareItemRecordDialog()
         }
     }
 
-    private fun setupRecyclerView() {
-        val itemRecyclerAdapter = ItemRecyclerAdapter()
-
-        _mainViewModel.getItemsList().observe(this, {
-            itemRecyclerAdapter.submitList(it)
-        })
-
-        _mainActivityBinding.recyclerView.adapter = itemRecyclerAdapter
-
-        setupOnHolderViewClick(itemRecyclerAdapter)
-        setupOnActionButtonClick(itemRecyclerAdapter)
-    }
-
-    private fun setupOnHolderViewClick(itemRecyclerAdapter: ItemRecyclerAdapter) {
-        itemRecyclerAdapter.onHolderViewClickListener = {
-            showInfoAboutItemRecordDialog(it)
-        }
-    }
-
-    private fun setupOnActionButtonClick(itemRecyclerAdapter: ItemRecyclerAdapter) {
-        itemRecyclerAdapter.onPopupButtonClickListener = {
-            item, view ->
-            showPopupMenu(view, item)
-        }
-    }
-
-    private fun showPopupMenu(view: View, itemElement: Item) {
-        val popupMenu = PopupMenu(view.context, view)
-        popupMenu.menu.add(0, DELETE_ITEM, Menu.NONE, "Удалить")
-        popupMenu.menu.add(0, EDIT_ITEM, Menu.NONE, "Редактировать")
-        //TODO: Намутить свап записей.
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                DELETE_ITEM -> {
-                    _mainViewModel.deleteItemFromDatabase(itemElement)
-                }
-                EDIT_ITEM -> {
-                    showEditItemRecordDialog(itemElement)
-                }
-            }
-            return@setOnMenuItemClickListener true
-        }
-        popupMenu.show()
-    }
-
-    private fun showAddItemRecordDialog() {
+    private fun showAddConsumablesItemRecordDialog() {
         val binding: FragmentAddOrEditItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(this), R.layout.fragment_add_or_edit_item,
-            null, false)
+            null, false
+        )
         val addItemFragmentViewModel =
             ViewModelProvider(this)[AddOrEditItemViewModel::class.java]
 
@@ -103,7 +61,8 @@ class MainActivity : AppCompatActivity() {
                     binding.itemNameEditText.text.toString(),
                     binding.itemCountEditText.text.toString(),
                     binding.itemDateEditText.text.toString(),
-                    binding.itemUserEditText.text.toString()
+                    binding.itemUserEditText.text.toString(),
+                    "consumables"
                 )
 
                 _mainViewModel.getStateAddItemLiveData().observe(this, {
@@ -118,74 +77,43 @@ class MainActivity : AppCompatActivity() {
                         ).show()
                     }
                 })
-            }.setNegativeButton("Отмена"){dialog, _ -> dialog.cancel()}.show()
+            }.setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }.show()
     }
 
-    private fun showEditItemRecordDialog(item: Item) {
+    private fun showAddHardwareItemRecordDialog() {
         val binding: FragmentAddOrEditItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(this), R.layout.fragment_add_or_edit_item,
-            null, false)
-        val addOrEditItemViewModel =
+            null, false
+        )
+        val addItemFragmentViewModel =
             ViewModelProvider(this)[AddOrEditItemViewModel::class.java]
 
-        binding.addItemVM = addOrEditItemViewModel
-
-        with(binding){
-            itemNameEditText.setText(item.name)
-            itemCountEditText.setText(item.count)
-            itemDateEditText.setText(item.date)
-            itemUserEditText.setText(item.user)
-        }
+        binding.addItemVM = addItemFragmentViewModel
 
         AlertDialog.Builder(this, R.style.MyAlertDialogRoundedTheme)
-            .setTitle("Редактировать запись") //Добавление заголовка.
+            .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(binding.root) //Присвоение View полученного ранее.
-            .setPositiveButton("Готово") { _, _ ->
-
-                _mainViewModel.updateItemInDatabase(
-                    item.id,
+            .setPositiveButton("Добавить") { _, _ ->
+                _mainViewModel.addItemToDatabase(
                     binding.itemNameEditText.text.toString(),
                     binding.itemCountEditText.text.toString(),
                     binding.itemDateEditText.text.toString(),
-                    binding.itemUserEditText.text.toString()
+                    binding.itemUserEditText.text.toString(),
+                    "hardware"
                 )
 
-                _mainViewModel.getStateEditItemLiveData().observe(this, {
+                _mainViewModel.getStateAddItemLiveData().observe(this, {
                     when (it!!) {
                         Status.ERROR -> Snackbar.make(
-                            _mainActivityBinding.root, "Ошибка!",
+                            _mainActivityBinding.root, "Введите все данные.",
                             Snackbar.LENGTH_SHORT
                         ).show()
                         Status.SUCCESS -> Snackbar.make(
-                            _mainActivityBinding.root, "Запись успешно обновлена!",
+                            _mainActivityBinding.root, "Запись успешно добавлена!",
                             Snackbar.LENGTH_SHORT
                         ).show()
                     }
                 })
-            }.setNegativeButton("Отмена"){dialog, _ -> dialog.cancel()}.show()
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun showInfoAboutItemRecordDialog(item: Item) {
-        val binding: FragmentItemInfoBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(this), R.layout.fragment_item_info,
-            null, false)
-
-        with(binding){
-            infoNameItem.text = item.name
-            infoCountItem.text = item.count + " шт."
-            infoDateItem.text = item.date
-            infoUserItem.text = item.user
-        }
-
-        AlertDialog.Builder(this, R.style.MyAlertDialogRoundedTheme)
-            .setTitle("Информация о выдаче") //Добавление заголовка.
-            .setView(binding.root) //Присвоение View полученного ранее.
-            .setPositiveButton("Закрыть") { dialog, _ -> dialog.cancel() }.show()
-    }
-
-    companion object {
-        private const val EDIT_ITEM = 1
-        private const val DELETE_ITEM = 0
+            }.setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }.show()
     }
 }

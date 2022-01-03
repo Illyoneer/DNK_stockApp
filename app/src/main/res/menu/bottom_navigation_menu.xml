@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/consumables"
+        android:title="@string/consumables_menu_text"
+        android:icon="@drawable/consumables_white_icon"/>
+
+    <item android:id="@+id/hardware"
+        android:title="@string/hardware_menu_text"
+        android:icon="@drawable/hardware_white_icon"/>
+
+</menu>

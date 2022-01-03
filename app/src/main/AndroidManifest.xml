@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DNKStockApp">
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.activity.MainActivity"
             android:exported="true">
             <intent-filter>

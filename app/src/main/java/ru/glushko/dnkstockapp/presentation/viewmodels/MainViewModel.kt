@@ -6,17 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.glushko.dnkstockapp.domain.Item
-import ru.glushko.dnkstockapp.domain.usecases.AddItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.DeleteItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.GetItemsListUseCase
-import ru.glushko.dnkstockapp.domain.usecases.UpdateItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.*
 import ru.glushko.dnkstockapp.presentation.viewutils.Status
 
 class MainViewModel constructor(
     private val _getItemsListUseCase: GetItemsListUseCase,
     private val _deleteItemUseCase:DeleteItemUseCase,
     private val _updateItemUseCase: UpdateItemUseCase,
-    private val _addItemUseCase:AddItemUseCase
+    private val _addItemUseCase:AddItemUseCase,
+    private val _getConsumablesItemsUseCase:GetConsumablesItemsUseCase,
+    private val _getHardwareItemsUseCase:GetHardwareItemsUseCase,
 ) : ViewModel() {
 
     private val _stateAddItemLiveData = MutableLiveData<Status>()
@@ -29,7 +28,11 @@ class MainViewModel constructor(
 
     fun getItemsList(): LiveData<List<Item>> = _getItemsListUseCase.getItemsList()
 
-    fun addItemToDatabase(name: String, count: String, date: String, user: String) {
+    fun getGetConsumablesItems(): LiveData<List<Item>> = _getConsumablesItemsUseCase.getConsumablesItems()
+
+    fun getGetHardwareItems(): LiveData<List<Item>> = _getHardwareItemsUseCase.getHardwareItems()
+
+    fun addItemToDatabase(name: String, count: String, date: String, user: String, type: String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
             viewModelScope.launch {
                 _addItemUseCase.addItem(
@@ -37,7 +40,8 @@ class MainViewModel constructor(
                         name = name,
                         count = count,
                         date = date,
-                        user = user
+                        user = user,
+                        type = type
                     )
                 )
             }
@@ -51,7 +55,7 @@ class MainViewModel constructor(
         _deleteItemUseCase.deleteItem(item)
     }
 
-    fun updateItemInDatabase(id: Int, name: String, count: String, date: String, user: String) {
+    fun updateItemInDatabase(id: Int, name: String, count: String, date: String, user: String, type:String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
             viewModelScope.launch {
                 _updateItemUseCase.updateItem(
@@ -60,7 +64,8 @@ class MainViewModel constructor(
                         name = name,
                         count = count,
                         date = date,
-                        user = user
+                        user = user,
+                        type = type
                     )
                 )
             }
