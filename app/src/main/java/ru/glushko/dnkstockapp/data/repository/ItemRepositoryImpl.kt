@@ -18,6 +18,16 @@ class ItemRepositoryImpl constructor(
             mapper.mapListDBItemToListEntity(it)
         }
 
+    override fun getConsumablesItems(): LiveData<List<Item>> =
+        Transformations.map(_itemDao.loadConsumablesItems()) {
+            mapper.mapListDBItemToListEntity(it)
+        }
+
+    override fun getHardwareItems(): LiveData<List<Item>> =
+        Transformations.map(_itemDao.loadHardwareItems()) {
+            mapper.mapListDBItemToListEntity(it)
+        }
+
     override suspend fun addItem(item: Item) = _itemDao.addItem(mapper.mapEntityToDBItem(item))
 
     override suspend fun deleteItem(item: Item) =

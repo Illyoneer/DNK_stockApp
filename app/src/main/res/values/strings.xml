@@ -7,6 +7,9 @@
     <string name="name_item">Название</string>
     <string name="date_item">Дата</string>
     <string name="type_item">Тип</string>
+    <string name="hardware_menu_text">Оборудование</string>
+    <string name="consumables_menu_text">Расходники</string>
+    <string name="addItemRecord">Добавить запись</string>
 
     <string-array name="spinnerTypes">
         <item>Расходник</item>
