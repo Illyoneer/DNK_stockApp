@@ -12,12 +12,6 @@ class ItemRepositoryImpl constructor(
     private val mapper: ItemMapper
 ) : ItemRepository {
 
-    /*private val _itemDao: ItemDao = ItemsDatabase.getInstance(AppInstance.instance).userDao()*/
-    override fun getItemsList(): LiveData<List<Item>> =
-        Transformations.map(_itemDao.loadAllItems()) {
-            mapper.mapListDBItemToListEntity(it)
-        }
-
     override fun getConsumablesItems(): LiveData<List<Item>> =
         Transformations.map(_itemDao.loadConsumablesItems()) {
             mapper.mapListDBItemToListEntity(it)

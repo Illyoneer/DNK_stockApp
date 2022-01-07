@@ -29,8 +29,8 @@ class ReviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _reviewFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_review, container, false)
+        val pagerAdapter = MyTabAdapter(this)
 
-        val pagerAdapter = MyTabAdapter(requireActivity())
         _reviewFragmentBinding.viewPager2.adapter = pagerAdapter
 
         TabLayoutMediator(_reviewFragmentBinding.tabLayout,_reviewFragmentBinding.viewPager2, ){

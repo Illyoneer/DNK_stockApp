@@ -6,10 +6,6 @@ import ru.glushko.dnkstockapp.domain.usecases.*
 val domainModule = module {
 
     factory {
-        GetItemsListUseCase(itemRepository = get())
-    }
-
-    factory {
         AddItemUseCase(itemRepository = get())
     }
 

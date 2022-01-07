@@ -10,7 +10,6 @@ import ru.glushko.dnkstockapp.domain.usecases.*
 import ru.glushko.dnkstockapp.presentation.viewutils.Status
 
 class MainViewModel constructor(
-    private val _getItemsListUseCase: GetItemsListUseCase,
     private val _deleteItemUseCase:DeleteItemUseCase,
     private val _updateItemUseCase: UpdateItemUseCase,
     private val _addItemUseCase:AddItemUseCase,
@@ -25,8 +24,6 @@ class MainViewModel constructor(
     fun getStateAddItemLiveData(): MutableLiveData<Status> = _stateAddItemLiveData
 
     fun getStateEditItemLiveData(): MutableLiveData<Status> = _stateEditItemLiveData
-
-    fun getItemsList(): LiveData<List<Item>> = _getItemsListUseCase.getItemsList()
 
     fun getGetConsumablesItems(): LiveData<List<Item>> = _getConsumablesItemsUseCase.getConsumablesItems()
 

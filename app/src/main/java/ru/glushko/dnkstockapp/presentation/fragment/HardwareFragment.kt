@@ -27,6 +27,7 @@ class HardwareFragment : Fragment() {
 
     private lateinit var _hardwareFragmentBinding: FragmentHardwareBinding
     private val _mainViewModel by viewModel<MainViewModel>()
+    private val _itemRecyclerAdapter = ItemRecyclerAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,16 +44,15 @@ class HardwareFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val itemRecyclerAdapter = ItemRecyclerAdapter()
 
         _mainViewModel.getGetHardwareItems().observe(viewLifecycleOwner, {
-            itemRecyclerAdapter.submitList(it)
+            _itemRecyclerAdapter.submitList(it)
         })
 
-        _hardwareFragmentBinding.recyclerView.adapter = itemRecyclerAdapter
+        _hardwareFragmentBinding.recyclerView.adapter = _itemRecyclerAdapter
 
-        setupOnHolderViewClick(itemRecyclerAdapter)
-        setupOnActionButtonClick(itemRecyclerAdapter)
+        setupOnHolderViewClick(_itemRecyclerAdapter)
+        setupOnActionButtonClick(_itemRecyclerAdapter)
     }
 
     private fun setupOnHolderViewClick(itemRecyclerAdapter: ItemRecyclerAdapter) {
@@ -70,12 +70,12 @@ class HardwareFragment : Fragment() {
     private fun showPopupMenu(view: View, itemElement: Item) {
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menu.add(0, DELETE_ITEM, Menu.NONE, "Удалить")
-        popupMenu.menu.add(0, EDIT_ITEM, Menu.NONE, "Редактировать")
+        popupMenu.menu.add(0, EDIT_ITEM, Menu.NONE, "Редактировать") //TODO: Перенести в Create
         //TODO: Намутить свап записей.
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 DELETE_ITEM -> {
-                    _mainViewModel.deleteItemFromDatabase(itemElement)
+                    _mainViewModel.deleteItemFromDatabase(item = itemElement)
                 }
                 EDIT_ITEM -> {
                     showEditItemRecordDialog(itemElement)
@@ -126,7 +126,7 @@ class HardwareFragment : Fragment() {
                         Status.SUCCESS -> Snackbar.make(
                             _hardwareFragmentBinding.root, "Запись успешно обновлена!",
                             Snackbar.LENGTH_SHORT
-                        ).show()
+                        ).show() //TODO: Сделать красивее и умнее!!!
                     }
                 })
             }.setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }.show()

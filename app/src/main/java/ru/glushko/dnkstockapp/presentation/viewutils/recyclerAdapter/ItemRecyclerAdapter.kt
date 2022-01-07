@@ -34,4 +34,14 @@ class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()
             }
         }
     }
+
+    override fun onCurrentListChanged(
+        previousList: MutableList<Item>,
+        currentList: MutableList<Item>
+    ) {
+        if(currentList.size < previousList.size)
+            notifyItemRangeChanged(0, currentList.size)
+        super.onCurrentListChanged(previousList, currentList)
+    }  //Исправление бага с нумерацией, если элемент из списка удаляется,
+        // происходит переотрисовка всех элементов со сдвигом индекса.
 }
