@@ -10,9 +10,6 @@ interface ItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addItem(dbItem: DBItem)
 
-    @Query("SELECT * FROM split_items_test")
-    fun loadAllItems(): LiveData<List<DBItem>>
-
     @Query("SELECT * FROM split_items_test WHERE item_type = 'hardware'")
     fun loadHardwareItems(): LiveData<List<DBItem>>
 

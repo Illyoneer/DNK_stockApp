@@ -2,14 +2,17 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/consumables">
-
+    app:startDestination="@id/home">
     <fragment
-        android:id="@+id/consumables"
-        android:name="ru.glushko.dnkstockapp.presentation.fragment.ConsumablesFragment"
-        android:label="ConsumablesFragment" />
+        android:id="@+id/home"
+        android:name="ru.glushko.dnkstockapp.presentation.fragment.HomeFragment"
+        android:label="HomeFragment" />
     <fragment
-        android:id="@+id/hardware"
-        android:name="ru.glushko.dnkstockapp.presentation.fragment.HardwareFragment"
-        android:label="HardwareFragment" />
+        android:id="@+id/review"
+        android:name="ru.glushko.dnkstockapp.presentation.fragment.ReviewFragment"
+        android:label="ReviewFragment" />
+    <fragment
+        android:id="@+id/management"
+        android:name="ru.glushko.dnkstockapp.presentation.fragment.ManagementFragment"
+        android:label="ManagementFragment" />
 </navigation>

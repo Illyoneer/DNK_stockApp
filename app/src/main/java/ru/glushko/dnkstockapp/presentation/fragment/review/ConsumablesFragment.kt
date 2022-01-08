@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.presentation.fragment
+package ru.glushko.dnkstockapp.presentation.fragment.review
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -27,16 +27,15 @@ class ConsumablesFragment : Fragment() {
 
     private lateinit var _consumablesFragmentBinding: FragmentConsumablesBinding
     private val _mainViewModel by viewModel<MainViewModel>()
+    private var _itemRecyclerAdapter = ItemRecyclerAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        _consumablesFragmentBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_consumables, container, false
-        )
-        _consumablesFragmentBinding.mainVM = _mainViewModel
+        _consumablesFragmentBinding = FragmentConsumablesBinding.inflate(
+            inflater, container, false)
 
         setupRecyclerView()
 
@@ -44,21 +43,20 @@ class ConsumablesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val itemRecyclerAdapter = ItemRecyclerAdapter()
 
-        _mainViewModel.getGetConsumablesItems().observe(viewLifecycleOwner, {
-            itemRecyclerAdapter.submitList(it)
+        _mainViewModel.getGetConsumablesItems().observe(viewLifecycleOwner, { itemList ->
+            _itemRecyclerAdapter.submitList(itemList)
         })
 
-        _consumablesFragmentBinding.recyclerView.adapter = itemRecyclerAdapter
+        _consumablesFragmentBinding.recyclerView.adapter = _itemRecyclerAdapter
 
-        setupOnHolderViewClick(itemRecyclerAdapter)
-        setupOnActionButtonClick(itemRecyclerAdapter)
+        setupOnHolderViewClick(_itemRecyclerAdapter)
+        setupOnActionButtonClick(_itemRecyclerAdapter)
     }
 
     private fun setupOnHolderViewClick(itemRecyclerAdapter: ItemRecyclerAdapter) {
-        itemRecyclerAdapter.onHolderViewClickListener = {
-            showInfoAboutItemRecordDialog(it)
+        itemRecyclerAdapter.onHolderViewClickListener = { item ->
+            showInfoAboutItemRecordDialog(item)
         }
     }
 
@@ -76,10 +74,10 @@ class ConsumablesFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 DELETE_ITEM -> {
-                    _mainViewModel.deleteItemFromDatabase(itemElement)
+                    _mainViewModel.deleteItemFromDatabase(item = itemElement)
                 }
                 EDIT_ITEM -> {
-                    showEditItemRecordDialog(itemElement)
+                    showEditItemRecordDialog(item = itemElement)
                 }
             }
             return@setOnMenuItemClickListener true
@@ -127,7 +125,7 @@ class ConsumablesFragment : Fragment() {
                         Status.SUCCESS -> Snackbar.make(
                             _consumablesFragmentBinding.root, "Запись успешно обновлена!",
                             Snackbar.LENGTH_SHORT
-                        ).show()
+                        ).show() //TODO: Сделать красивее и умнее!!!
                     }
                 })
             }.setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }.show()
@@ -135,8 +133,8 @@ class ConsumablesFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun showInfoAboutItemRecordDialog(item: Item) {
-        val binding: FragmentItemInfoBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(requireContext()), R.layout.fragment_item_info,
+        val binding: FragmentItemInfoBinding = FragmentItemInfoBinding.inflate(
+            LayoutInflater.from(requireContext()),
             null, false
         )
 
