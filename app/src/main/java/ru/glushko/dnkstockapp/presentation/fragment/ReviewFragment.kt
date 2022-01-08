@@ -17,7 +17,7 @@ import ru.glushko.dnkstockapp.databinding.FragmentReviewBinding
 import ru.glushko.dnkstockapp.presentation.viewmodels.AddOrEditItemViewModel
 import ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.Status
-import ru.glushko.dnkstockapp.presentation.viewutils.tabAdapter.MyTabAdapter
+import ru.glushko.dnkstockapp.presentation.viewutils.tabAdapter.ReviewTabAdapter
 
 class ReviewFragment : Fragment() {
 
@@ -28,9 +28,8 @@ class ReviewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _reviewFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_review, container, false)
-        val pagerAdapter = MyTabAdapter(this)
-
+        _reviewFragmentBinding = FragmentReviewBinding.inflate(inflater, container, false)
+        val pagerAdapter = ReviewTabAdapter(this)
         _reviewFragmentBinding.viewPager2.adapter = pagerAdapter
 
         TabLayoutMediator(_reviewFragmentBinding.tabLayout,_reviewFragmentBinding.viewPager2, ){

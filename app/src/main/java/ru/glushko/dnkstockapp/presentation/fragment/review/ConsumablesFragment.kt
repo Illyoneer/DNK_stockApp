@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.presentation.fragment
+package ru.glushko.dnkstockapp.presentation.fragment.review
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -34,9 +34,8 @@ class ConsumablesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _consumablesFragmentBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_consumables, container, false
-        )
+        _consumablesFragmentBinding = FragmentConsumablesBinding.inflate(
+            inflater, container, false)
 
         setupRecyclerView()
 
@@ -134,8 +133,8 @@ class ConsumablesFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun showInfoAboutItemRecordDialog(item: Item) {
-        val binding: FragmentItemInfoBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(requireContext()), R.layout.fragment_item_info,
+        val binding: FragmentItemInfoBinding = FragmentItemInfoBinding.inflate(
+            LayoutInflater.from(requireContext()),
             null, false
         )
 
