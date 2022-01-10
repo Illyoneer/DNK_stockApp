@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "split_items_test")
+@Entity(tableName = "split_items")
 data class DBItem (@PrimaryKey(autoGenerate = true) val id: Int,
                    @ColumnInfo(name = "item_name") val name: String,
                    @ColumnInfo(name = "item_count") val count: String,

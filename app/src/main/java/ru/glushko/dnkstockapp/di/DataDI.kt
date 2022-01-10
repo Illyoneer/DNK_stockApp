@@ -2,22 +2,39 @@ package ru.glushko.dnkstockapp.di
 
 import org.koin.dsl.module
 import ru.glushko.dnkstockapp.app.AppInstance
-import ru.glushko.dnkstockapp.data.mapper.ItemMapper
-import ru.glushko.dnkstockapp.data.repository.ItemRepositoryImpl
-import ru.glushko.dnkstockapp.data.source.ItemsDatabase
+import ru.glushko.dnkstockapp.data.mappers.ItemMapper
+import ru.glushko.dnkstockapp.data.mappers.StockItemMapper
+import ru.glushko.dnkstockapp.data.repositories.ItemRepositoryImpl
+import ru.glushko.dnkstockapp.data.repositories.StockItemRepositoryImpl
+import ru.glushko.dnkstockapp.data.source.DNKStockDatabase
 import ru.glushko.dnkstockapp.domain.ItemRepository
+import ru.glushko.dnkstockapp.domain.StockItemRepository
 
 val dataModule = module {
 
     single {
-        ItemsDatabase.getInstance(AppInstance.instance).userDao()
+        DNKStockDatabase.getInstance(AppInstance.instance).itemDao()
+    }
+
+    single {
+        DNKStockDatabase.getInstance(AppInstance.instance).stockItemDao()
     }
 
      single {
          ItemMapper()
      }
 
-    single <ItemRepository>{
-        ItemRepositoryImpl(_itemDao = get(), mapper = get())
+    single {
+        StockItemMapper()
     }
+
+    single <ItemRepository>{
+        ItemRepositoryImpl(_itemDao = get(), _mapper = get())
+    }
+
+    single <StockItemRepository>{
+        StockItemRepositoryImpl(_stockItemDao = get(), _mapper = get())
+    }
+
+
 }

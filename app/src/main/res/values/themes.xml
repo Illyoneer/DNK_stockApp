@@ -30,5 +30,10 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="MyIconButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorOnPrimary">@color/main</item>
+    </style>
+
 
 </resources>
