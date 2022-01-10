@@ -12,8 +12,8 @@ val presentationModule = module {
             _addItemUseCase = get(),
             _deleteItemUseCase = get(),
             _updateItemUseCase = get(),
-            _getConsumablesItemsUseCase = get(),
-            _getHardwareItemsUseCase = get()
+            _loadConsumablesItemsUseCase = get(),
+            _loadHardwareItemsUseCase = get()
         )
     }
 

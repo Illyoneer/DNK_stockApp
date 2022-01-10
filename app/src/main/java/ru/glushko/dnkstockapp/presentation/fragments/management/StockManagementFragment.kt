@@ -5,22 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStockItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentStockManagementBinding
 import ru.glushko.dnkstockapp.domain.StockItem
 import ru.glushko.dnkstockapp.presentation.viewmodels.ManagementViewModel
-import ru.glushko.dnkstockapp.presentation.viewutils.Status
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.management.StockItemRecyclerAdapter
 
 class StockManagementFragment : Fragment() {
 
     private lateinit var _stockManagementFragmentBinding: FragmentStockManagementBinding
+    private lateinit var _addOrEditStockItemBinding: FragmentAddOrEditStockItemBinding
+
     private val _managementViewModel by viewModel<ManagementViewModel>()
     private var _stockItemRecyclerAdapter = StockItemRecyclerAdapter()
 
@@ -46,7 +47,7 @@ class StockManagementFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        _managementViewModel.loadAllStockItems().observe(viewLifecycleOwner, { stockItemList ->
+        _managementViewModel.allStockItems.observe(viewLifecycleOwner, { stockItemList ->
             _stockItemRecyclerAdapter.submitList(stockItemList)
         })
 
@@ -84,66 +85,58 @@ class StockManagementFragment : Fragment() {
     }
 
     private fun showAddStockItemDialog() {
-        val binding: FragmentAddOrEditStockItemBinding = FragmentAddOrEditStockItemBinding.inflate(
-            LayoutInflater.from(requireContext()), null, false)
+        _addOrEditStockItemBinding =
+            FragmentAddOrEditStockItemBinding.inflate(
+                LayoutInflater.from(requireContext()),
+                null,
+                false
+            )
 
         AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
             .setTitle("Добавить новую запись") //Добавление заголовка.
-            .setView(binding.root) //Присвоение View полученного ранее.
+            .setView(_addOrEditStockItemBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
                 _managementViewModel.addItemToDatabase(
-                    name =  binding.itemNameEditText.text.toString(),
-                    count = binding.itemCountEditText.text.toString(),
+                    name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
+                    count = _addOrEditStockItemBinding.itemCountEditText.text.toString(),
                 )
 
-                _managementViewModel.getStateAddItemLiveData().observe(viewLifecycleOwner, {
-                    when (it!!) {
-                        Status.ERROR -> Snackbar.make(
-                            _stockManagementFragmentBinding.root, "Введите все данные.",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        Status.SUCCESS -> Snackbar.make(
-                            _stockManagementFragmentBinding.root, "Запись успешно добавлена!",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
+                _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                    Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
                 })
-            }.setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }.show()
+            }
+            .setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .show()
     }
 
     private fun showEditStockItemDialog(stockItem: StockItem) {
-        val binding: FragmentAddOrEditStockItemBinding = FragmentAddOrEditStockItemBinding.inflate(
-            LayoutInflater.from(requireContext()), null, false)
+        _addOrEditStockItemBinding =
+            FragmentAddOrEditStockItemBinding.inflate(
+                LayoutInflater.from(requireContext()),
+                null,
+                false
+            )
 
-        with(binding) {
+        with(_addOrEditStockItemBinding) {
             itemNameEditText.setText(stockItem.name)
             itemCountEditText.setText(stockItem.count)
         }
 
         AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
             .setTitle("Редактировать запись") //Добавление заголовка.
-            .setView(binding.root) //Присвоение View полученного ранее.
+            .setView(_addOrEditStockItemBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
-
                 _managementViewModel.updateItemInDatabase(
                     id = stockItem.id,
-                    name = binding.itemNameEditText.text.toString(),
-                    count = binding.itemCountEditText.text.toString(),
+                    name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
+                    count = _addOrEditStockItemBinding.itemCountEditText.text.toString(),
                 )
 
-                _managementViewModel.getStateEditItemLiveData().observe(viewLifecycleOwner, {
-                    when (it!!) {
-                        Status.ERROR -> Snackbar.make(
-                            _stockManagementFragmentBinding.root, "Ошибка!",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        Status.SUCCESS -> Snackbar.make(
-                            _stockManagementFragmentBinding.root, "Запись успешно обновлена!",
-                            Snackbar.LENGTH_SHORT
-                        ).show() //TODO: Сделать красивее и умнее!!!
-                    }
+                _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                    Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
                 })
-            }.setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }.show()
+            }
+            .setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .show()
     }
-
 }

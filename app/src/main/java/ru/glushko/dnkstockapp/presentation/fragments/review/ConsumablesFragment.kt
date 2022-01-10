@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
@@ -17,12 +17,14 @@ import ru.glushko.dnkstockapp.databinding.FragmentConsumablesBinding
 import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
 import ru.glushko.dnkstockapp.domain.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
-import ru.glushko.dnkstockapp.presentation.viewutils.Status
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.review.ItemRecyclerAdapter
 
 class ConsumablesFragment : Fragment() {
 
     private lateinit var _consumablesFragmentBinding: FragmentConsumablesBinding
+    private lateinit var _addOrEditItemFragmentBinding: FragmentAddOrEditItemBinding
+    private lateinit var _itemInfoFragmentBinding: FragmentItemInfoBinding
+
     private val _reviewViewModel by viewModel<ReviewViewModel>()
     private var _itemRecyclerAdapter = ItemRecyclerAdapter()
 
@@ -31,9 +33,8 @@ class ConsumablesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _consumablesFragmentBinding = FragmentConsumablesBinding.inflate(
-            inflater, container, false
-        )
+        _consumablesFragmentBinding =
+            FragmentConsumablesBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
 
@@ -41,9 +42,8 @@ class ConsumablesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-
-        _reviewViewModel.getGetConsumablesItems().observe(viewLifecycleOwner, { itemList ->
-            _itemRecyclerAdapter.submitList(itemList)
+        _reviewViewModel.consumablesItems.observe(viewLifecycleOwner, { consumablesItemsList ->
+            _itemRecyclerAdapter.submitList(consumablesItemsList)
         })
 
         _consumablesFragmentBinding.recyclerView.adapter = _itemRecyclerAdapter
@@ -83,10 +83,10 @@ class ConsumablesFragment : Fragment() {
     }
 
     private fun showEditItemRecordDialog(item: Item) {
-        val binding: FragmentAddOrEditItemBinding = FragmentAddOrEditItemBinding.inflate(
-            LayoutInflater.from(requireContext()), null, false)
+        _addOrEditItemFragmentBinding =
+            FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
-        with(binding) {
+        with(_addOrEditItemFragmentBinding) {
             itemNameEditText.setText(item.name)
             itemCountEditText.setText(item.count)
             itemDateEditText.setText(item.date)
@@ -95,41 +95,32 @@ class ConsumablesFragment : Fragment() {
 
         AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
             .setTitle("Редактировать запись") //Добавление заголовка.
-            .setView(binding.root) //Присвоение View полученного ранее.
+            .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
 
                 _reviewViewModel.updateItemInDatabase(
                     id = item.id,
-                    name = binding.itemNameEditText.text.toString(),
-                    count = binding.itemCountEditText.text.toString(),
-                    date = binding.itemDateEditText.text.toString(),
-                    user = binding.itemUserEditText.text.toString(),
+                    name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
+                    count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString(),
+                    date = _addOrEditItemFragmentBinding.itemDateEditText.text.toString(),
+                    user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
                     type = "consumables"
                 )
 
-                _reviewViewModel.getStateEditItemLiveData().observe(viewLifecycleOwner, {
-                    when (it!!) {
-                        Status.ERROR -> Snackbar.make(
-                            _consumablesFragmentBinding.root, "Ошибка!",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        Status.SUCCESS -> Snackbar.make(
-                            _consumablesFragmentBinding.root, "Запись успешно обновлена!",
-                            Snackbar.LENGTH_SHORT
-                        ).show() //TODO: Сделать красивее и умнее!!!
-                    }
+                _reviewViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                    Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
                 })
-            }.setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }.show()
+            }
+            .setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .show()
     }
 
     @SuppressLint("SetTextI18n")
     private fun showInfoAboutItemRecordDialog(item: Item) {
-        val binding: FragmentItemInfoBinding = FragmentItemInfoBinding.inflate(
-            LayoutInflater.from(requireContext()),
-            null, false
-        )
+        _itemInfoFragmentBinding =
+            FragmentItemInfoBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
-        with(binding) {
+        with(_itemInfoFragmentBinding) {
             infoNameItem.text = item.name
             infoCountItem.text = item.count + " шт."
             infoDateItem.text = item.date
@@ -139,8 +130,9 @@ class ConsumablesFragment : Fragment() {
 
         AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
             .setTitle("Информация о выдаче") //Добавление заголовка.
-            .setView(binding.root) //Присвоение View полученного ранее.
-            .setPositiveButton("Закрыть") { dialog, _ -> dialog.cancel() }.show()
+            .setView(_itemInfoFragmentBinding.root) //Присвоение View полученного ранее.
+            .setPositiveButton("Закрыть") { dialog, _ -> dialog.cancel() }
+            .show()
     }
 
 }

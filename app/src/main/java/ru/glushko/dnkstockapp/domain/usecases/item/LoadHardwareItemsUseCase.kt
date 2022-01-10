@@ -4,6 +4,6 @@ import androidx.lifecycle.LiveData
 import ru.glushko.dnkstockapp.domain.Item
 import ru.glushko.dnkstockapp.domain.ItemRepository
 
-class GetConsumablesItemsUseCase(private val _itemRepository: ItemRepository) {
-    fun getConsumablesItems(): LiveData<List<Item>> = _itemRepository.getConsumablesItems()
+class LoadHardwareItemsUseCase(private val _itemRepository: ItemRepository) {
+    fun getHardwareItems(): LiveData<List<Item>> = _itemRepository.getHardwareItems()
 }

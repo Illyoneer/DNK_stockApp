@@ -33,7 +33,6 @@ class ManagementFragment : Fragment() {
             tab.text = tabNames[position]
         }.attach()
 
-
         return _managementFragmentBinding.root
     }
 

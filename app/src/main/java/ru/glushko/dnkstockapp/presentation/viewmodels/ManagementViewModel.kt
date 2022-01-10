@@ -10,24 +10,17 @@ import ru.glushko.dnkstockapp.domain.usecases.stockitem.AddStockItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.stockitem.DeleteStockItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.stockitem.LoadAllStockItemsUseCase
 import ru.glushko.dnkstockapp.domain.usecases.stockitem.UpdateStockItemUseCase
-import ru.glushko.dnkstockapp.presentation.viewutils.Status
 
-class ManagementViewModel (
+class ManagementViewModel(
     private val _deleteStockItemUseCase: DeleteStockItemUseCase,
     private val _updateStockItemUseCase: UpdateStockItemUseCase,
     private val _addItemStockUseCase: AddStockItemUseCase,
     private val _loadAllStockItemsUseCase: LoadAllStockItemsUseCase,
 ) : ViewModel() {
 
-    private val _stateAddStockItemLiveData = MutableLiveData<Status>()
-    private val _stateEditStockItemLiveData = MutableLiveData<Status>()
+    val transactionStatus = MutableLiveData<String>()
 
-
-    fun getStateAddItemLiveData(): MutableLiveData<Status> = _stateAddStockItemLiveData
-
-    fun getStateEditItemLiveData(): MutableLiveData<Status> = _stateEditStockItemLiveData
-
-    fun loadAllStockItems(): LiveData<List<StockItem>> = _loadAllStockItemsUseCase.loadAllStockItems()
+    val allStockItems: LiveData<List<StockItem>> by lazy { _loadAllStockItemsUseCase.loadAllStockItems() }
 
 
     fun addItemToDatabase(name: String, count: String) {
@@ -40,10 +33,8 @@ class ManagementViewModel (
                     )
                 )
             }
-            _stateAddStockItemLiveData.postValue(Status.SUCCESS)
-        } else {
-            _stateAddStockItemLiveData.postValue(Status.ERROR)
-        }
+        } else
+            transactionStatus.postValue("Ошибка. Введите все данные!")
     }
 
     fun deleteItemFromDatabase(stockItem: StockItem) = viewModelScope.launch {
@@ -61,9 +52,7 @@ class ManagementViewModel (
                     )
                 )
             }
-            _stateEditStockItemLiveData.postValue(Status.SUCCESS)
-        } else {
-            _stateEditStockItemLiveData.postValue(Status.ERROR)
-        }
+        } else
+            transactionStatus.postValue("Ошибка. Введите все данные!")
     }
 }

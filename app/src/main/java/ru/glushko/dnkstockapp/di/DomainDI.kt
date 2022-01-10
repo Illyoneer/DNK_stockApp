@@ -22,11 +22,11 @@ val domainModule = module {
     }
 
     factory {
-        GetConsumablesItemsUseCase(_itemRepository  = get())
+        LoadConsumablesItemsUseCase(_itemRepository  = get())
     }
 
     factory {
-        GetHardwareItemsUseCase(_itemRepository  = get())
+        LoadHardwareItemsUseCase(_itemRepository  = get())
     }
 
 
