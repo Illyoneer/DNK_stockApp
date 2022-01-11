@@ -15,7 +15,7 @@ import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentHardwareBinding
 import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
-import ru.glushko.dnkstockapp.domain.Item
+import ru.glushko.dnkstockapp.domain.entity.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.review.ItemRecyclerAdapter
 

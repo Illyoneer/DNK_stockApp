@@ -1,6 +1,7 @@
-package ru.glushko.dnkstockapp.domain
+package ru.glushko.dnkstockapp.domain.repositories
 
 import androidx.lifecycle.LiveData
+import ru.glushko.dnkstockapp.domain.entity.StockItem
 
 interface StockItemRepository {
     fun loadAllStockItems(): LiveData<List<StockItem>>

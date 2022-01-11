@@ -5,8 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.glushko.dnkstockapp.domain.Item
+import ru.glushko.dnkstockapp.domain.entity.Item
+import ru.glushko.dnkstockapp.domain.entity.Staff
+import ru.glushko.dnkstockapp.domain.entity.StockItem
 import ru.glushko.dnkstockapp.domain.usecases.item.*
+import ru.glushko.dnkstockapp.domain.usecases.staff.LoadAllStaffUseCase
+import ru.glushko.dnkstockapp.domain.usecases.stockitem.LoadAllStockItemsUseCase
 
 class ReviewViewModel(
     private val _deleteItemUseCase: DeleteItemUseCase,
@@ -14,12 +18,17 @@ class ReviewViewModel(
     private val _addItemUseCase: AddItemUseCase,
     private val _loadConsumablesItemsUseCase: LoadConsumablesItemsUseCase,
     private val _loadHardwareItemsUseCase: LoadHardwareItemsUseCase,
+    private val _loadAllStockItemsUseCase: LoadAllStockItemsUseCase,
+    private val _loadAllStaffUseCase: LoadAllStaffUseCase
 ) : ViewModel() {
 
     val transactionStatus = MutableLiveData<String>()
 
     val consumablesItems: LiveData<List<Item>> by lazy {_loadConsumablesItemsUseCase.getConsumablesItems() }
     val hardwareItems: LiveData<List<Item>> by lazy { _loadHardwareItemsUseCase.getHardwareItems() }
+
+    val allStockItems: LiveData<List<StockItem>> by lazy { _loadAllStockItemsUseCase.loadAllStockItems() }
+    val allStaff: LiveData<List<Staff>> by lazy { _loadAllStaffUseCase.loadAllStaff() }
 
     fun addItemToDatabase(name: String, count: String, date: String, user: String, type: String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {

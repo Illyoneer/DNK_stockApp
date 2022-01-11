@@ -13,9 +13,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStockItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentStockManagementBinding
-import ru.glushko.dnkstockapp.domain.StockItem
+import ru.glushko.dnkstockapp.domain.entity.StockItem
 import ru.glushko.dnkstockapp.presentation.viewmodels.ManagementViewModel
-import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.management.StockItemRecyclerAdapter
+import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.management.stock.StockItemRecyclerAdapter
 
 class StockManagementFragment : Fragment() {
 
@@ -73,7 +73,7 @@ class StockManagementFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete_action -> {
-                    _managementViewModel.deleteItemFromDatabase(stockItem = stockItemElement)
+                    _managementViewModel.deleteStockItemFromDatabase(stockItem = stockItemElement)
                 }
                 R.id.edit_action -> {
                     showEditStockItemDialog(stockItem = stockItemElement)
@@ -96,7 +96,7 @@ class StockManagementFragment : Fragment() {
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(_addOrEditStockItemBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
-                _managementViewModel.addItemToDatabase(
+                _managementViewModel.addStockItemToDatabase(
                     name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
                     count = _addOrEditStockItemBinding.itemCountEditText.text.toString(),
                 )
@@ -126,7 +126,7 @@ class StockManagementFragment : Fragment() {
             .setTitle("Редактировать запись") //Добавление заголовка.
             .setView(_addOrEditStockItemBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
-                _managementViewModel.updateItemInDatabase(
+                _managementViewModel.updateStockItemInDatabase(
                     id = stockItem.id,
                     name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
                     count = _addOrEditStockItemBinding.itemCountEditText.text.toString(),

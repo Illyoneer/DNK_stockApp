@@ -14,20 +14,34 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentReviewBinding
+import ru.glushko.dnkstockapp.domain.entity.Staff
+import ru.glushko.dnkstockapp.domain.entity.StockItem
 import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.tabAdapters.ReviewTabAdapter
 
-class ReviewFragment : Fragment() {
+class ReviewFragment: Fragment() {
 
     private lateinit var _reviewFragmentBinding: FragmentReviewBinding
     private lateinit var _addOrEditItemBinding: FragmentAddOrEditItemBinding
     private val _reviewViewModel by viewModel<ReviewViewModel>()
+
+    private var _stockItemsList = listOf<StockItem>()
+    private var _staffList = listOf<Staff>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _reviewFragmentBinding = FragmentReviewBinding.inflate(inflater, container, false)
+
+
+        _reviewViewModel.allStockItems.observe(viewLifecycleOwner, {
+            _stockItemsList = it
+        }) //TODO: При добавлении (я пойму, надеюсь)
+
+        _reviewViewModel.allStaff.observe(viewLifecycleOwner, {
+            _staffList = it
+        }) //TODO: При добавлении (я пойму, надеюсь)
 
         val pagerAdapter = ReviewTabAdapter(this)
         _reviewFragmentBinding.viewPager2.adapter = pagerAdapter

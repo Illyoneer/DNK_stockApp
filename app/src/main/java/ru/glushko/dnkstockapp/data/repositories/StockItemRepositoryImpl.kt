@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import ru.glushko.dnkstockapp.data.mappers.StockItemMapper
 import ru.glushko.dnkstockapp.data.source.StockItemDao
-import ru.glushko.dnkstockapp.domain.StockItem
-import ru.glushko.dnkstockapp.domain.StockItemRepository
+import ru.glushko.dnkstockapp.domain.entity.StockItem
+import ru.glushko.dnkstockapp.domain.repositories.StockItemRepository
 
 class StockItemRepositoryImpl(
     private val _stockItemDao: StockItemDao,

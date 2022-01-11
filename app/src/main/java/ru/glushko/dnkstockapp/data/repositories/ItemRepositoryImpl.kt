@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import ru.glushko.dnkstockapp.data.mappers.ItemMapper
 import ru.glushko.dnkstockapp.data.source.ItemDao
-import ru.glushko.dnkstockapp.domain.Item
-import ru.glushko.dnkstockapp.domain.ItemRepository
+import ru.glushko.dnkstockapp.domain.entity.Item
+import ru.glushko.dnkstockapp.domain.repositories.ItemRepository
 
 class ItemRepositoryImpl(
     private val _itemDao: ItemDao,
