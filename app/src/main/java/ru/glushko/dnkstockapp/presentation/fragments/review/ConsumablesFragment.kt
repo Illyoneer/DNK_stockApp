@@ -2,9 +2,11 @@ package ru.glushko.dnkstockapp.presentation.fragments.review
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.MenuRes
@@ -28,11 +30,23 @@ class ConsumablesFragment : Fragment() {
     private val _reviewViewModel by viewModel<ReviewViewModel>()
     private var _itemRecyclerAdapter = ItemRecyclerAdapter()
 
+    private var _localStockItemsList = listOf<String>() //TODO: Оптимизировать!!!
+    private var _localStaffList = listOf<String>() //TODO: Оптимизировать!!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
+        _reviewViewModel.allStockItems.observe(viewLifecycleOwner, {
+            _localStockItemsList = it.map { stockItem -> stockItem.name }
+        }) //TODO: Оптимизировать!!!
+
+        _reviewViewModel.allStaff.observe(viewLifecycleOwner, {
+            _localStaffList = it.map { staff -> staff.surname + " " + staff.name + " " + staff.lastname[0] + "."}
+        }) //TODO: Оптимизировать!!!
+
+        Log.d("1", _localStaffList.toString())
         _consumablesFragmentBinding =
             FragmentConsumablesBinding.inflate(inflater, container, false)
 
@@ -85,6 +99,11 @@ class ConsumablesFragment : Fragment() {
     private fun showEditItemRecordDialog(item: Item) {
         _addOrEditItemFragmentBinding =
             FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
+
+        val userEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _localStaffList)
+        val nameEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _localStockItemsList)
+        _addOrEditItemFragmentBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
+        _addOrEditItemFragmentBinding.itemUserEditText.setAdapter(userEditTextAdapter)
 
         with(_addOrEditItemFragmentBinding) {
             itemNameEditText.setText(item.name)

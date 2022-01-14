@@ -17,14 +17,19 @@
         <item name="colorOnBackground">@color/gray_background</item>
     </style>
 
+    <style name="MyMaterialComponentsTheme" parent="Theme.MaterialComponents">
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorError">#FF6363</item>
+    </style>
+
     <style name="MyAlertDialogRoundedTheme" parent="@style/Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@drawable/dialog_background</item>
         <item name="colorSurface">@color/gray_background</item>
         <item name="colorAccent">@color/main</item>
-        <item name="android:windowTitleStyle">@style/DialogTextAppearance</item>
+        <item name="android:windowTitleStyle">@style/MyDialogTextAppearance</item>
     </style>
 
-    <style name="DialogTextAppearance" parent="TextAppearance.AppCompat">
+    <style name="MyDialogTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/main</item>
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">center</item>

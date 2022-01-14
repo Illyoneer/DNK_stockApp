@@ -19,12 +19,12 @@
         <item name="android:windowBackground">@drawable/dialog_background</item>
         <item name="colorSurface">@color/gray_background</item>
         <item name="colorAccent">@color/main</item>
-        <item name="itemTextAppearance">@style/DialogTextAppearance</item>
-        <item name="android:itemTextAppearance">@style/DialogTextAppearance</item>
+        <item name="itemTextAppearance">@style/MyDialogTextAppearance</item>
+        <item name="android:itemTextAppearance">@style/MyDialogTextAppearance</item>
         <item name="android:layout_height">300sp</item>
     </style>
 
-    <style name="DialogTextAppearance" parent="TextAppearance.AppCompat">
+    <style name="MyDialogTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/main</item>
     </style>

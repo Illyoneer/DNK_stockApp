@@ -19,7 +19,7 @@
     <string name="search_hint">Поиск</string>
     <string name="in_progress_text">IN PROGRESS</string>
     <string name="fio_staff">ФИО</string>
-    <string name="lastname_staff">Отчество*</string>
+    <string name="lastname_staff">Отчество</string>
     <string name="name_staff">Имя</string>
     <string name="surname_staff">Фамилия</string>
 

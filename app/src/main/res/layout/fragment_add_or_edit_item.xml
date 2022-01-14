@@ -4,74 +4,105 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:theme="@style/MyMaterialComponentsTheme">
 
-    <EditText
-        android:id="@+id/item_name_editText"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/item_name_editTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="275sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/edit_text_background"
-        android:ems="10"
+        android:layout_marginTop="16dp"
         android:hint="@string/name_item"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
         android:paddingStart="10sp"
         android:paddingEnd="10sp"
         android:textCursorDrawable="@drawable/colored_cursor"
+        app:helperText="*Обязательно"
+        app:helperTextTextColor="#F68888"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/article_icon">
 
-    <EditText
-        android:id="@+id/item_count_editText"
+        <AutoCompleteTextView
+            android:id="@+id/item_name_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/item_count_editTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="275sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/edit_text_background"
-        android:ems="10"
+        android:layout_marginTop="12dp"
         android:hint="@string/count_item"
-        android:inputType="number"
-        android:minHeight="48dp"
         android:paddingStart="10sp"
         android:paddingEnd="10sp"
         android:textCursorDrawable="@drawable/colored_cursor"
-        app:layout_constraintEnd_toEndOf="@+id/item_name_editText"
-        app:layout_constraintStart_toStartOf="@+id/item_name_editText"
-        app:layout_constraintTop_toBottomOf="@+id/item_name_editText" />
+        app:helperText="*Обязательно"
+        app:helperTextTextColor="#F68888"
+        app:layout_constraintEnd_toEndOf="@+id/item_name_editTextLayout"
+        app:layout_constraintStart_toStartOf="@+id/item_name_editTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/item_name_editTextLayout"
+        app:startIconDrawable="@drawable/count_icon">
 
-    <EditText
-        android:id="@+id/item_date_editText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/item_count_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/item_date_editTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="275sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/edit_text_background"
-        android:ems="10"
+        android:layout_marginTop="12dp"
         android:hint="@string/date_item"
-        android:inputType="date"
-        android:minHeight="48dp"
         android:paddingStart="10sp"
         android:paddingEnd="10sp"
         android:textCursorDrawable="@drawable/colored_cursor"
-        app:layout_constraintEnd_toEndOf="@+id/item_count_editText"
-        app:layout_constraintStart_toStartOf="@+id/item_count_editText"
-        app:layout_constraintTop_toBottomOf="@+id/item_count_editText" />
+        app:helperText="*Обязательно"
+        app:helperTextTextColor="#F68888"
+        app:layout_constraintEnd_toEndOf="@+id/item_count_editTextLayout"
+        app:layout_constraintStart_toStartOf="@+id/item_count_editTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/item_count_editTextLayout"
+        app:startIconDrawable="@drawable/calendar_icon">
 
-    <EditText
-        android:id="@+id/item_user_editText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/item_date_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/item_user_editTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="275sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/edit_text_background"
-        android:ems="10"
+        android:layout_marginTop="12dp"
         android:hint="@string/user_item"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
         android:paddingStart="10sp"
         android:paddingEnd="10sp"
         android:textCursorDrawable="@drawable/colored_cursor"
-        app:layout_constraintEnd_toEndOf="@+id/item_date_editText"
-        app:layout_constraintStart_toStartOf="@+id/item_date_editText"
-        app:layout_constraintTop_toBottomOf="@+id/item_date_editText" />
+        app:helperText="*Обязательно"
+        app:helperTextTextColor="#F68888"
+        app:layout_constraintEnd_toEndOf="@+id/item_date_editTextLayout"
+        app:layout_constraintStart_toStartOf="@+id/item_date_editTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/item_date_editTextLayout"
+        app:startIconDrawable="@drawable/person_icon">
+        <AutoCompleteTextView
+            android:id="@+id/item_user_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"/>
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

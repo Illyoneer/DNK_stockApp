@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.MenuRes
@@ -14,8 +15,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentReviewBinding
-import ru.glushko.dnkstockapp.domain.entity.Staff
-import ru.glushko.dnkstockapp.domain.entity.StockItem
 import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.tabAdapters.ReviewTabAdapter
 
@@ -25,8 +24,8 @@ class ReviewFragment: Fragment() {
     private lateinit var _addOrEditItemBinding: FragmentAddOrEditItemBinding
     private val _reviewViewModel by viewModel<ReviewViewModel>()
 
-    private var _stockItemsList = listOf<StockItem>()
-    private var _staffList = listOf<Staff>()
+    private var _stockItemsList = listOf<String>()
+    private var _staffList = listOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,12 +35,12 @@ class ReviewFragment: Fragment() {
 
 
         _reviewViewModel.allStockItems.observe(viewLifecycleOwner, {
-            _stockItemsList = it
-        }) //TODO: При добавлении (я пойму, надеюсь)
+            _stockItemsList = it.map { stockItem -> stockItem.name }
+        })
 
         _reviewViewModel.allStaff.observe(viewLifecycleOwner, {
-            _staffList = it
-        }) //TODO: При добавлении (я пойму, надеюсь)
+            _staffList = it.map { staff -> staff.surname + " " + staff.name + " " + staff.lastname[0] + "."}
+        })
 
         val pagerAdapter = ReviewTabAdapter(this)
         _reviewFragmentBinding.viewPager2.adapter = pagerAdapter
@@ -76,6 +75,12 @@ class ReviewFragment: Fragment() {
         _addOrEditItemBinding =
             FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
+        val userEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _staffList)
+        val nameEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _stockItemsList)
+        _addOrEditItemBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
+        _addOrEditItemBinding.itemUserEditText.setAdapter(userEditTextAdapter)
+
+
         AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(_addOrEditItemBinding.root) //Присвоение View полученного ранее.
@@ -99,6 +104,11 @@ class ReviewFragment: Fragment() {
     private fun showAddHardwareItemRecordDialog() {
         _addOrEditItemBinding =
             FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
+
+        val userEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _staffList)
+        val nameEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _stockItemsList)
+        _addOrEditItemBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
+        _addOrEditItemBinding.itemUserEditText.setAdapter(userEditTextAdapter)
 
         AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
             .setTitle("Добавить новую запись") //Добавление заголовка.
