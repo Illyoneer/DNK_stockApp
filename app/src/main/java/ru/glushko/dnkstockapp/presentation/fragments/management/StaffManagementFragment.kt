@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.MenuRes
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStaffBinding
@@ -91,7 +91,7 @@ class StaffManagementFragment : Fragment() {
                 false
             )
 
-        AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(_addOrEditStaffBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
@@ -105,7 +105,7 @@ class StaffManagementFragment : Fragment() {
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
                 })
             }
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
     }
 
@@ -123,7 +123,7 @@ class StaffManagementFragment : Fragment() {
             lastnameEditText.setText(staffElement.lastname)
         }
 
-        AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Редактировать запись") //Добавление заголовка.
             .setView(_addOrEditStaffBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
@@ -138,7 +138,7 @@ class StaffManagementFragment : Fragment() {
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
                 })
             }
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
     }
 }

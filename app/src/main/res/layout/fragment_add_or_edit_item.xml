@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:theme="@style/MyMaterialComponentsTheme">
+    android:padding="20dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/item_name_editTextLayout"
@@ -58,31 +58,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/item_date_editTextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="275sp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="@string/date_item"
-        android:paddingStart="10sp"
-        android:paddingEnd="10sp"
-        android:textCursorDrawable="@drawable/colored_cursor"
-        app:helperText="*Обязательно"
-        app:helperTextTextColor="#F68888"
-        app:layout_constraintEnd_toEndOf="@+id/item_count_editTextLayout"
-        app:layout_constraintStart_toStartOf="@+id/item_count_editTextLayout"
-        app:layout_constraintTop_toBottomOf="@+id/item_count_editTextLayout"
-        app:startIconDrawable="@drawable/calendar_icon">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/item_date_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="date" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/item_user_editTextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="275sp"
@@ -94,9 +69,9 @@
         android:textCursorDrawable="@drawable/colored_cursor"
         app:helperText="*Обязательно"
         app:helperTextTextColor="#F68888"
-        app:layout_constraintEnd_toEndOf="@+id/item_date_editTextLayout"
-        app:layout_constraintStart_toStartOf="@+id/item_date_editTextLayout"
-        app:layout_constraintTop_toBottomOf="@+id/item_date_editTextLayout"
+        app:layout_constraintEnd_toEndOf="@+id/item_count_editTextLayout"
+        app:layout_constraintStart_toStartOf="@+id/item_count_editTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/item_count_editTextLayout"
         app:startIconDrawable="@drawable/person_icon">
         <AutoCompleteTextView
             android:id="@+id/item_user_editText"
@@ -104,5 +79,55 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/date_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date_item"
+        android:textColor="@color/secondTextColor"
+        app:layout_constraintBottom_toTopOf="@+id/item_date_button"
+        app:layout_constraintEnd_toEndOf="@+id/item_date_button"
+        app:layout_constraintStart_toStartOf="@+id/item_date_button" />
+
+    <Button
+        android:id="@+id/item_date_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/gray_background"
+        android:drawableLeft="@drawable/calendar_icon"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/item_user_editTextLayout"
+        app:layout_constraintStart_toStartOf="@+id/item_user_editTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/item_user_editTextLayout"
+        tools:text="09.12.2003" />
+
+    <!--<com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/item_date_editTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="275sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/date_item"
+        android:paddingStart="10sp"
+        android:paddingEnd="10sp"
+        android:textCursorDrawable="@drawable/colored_cursor"
+        app:helperText="*Обязательно"
+        app:helperTextTextColor="#F68888"
+        app:layout_constraintEnd_toEndOf="@+id/item_user_editTextLayout"
+        app:layout_constraintStart_toStartOf="@+id/item_user_editTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/item_user_editTextLayout"
+        app:startIconDrawable="@drawable/calendar_icon">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/item_date_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date" />
+
+    </com.google.android.material.textfield.TextInputLayout>-->
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.MenuRes
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
@@ -20,6 +22,7 @@ import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
 import ru.glushko.dnkstockapp.domain.entity.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.review.ItemRecyclerAdapter
+import java.text.SimpleDateFormat
 
 class ConsumablesFragment : Fragment() {
 
@@ -105,33 +108,50 @@ class ConsumablesFragment : Fragment() {
         _addOrEditItemFragmentBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
         _addOrEditItemFragmentBinding.itemUserEditText.setAdapter(userEditTextAdapter)
 
+        _addOrEditItemFragmentBinding.itemDateButton.setOnClickListener{
+            showDatePickerDialog(_addOrEditItemFragmentBinding.itemDateButton)
+        }
+
         with(_addOrEditItemFragmentBinding) {
             itemNameEditText.setText(item.name)
             itemCountEditText.setText(item.count)
-            itemDateEditText.setText(item.date)
+            itemDateButton.text = item.date
             itemUserEditText.setText(item.user)
         }
 
-        AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Редактировать запись") //Добавление заголовка.
             .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
-
                 _reviewViewModel.updateItemInDatabase(
                     id = item.id,
                     name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
                     count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString(),
-                    date = _addOrEditItemFragmentBinding.itemDateEditText.text.toString(),
+                    date = _addOrEditItemFragmentBinding.itemDateButton.text.toString(),
                     user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
                     type = "consumables"
                 )
-
                 _reviewViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
                 })
             }
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun showDatePickerDialog(button: Button) {
+        val datePickerBuilder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Выберите дату")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+
+        val datePicker: MaterialDatePicker<*> = datePickerBuilder
+            .build()
+        datePicker.show(childFragmentManager, "tag")
+
+        datePicker.addOnPositiveButtonClickListener {
+            button.text = SimpleDateFormat("dd/MM/yyyy").format(datePicker.selection)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -147,10 +167,10 @@ class ConsumablesFragment : Fragment() {
             infoTypeItem.text = "Расходник"
         }
 
-        AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Информация о выдаче") //Добавление заголовка.
             .setView(_itemInfoFragmentBinding.root) //Присвоение View полученного ранее.
-            .setPositiveButton("Закрыть") { dialog, _ -> dialog.cancel() }
+            .setNegativeButton( "Закрыть") { dialog, _ -> dialog.cancel() }
             .show()
     }
 

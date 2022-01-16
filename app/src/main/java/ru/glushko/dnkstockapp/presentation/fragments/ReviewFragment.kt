@@ -1,15 +1,18 @@
 package ru.glushko.dnkstockapp.presentation.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.MenuRes
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
@@ -17,11 +20,16 @@ import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentReviewBinding
 import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.tabAdapters.ReviewTabAdapter
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class ReviewFragment: Fragment() {
 
     private lateinit var _reviewFragmentBinding: FragmentReviewBinding
     private lateinit var _addOrEditItemBinding: FragmentAddOrEditItemBinding
+    private lateinit var _calendar: Calendar
+    private lateinit var _dateToday: String
     private val _reviewViewModel by viewModel<ReviewViewModel>()
 
     private var _stockItemsList = listOf<String>()
@@ -32,7 +40,8 @@ class ReviewFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _reviewFragmentBinding = FragmentReviewBinding.inflate(inflater, container, false)
-
+        _calendar = Calendar.getInstance()
+        _dateToday = SimpleDateFormat("dd/MM/yyyy").format(_calendar.time)
 
         _reviewViewModel.allStockItems.observe(viewLifecycleOwner, {
             _stockItemsList = it.map { stockItem -> stockItem.name }
@@ -71,6 +80,7 @@ class ReviewFragment: Fragment() {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun showAddConsumablesItemRecordDialog() {
         _addOrEditItemBinding =
             FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
@@ -79,16 +89,20 @@ class ReviewFragment: Fragment() {
         val nameEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _stockItemsList)
         _addOrEditItemBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
         _addOrEditItemBinding.itemUserEditText.setAdapter(userEditTextAdapter)
+        _addOrEditItemBinding.itemDateButton.text = _dateToday
 
+        _addOrEditItemBinding.itemDateButton.setOnClickListener{
+            showDatePickerDialog(_addOrEditItemBinding.itemDateButton)
+        }
 
-        AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(_addOrEditItemBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
                 _reviewViewModel.addItemToDatabase(
                     name = _addOrEditItemBinding.itemNameEditText.text.toString(),
                     count = _addOrEditItemBinding.itemCountEditText.text.toString(),
-                    date = _addOrEditItemBinding.itemDateEditText.text.toString(),
+                    date = _addOrEditItemBinding.itemDateButton.text.toString(),
                     user = _addOrEditItemBinding.itemUserEditText.text.toString(),
                     type = "consumables"
                 )
@@ -97,7 +111,7 @@ class ReviewFragment: Fragment() {
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
                 })
             }
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
     }
 
@@ -109,15 +123,20 @@ class ReviewFragment: Fragment() {
         val nameEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _stockItemsList)
         _addOrEditItemBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
         _addOrEditItemBinding.itemUserEditText.setAdapter(userEditTextAdapter)
+        _addOrEditItemBinding.itemDateButton.text = _dateToday
 
-        AlertDialog.Builder(requireContext(), R.style.MyAlertDialogRoundedTheme)
+        _addOrEditItemBinding.itemDateButton.setOnClickListener{
+            showDatePickerDialog(_addOrEditItemBinding.itemDateButton)
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(_addOrEditItemBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
                 _reviewViewModel.addItemToDatabase(
                     name = _addOrEditItemBinding.itemNameEditText.text.toString(),
                     count = _addOrEditItemBinding.itemCountEditText.text.toString(),
-                    date = _addOrEditItemBinding.itemDateEditText.text.toString(),
+                    date = _addOrEditItemBinding.itemDateButton.text.toString(),
                     user = _addOrEditItemBinding.itemUserEditText.text.toString(),
                     type = "hardware"
                 )
@@ -127,8 +146,23 @@ class ReviewFragment: Fragment() {
                 })
 
             }
-            .setNegativeButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun showDatePickerDialog(button: Button) {
+        val datePickerBuilder:MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Выберите дату")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+
+        val datePicker: MaterialDatePicker<*> = datePickerBuilder
+            .build()
+        datePicker.show(childFragmentManager, "tag")
+
+        datePicker.addOnPositiveButtonClickListener {
+            button.text = SimpleDateFormat("dd/MM/yyyy").format(datePicker.selection)
+        }
     }
 
     private fun showSortPopupMenu(view: View, @MenuRes menuRes: Int) {
