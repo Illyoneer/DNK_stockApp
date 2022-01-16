@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/surname_editTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="275sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/surname_staff"
+        android:paddingStart="10sp"
+        android:paddingEnd="10sp"
+        android:textCursorDrawable="@drawable/colored_cursor"
+        app:helperText="*Обязательно"
+        app:helperTextTextColor="#F68888"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/surname_icon">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/surname_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_editTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="275sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/name_staff"
+        android:paddingStart="10sp"
+        android:paddingEnd="10sp"
+        android:textCursorDrawable="@drawable/colored_cursor"
+        app:helperText="*Обязательно"
+        app:helperTextTextColor="#F68888"
+        app:layout_constraintEnd_toEndOf="@+id/surname_editTextLayout"
+        app:layout_constraintStart_toStartOf="@+id/surname_editTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/surname_editTextLayout"
+        app:startIconDrawable="@drawable/name_icon">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lastname_editTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="275sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="@string/lastname_staff"
+        android:paddingStart="10sp"
+        android:paddingEnd="10sp"
+        android:textCursorDrawable="@drawable/colored_cursor"
+        app:helperText="*Необязательно"
+        app:helperTextTextColor="#DBFF85"
+        app:layout_constraintEnd_toEndOf="@+id/name_editTextLayout"
+        app:layout_constraintStart_toStartOf="@+id/name_editTextLayout"
+        app:layout_constraintTop_toBottomOf="@+id/name_editTextLayout"
+        app:startIconDrawable="@drawable/lastname_icon">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/lastname_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

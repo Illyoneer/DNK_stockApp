@@ -5,7 +5,7 @@
     <string name="user_item">На кого</string>
     <string name="count_item">Количество</string>
     <string name="name_item">Название</string>
-    <string name="date_item">Дата</string>
+    <string name="date_item">Дата выдачи</string>
     <string name="type_item">Тип</string>
     <string name="hardware_menu_text">Оборудование</string>
     <string name="consumables_menu_text">Расходники</string>
@@ -15,6 +15,13 @@
     <string name="home_menu_text">Главная</string>
     <string name="analytics_text">АНАЛИТИКА</string>
     <string name="update_summary_text">Обновить сводку</string>
+    <string name="remainder_item">Остаток на складе</string>
+    <string name="search_hint">Поиск</string>
+    <string name="in_progress_text">IN PROGRESS</string>
+    <string name="fio_staff">ФИО</string>
+    <string name="lastname_staff">Отчество</string>
+    <string name="name_staff">Имя</string>
+    <string name="surname_staff">Фамилия</string>
 
     <string-array name="spinnerTypes">
         <item>Расходник</item>

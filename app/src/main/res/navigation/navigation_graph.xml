@@ -5,14 +5,14 @@
     app:startDestination="@id/home">
     <fragment
         android:id="@+id/home"
-        android:name="ru.glushko.dnkstockapp.presentation.fragment.HomeFragment"
+        android:name="ru.glushko.dnkstockapp.presentation.fragments.HomeFragment"
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/review"
-        android:name="ru.glushko.dnkstockapp.presentation.fragment.ReviewFragment"
+        android:name="ru.glushko.dnkstockapp.presentation.fragments.ReviewFragment"
         android:label="ReviewFragment" />
     <fragment
         android:id="@+id/management"
-        android:name="ru.glushko.dnkstockapp.presentation.fragment.ManagementFragment"
+        android:name="ru.glushko.dnkstockapp.presentation.fragments.ManagementFragment"
         android:label="ManagementFragment" />
 </navigation>

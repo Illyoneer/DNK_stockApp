@@ -2,17 +2,33 @@ package ru.glushko.dnkstockapp.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.glushko.dnkstockapp.presentation.viewmodels.MainViewModel
+import ru.glushko.dnkstockapp.presentation.viewmodels.ManagementViewModel
+import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 
 
 val presentationModule = module {
     viewModel {
-        MainViewModel(
+        ReviewViewModel(
             _addItemUseCase = get(),
             _deleteItemUseCase = get(),
             _updateItemUseCase = get(),
-            _getConsumablesItemsUseCase = get(),
-            _getHardwareItemsUseCase = get()
+            _loadConsumablesItemsUseCase = get(),
+            _loadHardwareItemsUseCase = get(),
+            _loadAllStockItemsUseCase = get(),
+            _loadAllStaffUseCase = get()
+        )
+    }
+
+    viewModel {
+        ManagementViewModel(
+            _addItemStockUseCase = get(),
+            _deleteStockItemUseCase = get(),
+            _updateStockItemUseCase = get(),
+            _loadAllStockItemsUseCase = get(),
+            _loadAllStaffUseCase = get(),
+            _addStaffUseCase = get(),
+            _deleteStaffUseCase = get(),
+            _updateStaffUseCase = get()
         )
     }
 }

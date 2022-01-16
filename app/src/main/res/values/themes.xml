@@ -1,34 +1,65 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.DNKStockApp" parent="Theme.AppCompat.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="alertDialogTheme">@style/MyAlertDialogRoundedTheme</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/gray_background</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+<resources>
+    <style name="Theme.DNKStockApp" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorAccent">@color/main</item>
         <item name="colorOnBackground">@color/gray_background</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorOnPrimary">@color/main</item>
+        <item name="colorError">@color/error</item>
+
+        <!-- Custom components themes -->
+        <item name="alertDialogTheme">@style/MyAlertDialogRoundedTheme</item>
+        <item name="materialAlertDialogTheme">@style/My.Material.AlertDialog.Theme</item>
+        <item name="materialCalendarTheme">@style/My.Material.DatePicker.Theme</item>
     </style>
 
-    <style name="MyAlertDialogRoundedTheme" parent="@style/Theme.AppCompat.Dialog">
+
+    <style name="My.Material.DatePicker.Theme" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="My.Material.AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:windowBackground">@drawable/dialog_background</item>
-        <item name="colorSurface">@color/gray_background</item>
-        <item name="colorAccent">@color/main</item>
-        <item name="android:windowTitleStyle">@style/DialogTextAppearance</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/My.Material.AlertDialog.Title.Text.Style</item>
+        <item name="alertDialogStyle">@style/My.Material.AlertDialog.Style</item>
+        <item name="buttonBarPositiveButtonStyle">@style/My.Material.AlertDialog.Positive.Button.Style</item>
+        <item name="buttonBarNegativeButtonStyle">@style/My.Material.AlertDialog.Negative.Button.Style</item>
+        <item name="buttonBarNeutralButtonStyle">@style/My.Material.AlertDialog.Negative.Button.Style</item>
+        <item name="materialAlertDialogTitlePanelStyle">@style/My.Material.AlertDialog.Title.Panel.Style</item>
     </style>
 
-    <style name="DialogTextAppearance" parent="TextAppearance.AppCompat">
+    <style name="My.Material.AlertDialog.Style" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/My.Material.AlertDialog.Shape.Style</item>
+    </style>
+
+    <style name="My.Material.AlertDialog.Positive.Button.Style" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/main</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:gravity">center</item>
+        <item name="android:drawableLeft">@drawable/done_button_icon</item>
     </style>
 
+    <style name="My.Material.AlertDialog.Negative.Button.Style" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/main</item>
+        <item name="android:drawableLeft">@drawable/cancel_button_icon</item>
+    </style>
 
+    <style name="My.Material.AlertDialog.Neutral.Button.Style" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/main</item>
+        <item name="android:drawableLeft">@drawable/cancel_button_icon</item>
+    </style>
+
+    <style name="My.Material.AlertDialog.Title.Text.Style" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/main</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="My.Material.AlertDialog.Title.Panel.Style" parent="MaterialAlertDialog.MaterialComponents.Title.Panel">
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="My.Material.AlertDialog.Shape.Style" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">13sp</item>
+    </style>
 </resources>
