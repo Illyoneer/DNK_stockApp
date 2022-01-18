@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.domain.entity
+package ru.glushko.dnkstockapp.domain.model
 
 data class Item (val id: Int = 0,
                  val name: String,

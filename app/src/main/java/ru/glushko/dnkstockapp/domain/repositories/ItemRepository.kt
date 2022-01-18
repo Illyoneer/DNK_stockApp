@@ -1,7 +1,7 @@
 package ru.glushko.dnkstockapp.domain.repositories
 
 import androidx.lifecycle.LiveData
-import ru.glushko.dnkstockapp.domain.entity.Item
+import ru.glushko.dnkstockapp.domain.model.Item
 
 interface ItemRepository {
     fun getConsumablesItems(): LiveData<List<Item>>

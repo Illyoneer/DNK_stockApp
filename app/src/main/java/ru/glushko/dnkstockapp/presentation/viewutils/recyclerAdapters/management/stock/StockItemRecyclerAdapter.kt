@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.glushko.dnkstockapp.databinding.StockRecyclerItemBinding
-import ru.glushko.dnkstockapp.domain.entity.StockItem
+import ru.glushko.dnkstockapp.domain.model.StockItem
 
 class StockItemRecyclerAdapter : ListAdapter<StockItem, StockItemViewHolder>(StockItemDiffCallback()) {
 

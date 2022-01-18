@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.domain.entity
+package ru.glushko.dnkstockapp.domain.model
 
 data class StockItem(val id: Int = 0,
                      val name: String,

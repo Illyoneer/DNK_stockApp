@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.glushko.dnkstockapp.domain.entity.Item
-import ru.glushko.dnkstockapp.domain.entity.Staff
-import ru.glushko.dnkstockapp.domain.entity.StockItem
+import ru.glushko.dnkstockapp.domain.model.Item
+import ru.glushko.dnkstockapp.domain.model.Staff
+import ru.glushko.dnkstockapp.domain.model.StockItem
+import ru.glushko.dnkstockapp.domain.usecases.archive.AddArchiveItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.item.*
 import ru.glushko.dnkstockapp.domain.usecases.staff.LoadAllStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.stockitem.LoadAllStockItemsUseCase
@@ -19,7 +20,8 @@ class ReviewViewModel(
     private val _loadConsumablesItemsUseCase: LoadConsumablesItemsUseCase,
     private val _loadHardwareItemsUseCase: LoadHardwareItemsUseCase,
     private val _loadAllStockItemsUseCase: LoadAllStockItemsUseCase,
-    private val _loadAllStaffUseCase: LoadAllStaffUseCase
+    private val _loadAllStaffUseCase: LoadAllStaffUseCase,
+    private val _addArchiveItemUseCase: AddArchiveItemUseCase
 ) : ViewModel() {
 
     val transactionStatus = MutableLiveData<String>()

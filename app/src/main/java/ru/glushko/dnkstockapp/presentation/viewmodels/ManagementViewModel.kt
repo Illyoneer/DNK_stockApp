@@ -5,8 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.glushko.dnkstockapp.domain.entity.Staff
-import ru.glushko.dnkstockapp.domain.entity.StockItem
+import ru.glushko.dnkstockapp.domain.model.ArchiveItem
+import ru.glushko.dnkstockapp.domain.model.Staff
+import ru.glushko.dnkstockapp.domain.model.StockItem
+import ru.glushko.dnkstockapp.domain.usecases.archive.AddArchiveItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.archive.DeleteArchiveItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.archive.LoadAllArchiveItemsUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.AddStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.DeleteStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.LoadAllStaffUseCase
@@ -24,13 +28,17 @@ class ManagementViewModel(
     private val _loadAllStaffUseCase: LoadAllStaffUseCase,
     private val _addStaffUseCase: AddStaffUseCase,
     private val _updateStaffUseCase: UpdateStaffUseCase,
-    private val _deleteStaffUseCase: DeleteStaffUseCase
+    private val _deleteStaffUseCase: DeleteStaffUseCase,
+    private val _loadAllArchiveItemsUseCase: LoadAllArchiveItemsUseCase,
+    private val _deleteArchiveItemUseCase: DeleteArchiveItemUseCase,
+    private val _addArchiveItemUseCase: AddArchiveItemUseCase
 ) : ViewModel() {
 
     val transactionStatus = MutableLiveData<String>()
 
     val allStockItems: LiveData<List<StockItem>> by lazy { _loadAllStockItemsUseCase.loadAllStockItems() }
     val allStaff: LiveData<List<Staff>> by lazy { _loadAllStaffUseCase.loadAllStaff() }
+    val allArchiveItems: LiveData<List<ArchiveItem>> by lazy { _loadAllArchiveItemsUseCase.loadAllArchiveItems() }
 
 
     fun addStockItemToDatabase(name: String, count: String) {

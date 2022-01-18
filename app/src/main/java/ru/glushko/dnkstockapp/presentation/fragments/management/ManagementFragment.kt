@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.presentation.fragments
+package ru.glushko.dnkstockapp.presentation.fragments.management
 
 import android.os.Bundle
 import android.view.LayoutInflater

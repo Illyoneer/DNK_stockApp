@@ -9,10 +9,10 @@
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/review"
-        android:name="ru.glushko.dnkstockapp.presentation.fragments.ReviewFragment"
+        android:name="ru.glushko.dnkstockapp.presentation.fragments.review.ReviewFragment"
         android:label="ReviewFragment" />
     <fragment
         android:id="@+id/management"
-        android:name="ru.glushko.dnkstockapp.presentation.fragments.ManagementFragment"
+        android:name="ru.glushko.dnkstockapp.presentation.fragments.management.ManagementFragment"
         android:label="ManagementFragment" />
 </navigation>

@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStaffBinding
 import ru.glushko.dnkstockapp.databinding.FragmentStaffManagementBinding
-import ru.glushko.dnkstockapp.domain.entity.Staff
+import ru.glushko.dnkstockapp.domain.model.Staff
 import ru.glushko.dnkstockapp.presentation.viewmodels.ManagementViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.management.staff.StaffRecyclerAdapter
 

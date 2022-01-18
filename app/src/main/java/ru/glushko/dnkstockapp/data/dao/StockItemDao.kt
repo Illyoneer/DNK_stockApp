@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.data.source
+package ru.glushko.dnkstockapp.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

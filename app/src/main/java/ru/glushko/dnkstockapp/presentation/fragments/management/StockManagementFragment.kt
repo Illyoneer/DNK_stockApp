@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStockItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentStockManagementBinding
-import ru.glushko.dnkstockapp.domain.entity.StockItem
+import ru.glushko.dnkstockapp.domain.model.StockItem
 import ru.glushko.dnkstockapp.presentation.viewmodels.ManagementViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.management.stock.StockItemRecyclerAdapter
 

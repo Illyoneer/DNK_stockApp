@@ -18,7 +18,7 @@ import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditItemBinding
 import ru.glushko.dnkstockapp.databinding.FragmentHardwareBinding
 import ru.glushko.dnkstockapp.databinding.FragmentItemInfoBinding
-import ru.glushko.dnkstockapp.domain.entity.Item
+import ru.glushko.dnkstockapp.domain.model.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.review.ItemRecyclerAdapter
 import java.text.SimpleDateFormat
@@ -75,7 +75,7 @@ class HardwareFragment : Fragment() {
 
     private fun setupOnActionButtonClick(itemRecyclerAdapter: ItemRecyclerAdapter) {
         itemRecyclerAdapter.onPopupButtonClickListener = { item, view ->
-            showActionPopupMenu(view, item, R.menu.action_popup_menu)
+            showActionPopupMenu(view, item, R.menu.review_action_popup_menu)
         }
     }
 
@@ -90,6 +90,9 @@ class HardwareFragment : Fragment() {
                 }
                 R.id.edit_action -> {
                     showEditItemRecordDialog(itemElement)
+                }
+                R.id.archive_action -> {
+                    Toast.makeText(requireContext(), "Кнопка сдачи в процессе.", Toast.LENGTH_SHORT).show()
                 }
             }
             return@setOnMenuItemClickListener true

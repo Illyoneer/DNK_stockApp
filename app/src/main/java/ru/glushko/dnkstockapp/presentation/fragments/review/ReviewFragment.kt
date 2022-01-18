@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.presentation.fragments
+package ru.glushko.dnkstockapp.presentation.fragments.review
 
 import android.annotation.SuppressLint
 import android.os.Bundle

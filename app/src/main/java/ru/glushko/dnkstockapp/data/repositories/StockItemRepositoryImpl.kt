@@ -2,9 +2,9 @@ package ru.glushko.dnkstockapp.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import ru.glushko.dnkstockapp.data.dao.StockItemDao
 import ru.glushko.dnkstockapp.data.mappers.StockItemMapper
-import ru.glushko.dnkstockapp.data.source.StockItemDao
-import ru.glushko.dnkstockapp.domain.entity.StockItem
+import ru.glushko.dnkstockapp.domain.model.StockItem
 import ru.glushko.dnkstockapp.domain.repositories.StockItemRepository
 
 class StockItemRepositoryImpl(
