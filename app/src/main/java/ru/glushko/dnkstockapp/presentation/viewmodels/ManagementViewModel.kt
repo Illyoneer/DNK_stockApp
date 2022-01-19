@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import ru.glushko.dnkstockapp.domain.model.ArchiveItem
 import ru.glushko.dnkstockapp.domain.model.Staff
 import ru.glushko.dnkstockapp.domain.model.StockItem
-import ru.glushko.dnkstockapp.domain.usecases.archive.AddArchiveItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.archive.DeleteArchiveItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.archive.LoadAllArchiveItemsUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.AddStaffUseCase
@@ -31,7 +30,6 @@ class ManagementViewModel(
     private val _deleteStaffUseCase: DeleteStaffUseCase,
     private val _loadAllArchiveItemsUseCase: LoadAllArchiveItemsUseCase,
     private val _deleteArchiveItemUseCase: DeleteArchiveItemUseCase,
-    private val _addArchiveItemUseCase: AddArchiveItemUseCase
 ) : ViewModel() {
 
     val transactionStatus = MutableLiveData<String>()
@@ -41,13 +39,14 @@ class ManagementViewModel(
     val allArchiveItems: LiveData<List<ArchiveItem>> by lazy { _loadAllArchiveItemsUseCase.loadAllArchiveItems() }
 
 
-    fun addStockItemToDatabase(name: String, count: String) {
-        if (name.isNotEmpty() && count.isNotEmpty()) {
+    fun addStockItemToDatabase(name: String, count: String, balance: String) {
+        if (name.isNotEmpty() && count.isNotEmpty() && balance.isNotEmpty()) {
             viewModelScope.launch {
                 _addItemStockUseCase.addStockItem(
                     StockItem(
                         name = name,
-                        count = count
+                        count = count,
+                        balance = balance
                     )
                 )
             }
@@ -59,14 +58,15 @@ class ManagementViewModel(
         _deleteStockItemUseCase.deleteStockItem(stockItem)
     }
 
-    fun updateStockItemInDatabase(id: Int, name: String, count: String) {
-        if (name.isNotEmpty() && count.isNotEmpty()) {
+    fun updateStockItemInDatabase(id: Int, name: String, count: String, balance: String) {
+        if (name.isNotEmpty() && count.isNotEmpty() && balance.isNotEmpty()) {
             viewModelScope.launch {
                 _updateStockItemUseCase.updateStockItem(
                     StockItem(
                         id = id,
                         name = name,
-                        count = count
+                        count = count,
+                        balance = balance
                     )
                 )
             }
@@ -107,5 +107,9 @@ class ManagementViewModel(
             }
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
+    }
+
+    fun deleteArchiveItemFromDatabase(archiveItem: ArchiveItem) = viewModelScope.launch {
+        _deleteArchiveItemUseCase.deleteArchiveItem(archiveItem)
     }
 }

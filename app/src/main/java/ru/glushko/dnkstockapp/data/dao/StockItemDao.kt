@@ -9,7 +9,7 @@ interface StockItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addStockItem(dbStockItem: DBStockItem)
 
-    @Query("SELECT * FROM stock_items")
+    @Query("SELECT * FROM stock_items2")
     fun loadAllStockItems(): LiveData<List<DBStockItem>>
 
     @Delete

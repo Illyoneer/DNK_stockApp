@@ -11,6 +11,7 @@ import ru.glushko.dnkstockapp.domain.model.StockItem
 class StockItemRecyclerAdapter : ListAdapter<StockItem, StockItemViewHolder>(StockItemDiffCallback()) {
 
     var onPopupButtonClickListener: ((StockItem, View) -> Unit)? = null
+    var onHolderViewClickListener: ((StockItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -24,9 +25,13 @@ class StockItemRecyclerAdapter : ListAdapter<StockItem, StockItemViewHolder>(Sto
         with(holder.stockRecyclerItem) {
             countText.text = "${position+1}"
             itemName.text = stockItemElement.name
-            countItem.text = stockItemElement.count + " шт."
+            countItem.text = stockItemElement.balance + " шт."
             moreButton.setOnClickListener {
                 onPopupButtonClickListener?.invoke(stockItemElement, it)
+            }
+
+            root.setOnClickListener{
+                onHolderViewClickListener?.invoke(stockItemElement)
             }
         }
     }

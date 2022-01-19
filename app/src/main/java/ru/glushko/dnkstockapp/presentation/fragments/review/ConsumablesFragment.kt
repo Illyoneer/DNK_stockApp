@@ -2,7 +2,6 @@ package ru.glushko.dnkstockapp.presentation.fragments.review
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,16 +22,18 @@ import ru.glushko.dnkstockapp.domain.model.Item
 import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.review.ItemRecyclerAdapter
 import java.text.SimpleDateFormat
+import java.util.*
 
 class ConsumablesFragment : Fragment() {
 
     private lateinit var _consumablesFragmentBinding: FragmentConsumablesBinding
     private lateinit var _addOrEditItemFragmentBinding: FragmentAddOrEditItemBinding
     private lateinit var _itemInfoFragmentBinding: FragmentItemInfoBinding
+    private lateinit var _calendar: Calendar
+    private lateinit var _dateToday: String
 
     private val _reviewViewModel by viewModel<ReviewViewModel>()
     private var _itemRecyclerAdapter = ItemRecyclerAdapter()
-
     private var _localStockItemsList = listOf<String>() //TODO: Оптимизировать!!!
     private var _localStaffList = listOf<String>() //TODO: Оптимизировать!!!
 
@@ -40,29 +41,49 @@ class ConsumablesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _calendar = Calendar.getInstance()
+        _dateToday = SimpleDateFormat("dd/MM/yyyy").format(_calendar.time)
 
-        _reviewViewModel.allStockItems.observe(viewLifecycleOwner, {
-            _localStockItemsList = it.map { stockItem -> stockItem.name }
-        }) //TODO: Оптимизировать!!!
-
-        _reviewViewModel.allStaff.observe(viewLifecycleOwner, {
-            _localStaffList = it.map { staff -> staff.surname + " " + staff.name + " " + staff.lastname[0] + "."}
-        }) //TODO: Оптимизировать!!!
-
-        Log.d("1", _localStaffList.toString())
         _consumablesFragmentBinding =
             FragmentConsumablesBinding.inflate(inflater, container, false)
 
+        setupToolbarButtons()
         setupRecyclerView()
 
         return _consumablesFragmentBinding.root
     }
 
-    private fun setupRecyclerView() {
+    override fun onStart() {
         _reviewViewModel.consumablesItems.observe(viewLifecycleOwner, { consumablesItemsList ->
             _itemRecyclerAdapter.submitList(consumablesItemsList)
         })
 
+        _reviewViewModel.allStockItems.observe(viewLifecycleOwner, {
+            _localStockItemsList = it.map { stockItem -> stockItem.name }
+        })
+
+        _reviewViewModel.allStaff.observe(viewLifecycleOwner, {
+            _localStaffList =
+                it.map { staff -> staff.surname + " " + staff.name + " " + staff.lastname[0] + "." }
+        })
+        super.onStart()
+    }
+
+    private fun setupToolbarButtons(){
+        _consumablesFragmentBinding.addButton.setOnClickListener{
+            showAddConsumablesItemRecordDialog(
+                dateToday = _dateToday,
+                staffList = _localStaffList,
+                stockItemsList = _localStockItemsList
+            )
+        }
+
+        _consumablesFragmentBinding.sortButton.setOnClickListener {
+            showSortPopupMenu(it, R.menu.sort_popup_menu)
+        }
+    }
+
+    private fun setupRecyclerView() {
         _consumablesFragmentBinding.recyclerView.adapter = _itemRecyclerAdapter
 
         setupOnHolderViewClick(_itemRecyclerAdapter)
@@ -81,6 +102,30 @@ class ConsumablesFragment : Fragment() {
         }
     }
 
+    private fun showSortPopupMenu(view: View, @MenuRes menuRes: Int) {
+        val popupMenu = PopupMenu(view.context, view)
+        popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.sort_by_date -> {
+                    Toast.makeText(requireContext(), "Сортировка по дате", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                R.id.sort_by_item_name -> {
+                    Toast.makeText(requireContext(), "Сортировка по названию", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                R.id.sort_by_surname -> {
+                    Toast.makeText(requireContext(), "Сортировка по фамилии", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
+        popupMenu.show()
+    }
+
     private fun showActionPopupMenu(view: View, itemElement: Item, @MenuRes menuRes: Int) {
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
@@ -94,7 +139,7 @@ class ConsumablesFragment : Fragment() {
                     showEditItemRecordDialog(item = itemElement)
                 }
                 R.id.archive_action -> {
-                    Toast.makeText(requireContext(), "Кнопка сдачи в процессе.", Toast.LENGTH_SHORT).show()
+                    _reviewViewModel.moveItemToArchive(item = itemElement, dateToday = _dateToday)
                 }
             }
             return@setOnMenuItemClickListener true
@@ -102,16 +147,53 @@ class ConsumablesFragment : Fragment() {
         popupMenu.show()
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private fun showAddConsumablesItemRecordDialog(dateToday: String, staffList: List<String>, stockItemsList: List<String>) {
+        _addOrEditItemFragmentBinding =
+            FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
+
+        val userEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, staffList)
+        val nameEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, stockItemsList)
+        _addOrEditItemFragmentBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
+        _addOrEditItemFragmentBinding.itemUserEditText.setAdapter(userEditTextAdapter)
+        _addOrEditItemFragmentBinding.itemDateButton.text = dateToday
+
+        _addOrEditItemFragmentBinding.itemDateButton.setOnClickListener {
+            showDatePickerDialog(_addOrEditItemFragmentBinding.itemDateButton)
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Добавить новую запись") //Добавление заголовка.
+            .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
+            .setPositiveButton("Добавить") { _, _ ->
+                _reviewViewModel.addItemToDatabase(
+                    name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
+                    count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString(),
+                    date = _addOrEditItemFragmentBinding.itemDateButton.text.toString(),
+                    user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
+                    type = "consumables"
+                )
+
+                _reviewViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                    Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
+                })
+            }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .show()
+    }
+
     private fun showEditItemRecordDialog(item: Item) {
         _addOrEditItemFragmentBinding =
             FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
-        val userEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _localStaffList)
-        val nameEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, _localStockItemsList)
+        val userEditTextAdapter =
+            ArrayAdapter(requireContext(), R.layout.list_item, _localStaffList)
+        val nameEditTextAdapter =
+            ArrayAdapter(requireContext(), R.layout.list_item, _localStockItemsList)
         _addOrEditItemFragmentBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
         _addOrEditItemFragmentBinding.itemUserEditText.setAdapter(userEditTextAdapter)
 
-        _addOrEditItemFragmentBinding.itemDateButton.setOnClickListener{
+        _addOrEditItemFragmentBinding.itemDateButton.setOnClickListener {
             showDatePickerDialog(_addOrEditItemFragmentBinding.itemDateButton)
         }
 
@@ -144,9 +226,10 @@ class ConsumablesFragment : Fragment() {
 
     @SuppressLint("SimpleDateFormat")
     private fun showDatePickerDialog(button: Button) {
-        val datePickerBuilder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Выберите дату")
-            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+        val datePickerBuilder: MaterialDatePicker.Builder<*> =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Выберите дату")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
 
         val datePicker: MaterialDatePicker<*> = datePickerBuilder
             .build()
@@ -173,8 +256,7 @@ class ConsumablesFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Информация о выдаче") //Добавление заголовка.
             .setView(_itemInfoFragmentBinding.root) //Присвоение View полученного ранее.
-            .setNegativeButton( "Закрыть") { dialog, _ -> dialog.cancel() }
+            .setNegativeButton("Закрыть") { dialog, _ -> dialog.cancel() }
             .show()
     }
-
 }

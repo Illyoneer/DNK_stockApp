@@ -30,7 +30,6 @@ val presentationModule = module {
             _addStaffUseCase = get(),
             _deleteStaffUseCase = get(),
             _updateStaffUseCase = get(),
-            _addArchiveItemUseCase = get(),
             _deleteArchiveItemUseCase = get(),
             _loadAllArchiveItemsUseCase = get()
         )

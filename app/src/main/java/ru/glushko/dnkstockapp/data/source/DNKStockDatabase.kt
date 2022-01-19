@@ -16,7 +16,7 @@ import ru.glushko.dnkstockapp.data.model.DBStockItem
 @Database(
     entities = [DBItem::class, DBStockItem::class, DBStaff::class, DBArchiveItem::class],
 
-    version = 8
+    version = 9
 )
 abstract class DNKStockDatabase : RoomDatabase() {
 

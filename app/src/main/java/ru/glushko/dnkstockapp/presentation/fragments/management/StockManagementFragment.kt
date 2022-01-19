@@ -1,5 +1,6 @@
 package ru.glushko.dnkstockapp.presentation.fragments.management
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,11 @@ import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStockItemBinding
+import ru.glushko.dnkstockapp.databinding.FragmentStockItemInfoBinding
 import ru.glushko.dnkstockapp.databinding.FragmentStockManagementBinding
 import ru.glushko.dnkstockapp.domain.model.StockItem
 import ru.glushko.dnkstockapp.presentation.viewmodels.ManagementViewModel
@@ -21,6 +24,7 @@ class StockManagementFragment : Fragment() {
 
     private lateinit var _stockManagementFragmentBinding: FragmentStockManagementBinding
     private lateinit var _addOrEditStockItemBinding: FragmentAddOrEditStockItemBinding
+    private lateinit var _stockItemInfoFragmentBinding: FragmentStockItemInfoBinding
 
     private val _managementViewModel by viewModel<ManagementViewModel>()
     private var _stockItemRecyclerAdapter = StockItemRecyclerAdapter()
@@ -34,7 +38,6 @@ class StockManagementFragment : Fragment() {
             FragmentStockManagementBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
-
         setupToolbarFunctional()
 
         return _stockManagementFragmentBinding.root
@@ -46,14 +49,26 @@ class StockManagementFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
+    override fun onStart() {
         _managementViewModel.allStockItems.observe(viewLifecycleOwner, { stockItemList ->
             _stockItemRecyclerAdapter.submitList(stockItemList)
+            if(stockItemList.isEmpty())
+                Snackbar.make( _stockManagementFragmentBinding.root, "Для начала работы добавьте предметы кнопкой +", Snackbar.LENGTH_LONG).show()
         })
+        super.onStart()
+    }
 
+    private fun setupRecyclerView() {
         _stockManagementFragmentBinding.recyclerView.adapter = _stockItemRecyclerAdapter
 
         setupOnActionButtonClick(_stockItemRecyclerAdapter)
+        setupOnHolderViewClick(_stockItemRecyclerAdapter)
+    }
+
+    private fun setupOnHolderViewClick(stockItemRecyclerAdapter: StockItemRecyclerAdapter) {
+        stockItemRecyclerAdapter.onHolderViewClickListener = {
+            showInfoAboutStockItemRecordDialog(it)
+        }
     }
 
     private fun setupOnActionButtonClick(stockItemRecyclerAdapter: StockItemRecyclerAdapter) {
@@ -99,6 +114,7 @@ class StockManagementFragment : Fragment() {
                 _managementViewModel.addStockItemToDatabase(
                     name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
                     count = _addOrEditStockItemBinding.itemCountEditText.text.toString(),
+                    balance = _addOrEditStockItemBinding.itemBalanceEditText.text.toString()
                 )
 
                 _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
@@ -120,6 +136,7 @@ class StockManagementFragment : Fragment() {
         with(_addOrEditStockItemBinding) {
             itemNameEditText.setText(stockItem.name)
             itemCountEditText.setText(stockItem.count)
+            itemBalanceEditText.setText(stockItem.balance)
         }
 
         MaterialAlertDialogBuilder(requireContext())
@@ -130,6 +147,7 @@ class StockManagementFragment : Fragment() {
                     id = stockItem.id,
                     name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
                     count = _addOrEditStockItemBinding.itemCountEditText.text.toString(),
+                    balance = _addOrEditStockItemBinding.itemBalanceEditText.text.toString()
                 )
 
                 _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
@@ -137,6 +155,24 @@ class StockManagementFragment : Fragment() {
                 })
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showInfoAboutStockItemRecordDialog(stockItem: StockItem) {
+        _stockItemInfoFragmentBinding =
+            FragmentStockItemInfoBinding.inflate(LayoutInflater.from(requireContext()), null, false)
+
+        with(_stockItemInfoFragmentBinding) {
+            infoNameStockItem.text = stockItem.name
+            infoStartCountStockItem.text = stockItem.count + " шт."
+            infoBalanceStockItem.text = stockItem.balance + " шт."
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Информация о выдаче") //Добавление заголовка.
+            .setView(_stockItemInfoFragmentBinding.root) //Присвоение View полученного ранее.
+            .setNegativeButton("Закрыть") { dialog, _ -> dialog.cancel() }
             .show()
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStaffBinding
@@ -27,13 +28,12 @@ class StaffManagementFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _staffManagementFragmentBinding =
             FragmentStaffManagementBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
-
         setupToolbarFunctional()
 
         return _staffManagementFragmentBinding.root
@@ -45,11 +45,16 @@ class StaffManagementFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
+    override fun onStart() {
         _managementViewModel.allStaff.observe(viewLifecycleOwner, { staffList ->
             _staffItemRecyclerAdapter.submitList(staffList)
+            if(staffList.isEmpty())
+               Snackbar.make(_staffManagementFragmentBinding.root, "Для начала работы добавьте людей кнопкой +", Snackbar.LENGTH_LONG).show()
         })
+        super.onStart()
+    }
 
+    private fun setupRecyclerView() {
         _staffManagementFragmentBinding.recyclerView.adapter = _staffItemRecyclerAdapter
 
         setupOnActionButtonClick(_staffItemRecyclerAdapter)

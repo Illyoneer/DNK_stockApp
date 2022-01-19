@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.glushko.dnkstockapp.domain.model.ArchiveItem
 import ru.glushko.dnkstockapp.domain.model.Item
 import ru.glushko.dnkstockapp.domain.model.Staff
 import ru.glushko.dnkstockapp.domain.model.StockItem
@@ -26,7 +27,7 @@ class ReviewViewModel(
 
     val transactionStatus = MutableLiveData<String>()
 
-    val consumablesItems: LiveData<List<Item>> by lazy {_loadConsumablesItemsUseCase.getConsumablesItems() }
+    val consumablesItems: LiveData<List<Item>> by lazy { _loadConsumablesItemsUseCase.getConsumablesItems() }
     val hardwareItems: LiveData<List<Item>> by lazy { _loadHardwareItemsUseCase.getHardwareItems() }
 
     val allStockItems: LiveData<List<StockItem>> by lazy { _loadAllStockItemsUseCase.loadAllStockItems() }
@@ -53,14 +54,7 @@ class ReviewViewModel(
         _deleteItemUseCase.deleteItem(item)
     }
 
-    fun updateItemInDatabase(
-        id: Int,
-        name: String,
-        count: String,
-        date: String,
-        user: String,
-        type: String
-    ) {
+    fun updateItemInDatabase(id: Int, name: String, count: String, date: String, user: String, type: String) {
         if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
             viewModelScope.launch {
                 _updateItemUseCase.updateItem(
@@ -76,5 +70,18 @@ class ReviewViewModel(
             }
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
+    }
+
+    fun moveItemToArchive(item: Item, dateToday: String) = viewModelScope.launch {
+        _addArchiveItemUseCase.addArchiveItem(
+            ArchiveItem(
+                name = item.name,
+                count = item.count,
+                date = dateToday,
+                user = item.user,
+                type = item.type
+            )
+        )
+        _deleteItemUseCase.deleteItem(item)
     }
 }
