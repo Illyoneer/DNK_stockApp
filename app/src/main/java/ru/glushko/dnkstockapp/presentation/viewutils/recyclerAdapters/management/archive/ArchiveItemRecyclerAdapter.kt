@@ -25,7 +25,7 @@ class ArchiveItemRecyclerAdapter : ListAdapter<ArchiveItem, ArchiveItemViewHolde
         with(holder.archiveRecyclerItem) {
             countText.text = "${position+1}"
             itemName.text = archiveItemElement.name
-            countItem.text = archiveItemElement.count + " шт."
+            countItem.text = archiveItemElement.count.toString() + " шт."
             moreButton.setOnClickListener {
                 onPopupButtonClickListener?.invoke(archiveItemElement, it)
             }

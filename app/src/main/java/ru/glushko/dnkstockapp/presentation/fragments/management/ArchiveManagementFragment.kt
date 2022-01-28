@@ -1,5 +1,6 @@
 package ru.glushko.dnkstockapp.presentation.fragments.management
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,8 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
-import ru.glushko.dnkstockapp.databinding.*
+import ru.glushko.dnkstockapp.databinding.FragmentArchiveItemInfoBinding
+import ru.glushko.dnkstockapp.databinding.FragmentArchiveManagementBinding
 import ru.glushko.dnkstockapp.domain.model.ArchiveItem
 import ru.glushko.dnkstockapp.presentation.viewmodels.ManagementViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.management.archive.ArchiveItemRecyclerAdapter
@@ -36,9 +38,9 @@ class ArchiveManagementFragment : Fragment() {
     }
 
     override fun onStart() {
-        _managementViewModel.allArchiveItems.observe(viewLifecycleOwner, { archiveItemsList ->
+        _managementViewModel.allArchiveItems.observe(viewLifecycleOwner) { archiveItemsList ->
             _archiveItemRecyclerAdapter.submitList(archiveItemsList)
-        })
+        }
         super.onStart()
     }
 
@@ -80,13 +82,14 @@ class ArchiveManagementFragment : Fragment() {
         popupMenu.show()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showInfoAboutItemRecordDialog(archiveItem: ArchiveItem) {
         _archiveItemInfoFragmentBinding =
             FragmentArchiveItemInfoBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
         with(_archiveItemInfoFragmentBinding) {
             infoNameItem.text = archiveItem.name
-            infoCountItem.text = archiveItem.count + " шт."
+            infoCountItem.text = archiveItem.count.toString() + " шт."
             infoDateItem.text = archiveItem.date //Сделать дату сдачи
             infoUserItem.text = archiveItem.user
             if(archiveItem.type == "consumables")

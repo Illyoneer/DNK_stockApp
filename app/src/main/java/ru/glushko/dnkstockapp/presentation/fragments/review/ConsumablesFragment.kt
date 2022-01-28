@@ -37,6 +37,7 @@ class ConsumablesFragment : Fragment() {
     private var _localStockItemsList = listOf<String>() //TODO: Оптимизировать!!!
     private var _localStaffList = listOf<String>() //TODO: Оптимизировать!!!
 
+    @SuppressLint("SimpleDateFormat")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,23 +55,23 @@ class ConsumablesFragment : Fragment() {
     }
 
     override fun onStart() {
-        _reviewViewModel.consumablesItems.observe(viewLifecycleOwner, { consumablesItemsList ->
+        _reviewViewModel.consumablesItems.observe(viewLifecycleOwner) { consumablesItemsList ->
             _itemRecyclerAdapter.submitList(consumablesItemsList)
-        })
+        }
 
-        _reviewViewModel.allStockItems.observe(viewLifecycleOwner, {
+        _reviewViewModel.allStockItems.observe(viewLifecycleOwner) {
             _localStockItemsList = it.map { stockItem -> stockItem.name }
-        })
+        }
 
-        _reviewViewModel.allStaff.observe(viewLifecycleOwner, {
+        _reviewViewModel.allStaff.observe(viewLifecycleOwner) {
             _localStaffList =
                 it.map { staff -> staff.surname + " " + staff.name + " " + staff.lastname[0] + "." }
-        })
+        }
         super.onStart()
     }
 
-    private fun setupToolbarButtons(){
-        _consumablesFragmentBinding.addButton.setOnClickListener{
+    private fun setupToolbarButtons() {
+        _consumablesFragmentBinding.addButton.setOnClickListener {
             showAddConsumablesItemRecordDialog(
                 dateToday = _dateToday,
                 staffList = _localStaffList,
@@ -148,7 +149,11 @@ class ConsumablesFragment : Fragment() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun showAddConsumablesItemRecordDialog(dateToday: String, staffList: List<String>, stockItemsList: List<String>) {
+    private fun showAddConsumablesItemRecordDialog(
+        dateToday: String,
+        staffList: List<String>,
+        stockItemsList: List<String>
+    ) {
         _addOrEditItemFragmentBinding =
             FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
@@ -166,17 +171,20 @@ class ConsumablesFragment : Fragment() {
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
-                _reviewViewModel.addItemToDatabase(
-                    name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
-                    count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString(),
-                    date = _addOrEditItemFragmentBinding.itemDateButton.text.toString(),
-                    user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
-                    type = "consumables"
-                )
+                if (_localStockItemsList.contains(_addOrEditItemFragmentBinding.itemNameEditText.text.toString())) {
+                    _reviewViewModel.addItemToDatabase(
+                        name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
+                        count = Integer.parseInt(_addOrEditItemFragmentBinding.itemCountEditText.text.toString()),
+                        date = _addOrEditItemFragmentBinding.itemDateButton.text.toString(),
+                        user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
+                        type = "consumables"
+                    )
+                } else
+                    Toast.makeText(requireContext(), "На складе нет такого предмета!", Toast.LENGTH_SHORT).show()
 
-                _reviewViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                _reviewViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
@@ -199,7 +207,7 @@ class ConsumablesFragment : Fragment() {
 
         with(_addOrEditItemFragmentBinding) {
             itemNameEditText.setText(item.name)
-            itemCountEditText.setText(item.count)
+            itemCountEditText.setText(item.count.toString())
             itemDateButton.text = item.date
             itemUserEditText.setText(item.user)
         }
@@ -208,17 +216,22 @@ class ConsumablesFragment : Fragment() {
             .setTitle("Редактировать запись") //Добавление заголовка.
             .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
-                _reviewViewModel.updateItemInDatabase(
-                    id = item.id,
-                    name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
-                    count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString(),
-                    date = _addOrEditItemFragmentBinding.itemDateButton.text.toString(),
-                    user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
-                    type = "consumables"
-                )
-                _reviewViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                if (_localStockItemsList.contains(_addOrEditItemFragmentBinding.itemNameEditText.text.toString())) {
+                    _reviewViewModel.updateItemInDatabase(
+                        id = item.id,
+                        name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
+                        count = Integer.parseInt(_addOrEditItemFragmentBinding.itemCountEditText.text.toString()),
+                        date = _addOrEditItemFragmentBinding.itemDateButton.text.toString(),
+                        user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
+                        type = "consumables",
+                        start_count = item.count
+                    )
+                } else
+                    Toast.makeText(requireContext(), "На складе нет такого предмета!", Toast.LENGTH_SHORT).show()
+
+                _reviewViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
@@ -247,7 +260,7 @@ class ConsumablesFragment : Fragment() {
 
         with(_itemInfoFragmentBinding) {
             infoNameItem.text = item.name
-            infoCountItem.text = item.count + " шт."
+            infoCountItem.text = item.count.toString() + " шт."
             infoDateItem.text = item.date
             infoUserItem.text = item.user
             infoTypeItem.text = "Расходник"

@@ -46,11 +46,15 @@ class StaffManagementFragment : Fragment() {
     }
 
     override fun onStart() {
-        _managementViewModel.allStaff.observe(viewLifecycleOwner, { staffList ->
+        _managementViewModel.allStaff.observe(viewLifecycleOwner) { staffList ->
             _staffItemRecyclerAdapter.submitList(staffList)
-            if(staffList.isEmpty())
-               Snackbar.make(_staffManagementFragmentBinding.root, "Для начала работы добавьте людей кнопкой +", Snackbar.LENGTH_LONG).show()
-        })
+            if (staffList.isEmpty())
+                Snackbar.make(
+                    _staffManagementFragmentBinding.root,
+                    "Для начала работы добавьте людей кнопкой +",
+                    Snackbar.LENGTH_LONG
+                ).show()
+        }
         super.onStart()
     }
 
@@ -106,9 +110,9 @@ class StaffManagementFragment : Fragment() {
                     lastname = _addOrEditStaffBinding.lastnameEditText.text.toString()
                 )
 
-                _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
@@ -139,9 +143,9 @@ class StaffManagementFragment : Fragment() {
                     lastname = _addOrEditStaffBinding.lastnameEditText.text.toString()
                 )
 
-                _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()

@@ -9,9 +9,9 @@ import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 val presentationModule = module {
     viewModel {
         ReviewViewModel(
-            _addItemUseCase = get(),
-            _deleteItemUseCase = get(),
-            _updateItemUseCase = get(),
+            _addItemWithUpdateStock = get(),
+            _deleteItemWithUpdateStockUseCase = get(),
+            _updateItemWithUpdateStockUseCases = get(),
             _loadConsumablesItemsUseCase = get(),
             _loadHardwareItemsUseCase = get(),
             _loadAllStockItemsUseCase = get(),

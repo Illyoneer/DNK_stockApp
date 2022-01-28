@@ -50,11 +50,15 @@ class StockManagementFragment : Fragment() {
     }
 
     override fun onStart() {
-        _managementViewModel.allStockItems.observe(viewLifecycleOwner, { stockItemList ->
+        _managementViewModel.allStockItems.observe(viewLifecycleOwner) { stockItemList ->
             _stockItemRecyclerAdapter.submitList(stockItemList)
-            if(stockItemList.isEmpty())
-                Snackbar.make( _stockManagementFragmentBinding.root, "Для начала работы добавьте предметы кнопкой +", Snackbar.LENGTH_LONG).show()
-        })
+            if (stockItemList.isEmpty())
+                Snackbar.make(
+                    _stockManagementFragmentBinding.root,
+                    "Для начала работы добавьте предметы кнопкой +",
+                    Snackbar.LENGTH_LONG
+                ).show()
+        }
         super.onStart()
     }
 
@@ -113,13 +117,13 @@ class StockManagementFragment : Fragment() {
             .setPositiveButton("Добавить") { _, _ ->
                 _managementViewModel.addStockItemToDatabase(
                     name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
-                    count = _addOrEditStockItemBinding.itemCountEditText.text.toString(),
-                    balance = _addOrEditStockItemBinding.itemBalanceEditText.text.toString()
+                    count = Integer.parseInt(_addOrEditStockItemBinding.itemCountEditText.text.toString()),
+                    balance = Integer.parseInt(_addOrEditStockItemBinding.itemBalanceEditText.text.toString())
                 )
 
-                _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
@@ -135,8 +139,8 @@ class StockManagementFragment : Fragment() {
 
         with(_addOrEditStockItemBinding) {
             itemNameEditText.setText(stockItem.name)
-            itemCountEditText.setText(stockItem.count)
-            itemBalanceEditText.setText(stockItem.balance)
+            itemCountEditText.setText(stockItem.count.toString())
+            itemBalanceEditText.setText(stockItem.balance.toString())
         }
 
         MaterialAlertDialogBuilder(requireContext())
@@ -146,13 +150,13 @@ class StockManagementFragment : Fragment() {
                 _managementViewModel.updateStockItemInDatabase(
                     id = stockItem.id,
                     name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
-                    count = _addOrEditStockItemBinding.itemCountEditText.text.toString(),
-                    balance = _addOrEditStockItemBinding.itemBalanceEditText.text.toString()
+                    count = Integer.parseInt(_addOrEditStockItemBinding.itemCountEditText.text.toString()),
+                    balance = Integer.parseInt(_addOrEditStockItemBinding.itemBalanceEditText.text.toString())
                 )
 
-                _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
@@ -165,8 +169,8 @@ class StockManagementFragment : Fragment() {
 
         with(_stockItemInfoFragmentBinding) {
             infoNameStockItem.text = stockItem.name
-            infoStartCountStockItem.text = stockItem.count + " шт."
-            infoBalanceStockItem.text = stockItem.balance + " шт."
+            infoStartCountStockItem.text = stockItem.count.toString() + " шт."
+            infoBalanceStockItem.text = stockItem.balance.toString() + " шт."
         }
 
         MaterialAlertDialogBuilder(requireContext())

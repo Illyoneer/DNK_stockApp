@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class DBInventoryItem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "inventory_name") val name: String,
-    @ColumnInfo(name = "inventory_count")val count: String,
+    @ColumnInfo(name = "inventory_count")val count: Int,
     @ColumnInfo(name = "inventory_date")val date: String,
     @ColumnInfo(name = "inventory_reason")val reason: String
 ) //TODO: Переделать.

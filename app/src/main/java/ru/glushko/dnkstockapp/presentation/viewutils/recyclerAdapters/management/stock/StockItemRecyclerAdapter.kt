@@ -25,7 +25,7 @@ class StockItemRecyclerAdapter : ListAdapter<StockItem, StockItemViewHolder>(Sto
         with(holder.stockRecyclerItem) {
             countText.text = "${position+1}"
             itemName.text = stockItemElement.name
-            countItem.text = stockItemElement.balance + " шт."
+            countItem.text = stockItemElement.balance.toString() + " шт."
             moreButton.setOnClickListener {
                 onPopupButtonClickListener?.invoke(stockItemElement, it)
             }

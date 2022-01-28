@@ -15,9 +15,9 @@ import ru.glushko.dnkstockapp.domain.usecases.staff.LoadAllStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.stockitem.LoadAllStockItemsUseCase
 
 class ReviewViewModel(
-    private val _deleteItemUseCase: DeleteItemUseCase,
-    private val _updateItemUseCase: UpdateItemUseCase,
-    private val _addItemUseCase: AddItemUseCase,
+    private val _deleteItemWithUpdateStockUseCase: DeleteItemWithUpdateStockUseCase,
+    private val _updateItemWithUpdateStockUseCases: UpdateItemWithUpdateStockUseCases,
+    private val _addItemWithUpdateStock: AddItemWithUpdateStockUseCase,
     private val _loadConsumablesItemsUseCase: LoadConsumablesItemsUseCase,
     private val _loadHardwareItemsUseCase: LoadHardwareItemsUseCase,
     private val _loadAllStockItemsUseCase: LoadAllStockItemsUseCase,
@@ -33,41 +33,55 @@ class ReviewViewModel(
     val allStockItems: LiveData<List<StockItem>> by lazy { _loadAllStockItemsUseCase.loadAllStockItems() }
     val allStaff: LiveData<List<Staff>> by lazy { _loadAllStaffUseCase.loadAllStaff() }
 
-    fun addItemToDatabase(name: String, count: String, date: String, user: String, type: String) {
-        if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
-            viewModelScope.launch {
-                _addItemUseCase.addItem(
-                    Item(
-                        name = name,
-                        count = count,
-                        date = date,
-                        user = user,
-                        type = type
+    fun addItemToDatabase(
+        name: String,
+        count: Int,
+        date: String,
+        user: String,
+        type: String,
+    ) {
+        if (name.isNotEmpty() && count > 0 && date.isNotEmpty() && user.isNotEmpty()) {
+                viewModelScope.launch {
+                    _addItemWithUpdateStock.addItemWithUpdateStock(
+                        Item(
+                            name = name,
+                            count = count,
+                            date = date,
+                            user = user,
+                            type = type
+                        )
                     )
-                )
-            }
+                }
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }
 
     fun deleteItemFromDatabase(item: Item) = viewModelScope.launch {
-        _deleteItemUseCase.deleteItem(item)
+        _deleteItemWithUpdateStockUseCase.deleteItemWithUpdateStock(item)
     }
 
-    fun updateItemInDatabase(id: Int, name: String, count: String, date: String, user: String, type: String) {
-        if (name.isNotEmpty() && count.isNotEmpty() && date.isNotEmpty() && user.isNotEmpty()) {
-            viewModelScope.launch {
-                _updateItemUseCase.updateItem(
-                    Item(
-                        id = id,
-                        name = name,
-                        count = count,
-                        date = date,
-                        user = user,
-                        type = type
+    fun updateItemInDatabase(
+        id: Int,
+        name: String,
+        count: Int,
+        date: String,
+        user: String,
+        type: String,
+        start_count: Int
+    ) {
+        if (name.isNotEmpty() && count > 0 && date.isNotEmpty() && user.isNotEmpty()) {
+                viewModelScope.launch {
+                    _updateItemWithUpdateStockUseCases.updateItem(
+                        Item(
+                            id = id,
+                            name = name,
+                            count = count,
+                            date = date,
+                            user = user,
+                            type = type
+                        ), start_count
                     )
-                )
-            }
+                }
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }
@@ -82,6 +96,6 @@ class ReviewViewModel(
                 type = item.type
             )
         )
-        _deleteItemUseCase.deleteItem(item)
+        _deleteItemWithUpdateStockUseCase.deleteItemWithUpdateStock(item)
     }
 }

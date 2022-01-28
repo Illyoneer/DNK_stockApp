@@ -25,7 +25,7 @@ class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()
         with(holder.reviewRecyclerItem) {
             countText.text = "${position+1}"
             itemName.text = itemElement.name
-            countItem.text = itemElement.count + " шт."
+            countItem.text = itemElement.count.toString() + " шт."
             moreButton.setOnClickListener {
                 onPopupButtonClickListener?.invoke(itemElement, it)
             }

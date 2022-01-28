@@ -22,11 +22,11 @@ val domainModule = module {
     }
 
     factory {
-        DeleteItemUseCase(_itemRepository = get())
+        DeleteItemWithUpdateStockUseCase(_itemRepository = get())
     }
 
     factory {
-        UpdateItemUseCase(_itemRepository = get())
+        UpdateItemWithUpdateStockUseCases(_itemRepository = get())
     }
 
     factory {
@@ -35,6 +35,10 @@ val domainModule = module {
 
     factory {
         LoadHardwareItemsUseCase(_itemRepository  = get())
+    }
+
+    factory {
+        AddItemWithUpdateStockUseCase(_itemRepository = get())
     }
 
     //----------------Stock Items----------------------------//

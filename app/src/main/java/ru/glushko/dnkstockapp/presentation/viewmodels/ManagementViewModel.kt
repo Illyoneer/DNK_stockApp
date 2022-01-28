@@ -39,8 +39,8 @@ class ManagementViewModel(
     val allArchiveItems: LiveData<List<ArchiveItem>> by lazy { _loadAllArchiveItemsUseCase.loadAllArchiveItems() }
 
 
-    fun addStockItemToDatabase(name: String, count: String, balance: String) {
-        if (name.isNotEmpty() && count.isNotEmpty() && balance.isNotEmpty()) {
+    fun addStockItemToDatabase(name: String, count: Int, balance: Int) {
+        if (name.isNotEmpty() && count > 0 && balance > 0) {
             viewModelScope.launch {
                 _addItemStockUseCase.addStockItem(
                     StockItem(
@@ -58,8 +58,8 @@ class ManagementViewModel(
         _deleteStockItemUseCase.deleteStockItem(stockItem)
     }
 
-    fun updateStockItemInDatabase(id: Int, name: String, count: String, balance: String) {
-        if (name.isNotEmpty() && count.isNotEmpty() && balance.isNotEmpty()) {
+    fun updateStockItemInDatabase(id: Int, name: String, count: Int, balance: Int) {
+        if (name.isNotEmpty() && count > 0 && balance > 0) {
             viewModelScope.launch {
                 _updateStockItemUseCase.updateStockItem(
                     StockItem(
