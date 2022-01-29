@@ -27,8 +27,8 @@ import java.util.*
 class HardwareFragment : Fragment() {
 
     private lateinit var _hardwareFragmentBinding: FragmentHardwareBinding
-    private lateinit var _addOrEditItemFragmentBinding: FragmentAddOrEditItemBinding
-    private lateinit var _itemInfoFragmentBinding: FragmentItemInfoBinding
+    private lateinit var itemFBinding: FragmentAddOrEditItemBinding
+    private lateinit var itemInfoFBinding: FragmentItemInfoBinding
     private lateinit var _calendar: Calendar
     private lateinit var _dateToday: String
 
@@ -155,63 +155,71 @@ class HardwareFragment : Fragment() {
         staffList: List<String>,
         stockItemsList: List<String>
     ) {
-        _addOrEditItemFragmentBinding =
+        itemFBinding =
             FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
         val userEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, staffList)
         val nameEditTextAdapter = ArrayAdapter(requireContext(), R.layout.list_item, stockItemsList)
-        _addOrEditItemFragmentBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
-        _addOrEditItemFragmentBinding.itemUserEditText.setAdapter(userEditTextAdapter)
-        _addOrEditItemFragmentBinding.itemDateButton.text = dateToday
+        itemFBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
+        itemFBinding.itemUserEditText.setAdapter(userEditTextAdapter)
+        itemFBinding.itemDateButton.text = dateToday
 
-        _addOrEditItemFragmentBinding.itemDateButton.setOnClickListener {
-            showDatePickerDialog(_addOrEditItemFragmentBinding.itemDateButton)
+        itemFBinding.itemDateButton.setOnClickListener {
+            showDatePickerDialog(itemFBinding.itemDateButton)
         }
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Добавить новую запись") //Добавление заголовка.
-            .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
+            .setView(itemFBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
-                var count = 0
-                try {
-                    count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString().trim().toInt()
-                } catch (e: NumberFormatException) {null}
-                if (_localStockItemsList.contains(_addOrEditItemFragmentBinding.itemNameEditText.text.toString().trim())) {
-                    _reviewViewModel.addItemToDatabase(
-                        name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString().trim(),
-                        count = count,
-                        date = _addOrEditItemFragmentBinding.itemDateButton.text.toString().trim(),
-                        user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString().trim(),
-                        type = "hardware"
-                    )
+                val count = try {
+                    itemFBinding.itemCountEditText.text.toString().trim().toInt()
+                } catch (e: NumberFormatException) { 0 }
+                val name = itemFBinding.itemNameEditText.text.toString()
+                val date = itemFBinding.itemDateButton.text.toString().trim()
+                val user = itemFBinding.itemUserEditText.text.toString().trim()
+
+                if (_localStockItemsList.contains(name)) {
+                    if (_localStaffList.contains(user)) {
+                        addItemToDatabase(name = name, count = count, date = date, user = user)
+                    } else {
+                        showUserQuestionDialog(
+                            id = 0,
+                            name = name,
+                            count = count,
+                            date = date,
+                            user = user,
+                            start_count = 0,
+                            action = "add"
+                        )
+                    }
                 } else
-                    Toast.makeText(requireContext(), "На складе нет такого предмета!", Toast.LENGTH_SHORT).show()
-
-                _reviewViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
-                    Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                }
-
+                    Toast.makeText(
+                        requireContext(),
+                        "На складе нет такого предмета!",
+                        Toast.LENGTH_SHORT
+                    ).show()
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
     }
 
     private fun showEditItemRecordDialog(item: Item) {
-        _addOrEditItemFragmentBinding =
+        itemFBinding =
             FragmentAddOrEditItemBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
         val userEditTextAdapter =
             ArrayAdapter(requireContext(), R.layout.list_item, _localStaffList)
         val nameEditTextAdapter =
             ArrayAdapter(requireContext(), R.layout.list_item, _localStockItemsList)
-        _addOrEditItemFragmentBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
-        _addOrEditItemFragmentBinding.itemUserEditText.setAdapter(userEditTextAdapter)
+        itemFBinding.itemNameEditText.setAdapter(nameEditTextAdapter)
+        itemFBinding.itemUserEditText.setAdapter(userEditTextAdapter)
 
-        _addOrEditItemFragmentBinding.itemDateButton.setOnClickListener {
-            showDatePickerDialog(_addOrEditItemFragmentBinding.itemDateButton)
+        itemFBinding.itemDateButton.setOnClickListener {
+            showDatePickerDialog(itemFBinding.itemDateButton)
         }
 
-        with(_addOrEditItemFragmentBinding) {
+        with(itemFBinding) {
             itemNameEditText.setText(item.name)
             itemCountEditText.setText(item.count.toString())
             itemDateButton.text = item.date
@@ -220,28 +228,41 @@ class HardwareFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Редактировать запись") //Добавление заголовка.
-            .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
+            .setView(itemFBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
-                var count = 0
-                try {
-                    count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString().trim().toInt()
-                } catch (e: NumberFormatException) {null}
-                if (_localStockItemsList.contains(_addOrEditItemFragmentBinding.itemNameEditText.text.toString().trim())) {
-                    _reviewViewModel.updateItemInDatabase(
-                        id = item.id,
-                        name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString().trim(),
-                        count = count,
-                        date = _addOrEditItemFragmentBinding.itemDateButton.text.toString().trim(),
-                        user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString().trim(),
-                        type = "hardware",
-                        start_count = item.count
-                    )
-                } else
-                    Toast.makeText(requireContext(), "На складе нет такого предмета!", Toast.LENGTH_SHORT).show()
+                val count = try {
+                    itemFBinding.itemCountEditText.text.toString().trim().toInt()
+                } catch (e: NumberFormatException) { 0 }
+                val name = itemFBinding.itemNameEditText.text.toString()
+                val date = itemFBinding.itemDateButton.text.toString().trim()
+                val user = itemFBinding.itemUserEditText.text.toString().trim()
 
-                _reviewViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
-                    Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                }
+                if (_localStockItemsList.contains(name)) {
+                    if (_localStaffList.contains(user)) {
+                        updateItemInDatabase(
+                            id = item.id,
+                            name = name,
+                            count = count,
+                            date = date,
+                            user = user,
+                            start_count = item.count
+                        )
+                    } else
+                        showUserQuestionDialog(
+                            id = item.id,
+                            name = name,
+                            count = count,
+                            date = date,
+                            user = user,
+                            start_count = item.count,
+                            action = "update"
+                        )
+                } else
+                    Toast.makeText(
+                        requireContext(),
+                        "На складе нет такого предмета!",
+                        Toast.LENGTH_SHORT
+                    ).show()
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
@@ -263,12 +284,61 @@ class HardwareFragment : Fragment() {
         }
     }
 
+    private fun showUserQuestionDialog(id: Int, name: String, count: Int, date: String, user: String, start_count: Int, action: String) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Внимание!")
+            .setMessage("Введенного вами пользователя нет в вашей базе. Желаете добавить новую запись?")
+            .setPositiveButton("Да") { dialog, _ -> dialog.cancel() }
+            .setNeutralButton("Нет") { _, _ ->
+                if (action == "add")
+                    addItemToDatabase(name = name, count = count, date = date, user = user)
+                else
+                    updateItemInDatabase(
+                        id = id,
+                        name = name,
+                        count = count,
+                        date = date,
+                        user = user,
+                        start_count = start_count
+                    )
+            }
+            .show()
+    }
+
+    private fun updateItemInDatabase(id: Int, name: String, count: Int, date: String, user: String, start_count: Int) {
+        _reviewViewModel.updateItemInDatabase(
+            id = id,
+            name = name,
+            count = count,
+            date = date,
+            user = user,
+            type = "hardware",
+            start_count = start_count
+        )
+        _reviewViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
+            Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun addItemToDatabase(name: String, count: Int, date: String, user: String) {
+        _reviewViewModel.addItemToDatabase(
+            name = name,
+            count = count,
+            date = date,
+            user = user,
+            type = "hardware"
+        )
+        _reviewViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
+            Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun showInfoAboutItemRecordDialog(item: Item) {
-        _itemInfoFragmentBinding =
+        itemInfoFBinding =
             FragmentItemInfoBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
-        with(_itemInfoFragmentBinding) {
+        with(itemInfoFBinding) {
             infoNameItem.text = item.name
             infoCountItem.text = item.count.toString() + " шт."
             infoDateItem.text = item.date
@@ -278,7 +348,7 @@ class HardwareFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Информация о выдаче") //Добавление заголовка.
-            .setView(_itemInfoFragmentBinding.root) //Присвоение View полученного ранее.
+            .setView(itemInfoFBinding.root) //Присвоение View полученного ранее.
             .setNegativeButton("Закрыть") { dialog, _ -> dialog.cancel() }
             .show()
     }

@@ -22,8 +22,8 @@ import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.management
 class StockManagementFragment : Fragment() {
 
     private lateinit var _stockManagementFragmentBinding: FragmentStockManagementBinding
-    private lateinit var _addOrEditStockItemBinding: FragmentAddOrEditStockItemBinding
-    private lateinit var _stockItemInfoFragmentBinding: FragmentStockItemInfoBinding
+    private lateinit var stockItemFBinding: FragmentAddOrEditStockItemBinding
+    private lateinit var stockItemInfoFBinding: FragmentStockItemInfoBinding
 
     private val _managementViewModel by viewModel<ManagementViewModel>()
     private var _stockItemRecyclerAdapter = StockItemRecyclerAdapter()
@@ -42,23 +42,32 @@ class StockManagementFragment : Fragment() {
         return _stockManagementFragmentBinding.root
     }
 
+    override fun onStart() {
+        _managementViewModel.allStockItems.observe(viewLifecycleOwner) { stockItemList ->
+            _stockItemRecyclerAdapter.submitList(stockItemList)
+        }
+        super.onStart()
+    }
+
+    override fun onResume() {
+        if (_stockItemRecyclerAdapter.itemCount < 1)
+            showEmptyAttentionDialog()
+        super.onResume()
+    }
+
+    private fun showEmptyAttentionDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Внимание!")
+            .setMessage("Для начала работы вам необходимо добавить хотя бы одну запись.")
+            .setPositiveButton("Добавить") { _, _ -> showAddStockItemDialog() }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .show()
+    }
+
     private fun setupToolbarFunctional() {
         _stockManagementFragmentBinding.addButton.setOnClickListener {
             showAddStockItemDialog()
         }
-    }
-
-    override fun onStart() {
-        _managementViewModel.allStockItems.observe(viewLifecycleOwner) { stockItemList ->
-            _stockItemRecyclerAdapter.submitList(stockItemList)
-            if (stockItemList.isEmpty())
-                Toast.makeText(
-                    requireContext(),
-                    "Для начала работы добавьте предметы кнопкой +",
-                    Toast.LENGTH_SHORT
-                ).show()
-        }
-        super.onStart()
     }
 
     private fun setupRecyclerView() {
@@ -110,7 +119,7 @@ class StockManagementFragment : Fragment() {
     }
 
     private fun showAddStockItemDialog() {
-        _addOrEditStockItemBinding =
+        stockItemFBinding =
             FragmentAddOrEditStockItemBinding.inflate(
                 LayoutInflater.from(requireContext()),
                 null,
@@ -119,16 +128,18 @@ class StockManagementFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Добавить новую запись") //Добавление заголовка.
-            .setView(_addOrEditStockItemBinding.root) //Присвоение View полученного ранее.
+            .setView(stockItemFBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
-                var count = 0
-                var balance = 0
-                try {
-                    count = _addOrEditStockItemBinding.itemCountEditText.text.toString().trim().toInt()
-                    balance = _addOrEditStockItemBinding.itemBalanceEditText.text.toString().trim().toInt()
-                } catch (e: NumberFormatException) {null}
+                val count = try {
+                    stockItemFBinding.itemCountEditText.text.toString().trim().toInt()
+                } catch (e: NumberFormatException) { 0 }
+                val balance = try {
+                    stockItemFBinding.itemBalanceEditText.text.toString().trim().toInt()
+                }catch (e: NumberFormatException) { 0 }
+                val name = stockItemFBinding.itemNameEditText.text.toString().trim()
+
                 _managementViewModel.addStockItemToDatabase(
-                    name = _addOrEditStockItemBinding.itemNameEditText.text.toString().trim(),
+                    name = name,
                     count = count,
                     balance = balance
                 )
@@ -142,14 +153,14 @@ class StockManagementFragment : Fragment() {
     }
 
     private fun showEditStockItemDialog(stockItem: StockItem) {
-        _addOrEditStockItemBinding =
+        stockItemFBinding =
             FragmentAddOrEditStockItemBinding.inflate(
                 LayoutInflater.from(requireContext()),
                 null,
                 false
             )
 
-        with(_addOrEditStockItemBinding) {
+        with(stockItemFBinding) {
             itemNameEditText.setText(stockItem.name)
             itemCountEditText.setText(stockItem.count.toString())
             itemBalanceEditText.setText(stockItem.balance.toString())
@@ -157,17 +168,19 @@ class StockManagementFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Редактировать запись") //Добавление заголовка.
-            .setView(_addOrEditStockItemBinding.root) //Присвоение View полученного ранее.
+            .setView(stockItemFBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
-                var count = 0
-                var balance = 0
-                try {
-                    count = _addOrEditStockItemBinding.itemCountEditText.text.toString().trim().toInt()
-                    balance = _addOrEditStockItemBinding.itemBalanceEditText.text.toString().trim().toInt()
-                } catch (e: NumberFormatException) {null}
+                val count = try {
+                    stockItemFBinding.itemCountEditText.text.toString().trim().toInt()
+                } catch (e: NumberFormatException) { 0 }
+                val balance = try {
+                    stockItemFBinding.itemBalanceEditText.text.toString().trim().toInt()
+                }catch (e: NumberFormatException) { 0 }
+                val name = stockItemFBinding.itemNameEditText.text.toString().trim()
+
                 _managementViewModel.updateStockItemInDatabase(
                     id = stockItem.id,
-                    name = _addOrEditStockItemBinding.itemNameEditText.text.toString().trim(),
+                    name = name,
                     count = count,
                     balance = balance
                 )
@@ -182,10 +195,10 @@ class StockManagementFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun showInfoAboutStockItemRecordDialog(stockItem: StockItem) {
-        _stockItemInfoFragmentBinding =
+        stockItemInfoFBinding =
             FragmentStockItemInfoBinding.inflate(LayoutInflater.from(requireContext()), null, false)
 
-        with(_stockItemInfoFragmentBinding) {
+        with(stockItemInfoFBinding) {
             infoNameStockItem.text = stockItem.name
             infoStartCountStockItem.text = stockItem.count.toString() + " шт."
             infoBalanceStockItem.text = stockItem.balance.toString() + " шт."
@@ -193,7 +206,7 @@ class StockManagementFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Информация о выдаче") //Добавление заголовка.
-            .setView(_stockItemInfoFragmentBinding.root) //Присвоение View полученного ранее.
+            .setView(stockItemInfoFBinding.root) //Присвоение View полученного ранее.
             .setNegativeButton("Закрыть") { dialog, _ -> dialog.cancel() }
             .show()
     }
