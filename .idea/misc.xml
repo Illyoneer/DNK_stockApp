@@ -42,8 +42,8 @@
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/fragment_management.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/fragment_reports_management.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/fragment_review.xml" value="0.25" />
-        <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/fragment_staff_management.xml" value="0.3734375" />
-        <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/fragment_stock_item_info.xml" value="0.384375" />
+        <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/fragment_staff_management.xml" value="0.1" />
+        <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/fragment_stock_item_info.xml" value="0.33" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/fragment_stock_management.xml" value="0.3734375" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/hardware_fragment.xml" value="0.3734375" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/list_item.xml" value="0.3734375" />
@@ -51,14 +51,16 @@
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/recycler_item.xml" value="0.5" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/review_recycler_item.xml" value="0.3734375" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/staff_recycler_item.xml" value="0.3734375" />
+        <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/stock_recycler_item.xml" value="0.3734375" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/toolbar.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/toolbar_background.xml" value="0.384375" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/layout/toolbar_buttons.xml" value="0.67" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/menu/action_popup_menu.xml" value="0.25729166666666664" />
-        <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/menu/archive_action_popup_menu.xml" value="0.14035087719298245" />
+        <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/menu/archive_action_popup_menu.xml" value="0.33" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3734375" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/menu/review_action_popup_menu.xml" value="0.3734375" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/menu/sort_popup_menu.xml" value="0.3734375" />
+        <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/menu/stock_action_popup_menu.xml" value="0.3734375" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/menu/toolbar_menu.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.38958333333333334" />
         <entry key="..\:/Users/illyo/AndroidStudioProjects/DNKStockApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.38958333333333334" />

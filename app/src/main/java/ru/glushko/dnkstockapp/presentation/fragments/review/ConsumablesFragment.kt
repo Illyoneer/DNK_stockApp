@@ -171,12 +171,16 @@ class ConsumablesFragment : Fragment() {
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
-                if (_localStockItemsList.contains(_addOrEditItemFragmentBinding.itemNameEditText.text.toString())) {
+                var count = 0
+                try {
+                    count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString().trim().toInt()
+                } catch (e: NumberFormatException) {null}
+                if (_localStockItemsList.contains(_addOrEditItemFragmentBinding.itemNameEditText.text.toString().trim())) {
                     _reviewViewModel.addItemToDatabase(
                         name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
-                        count = Integer.parseInt(_addOrEditItemFragmentBinding.itemCountEditText.text.toString()),
-                        date = _addOrEditItemFragmentBinding.itemDateButton.text.toString(),
-                        user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
+                        count = count,
+                        date = _addOrEditItemFragmentBinding.itemDateButton.text.toString().trim(),
+                        user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString().trim(),
                         type = "consumables"
                     )
                 } else
@@ -216,13 +220,17 @@ class ConsumablesFragment : Fragment() {
             .setTitle("Редактировать запись") //Добавление заголовка.
             .setView(_addOrEditItemFragmentBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
+                var count = 0
+                try {
+                    count = _addOrEditItemFragmentBinding.itemCountEditText.text.toString().trim().toInt()
+                } catch (e: NumberFormatException) {null}
                 if (_localStockItemsList.contains(_addOrEditItemFragmentBinding.itemNameEditText.text.toString())) {
                     _reviewViewModel.updateItemInDatabase(
                         id = item.id,
-                        name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString(),
-                        count = Integer.parseInt(_addOrEditItemFragmentBinding.itemCountEditText.text.toString()),
-                        date = _addOrEditItemFragmentBinding.itemDateButton.text.toString(),
-                        user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString(),
+                        name = _addOrEditItemFragmentBinding.itemNameEditText.text.toString().trim(),
+                        count = count,
+                        date = _addOrEditItemFragmentBinding.itemDateButton.text.toString().trim(),
+                        user = _addOrEditItemFragmentBinding.itemUserEditText.text.toString().trim(),
                         type = "consumables",
                         start_count = item.count
                     )

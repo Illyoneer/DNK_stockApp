@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStockItemBinding
@@ -53,10 +52,10 @@ class StockManagementFragment : Fragment() {
         _managementViewModel.allStockItems.observe(viewLifecycleOwner) { stockItemList ->
             _stockItemRecyclerAdapter.submitList(stockItemList)
             if (stockItemList.isEmpty())
-                Snackbar.make(
-                    _stockManagementFragmentBinding.root,
+                Toast.makeText(
+                    requireContext(),
                     "Для начала работы добавьте предметы кнопкой +",
-                    Snackbar.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
         }
         super.onStart()
@@ -80,7 +79,7 @@ class StockManagementFragment : Fragment() {
             showPopupMenu(
                 stockItemElement = stockItem,
                 view = view,
-                menuRes = R.menu.action_popup_menu
+                menuRes = R.menu.stock_action_popup_menu
             )
         }
     }
@@ -97,10 +96,17 @@ class StockManagementFragment : Fragment() {
                 R.id.edit_action -> {
                     showEditStockItemDialog(stockItem = stockItemElement)
                 }
+                R.id.add_action -> {
+                    showAddIncomingStockItemDialog()
+                }
             }
             return@setOnMenuItemClickListener true
         }
         popupMenu.show()
+    }
+
+    private fun showAddIncomingStockItemDialog() {
+        Toast.makeText(requireContext(), "Добавление поступившего.", Toast.LENGTH_SHORT).show()
     }
 
     private fun showAddStockItemDialog() {
@@ -115,10 +121,16 @@ class StockManagementFragment : Fragment() {
             .setTitle("Добавить новую запись") //Добавление заголовка.
             .setView(_addOrEditStockItemBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
+                var count = 0
+                var balance = 0
+                try {
+                    count = _addOrEditStockItemBinding.itemCountEditText.text.toString().trim().toInt()
+                    balance = _addOrEditStockItemBinding.itemBalanceEditText.text.toString().trim().toInt()
+                } catch (e: NumberFormatException) {null}
                 _managementViewModel.addStockItemToDatabase(
-                    name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
-                    count = Integer.parseInt(_addOrEditStockItemBinding.itemCountEditText.text.toString()),
-                    balance = Integer.parseInt(_addOrEditStockItemBinding.itemBalanceEditText.text.toString())
+                    name = _addOrEditStockItemBinding.itemNameEditText.text.toString().trim(),
+                    count = count,
+                    balance = balance
                 )
 
                 _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
@@ -147,11 +159,17 @@ class StockManagementFragment : Fragment() {
             .setTitle("Редактировать запись") //Добавление заголовка.
             .setView(_addOrEditStockItemBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
+                var count = 0
+                var balance = 0
+                try {
+                    count = _addOrEditStockItemBinding.itemCountEditText.text.toString().trim().toInt()
+                    balance = _addOrEditStockItemBinding.itemBalanceEditText.text.toString().trim().toInt()
+                } catch (e: NumberFormatException) {null}
                 _managementViewModel.updateStockItemInDatabase(
                     id = stockItem.id,
-                    name = _addOrEditStockItemBinding.itemNameEditText.text.toString(),
-                    count = Integer.parseInt(_addOrEditStockItemBinding.itemCountEditText.text.toString()),
-                    balance = Integer.parseInt(_addOrEditStockItemBinding.itemBalanceEditText.text.toString())
+                    name = _addOrEditStockItemBinding.itemNameEditText.text.toString().trim(),
+                    count = count,
+                    balance = balance
                 )
 
                 _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->

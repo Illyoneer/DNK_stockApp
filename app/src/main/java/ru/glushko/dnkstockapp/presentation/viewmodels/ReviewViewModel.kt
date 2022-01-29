@@ -52,6 +52,7 @@ class ReviewViewModel(
                         )
                     )
                 }
+            transactionStatus.postValue("Запись успешно добавлена!")
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }
@@ -82,6 +83,7 @@ class ReviewViewModel(
                         ), start_count
                     )
                 }
+            transactionStatus.postValue("Запись успешно обновлена!")
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }

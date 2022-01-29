@@ -6,11 +6,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="6sp"
-    android:layout_marginTop="6sp"
-    android:layout_marginEnd="6sp"
+    android:layout_marginStart="6dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginEnd="6dp"
     android:background="@drawable/item_background"
-    android:paddingBottom="8sp">
+    android:paddingBottom="8dp">
 
 
     <TextView
@@ -41,8 +41,8 @@
 
     <ImageView
         android:id="@+id/more_button"
-        android:layout_width="35sp"
-        android:layout_height="35sp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"

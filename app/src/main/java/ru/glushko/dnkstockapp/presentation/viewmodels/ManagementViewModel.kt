@@ -50,6 +50,7 @@ class ManagementViewModel(
                     )
                 )
             }
+            transactionStatus.postValue("Запись успешно добавлена!")
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }
@@ -70,11 +71,12 @@ class ManagementViewModel(
                     )
                 )
             }
+            transactionStatus.postValue("Запись успешно обновлена!")
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }
 
-    fun addStaffToDatabase(surname: String, name: String, lastname: String){
+    fun addStaffToDatabase(surname: String, name: String, lastname: String) {
         if (surname.isNotEmpty() && name.isNotEmpty() && lastname.isNotEmpty()) {
             viewModelScope.launch {
                 _addStaffUseCase.addStaff(
@@ -85,6 +87,7 @@ class ManagementViewModel(
                     )
                 )
             }
+            transactionStatus.postValue("Запись успешно добавлена!")
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }
@@ -93,7 +96,7 @@ class ManagementViewModel(
         _deleteStaffUseCase.deleteStaff(staff)
     }
 
-    fun updateStaffInDatabase(id:Int, surname: String, name: String, lastname: String){
+    fun updateStaffInDatabase(id: Int, surname: String, name: String, lastname: String) {
         if (surname.isNotEmpty() && name.isNotEmpty() && lastname.isNotEmpty()) {
             viewModelScope.launch {
                 _updateStaffUseCase.updateStaff(
@@ -105,6 +108,7 @@ class ManagementViewModel(
                     )
                 )
             }
+            transactionStatus.postValue("Запись успешно обновлена!")
         } else
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }

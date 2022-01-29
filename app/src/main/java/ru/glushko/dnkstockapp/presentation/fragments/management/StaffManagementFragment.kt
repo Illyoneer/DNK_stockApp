@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStaffBinding
@@ -49,10 +48,10 @@ class StaffManagementFragment : Fragment() {
         _managementViewModel.allStaff.observe(viewLifecycleOwner) { staffList ->
             _staffItemRecyclerAdapter.submitList(staffList)
             if (staffList.isEmpty())
-                Snackbar.make(
-                    _staffManagementFragmentBinding.root,
+                Toast.makeText(
+                    requireContext(),
                     "Для начала работы добавьте людей кнопкой +",
-                    Snackbar.LENGTH_LONG
+                   Toast.LENGTH_SHORT
                 ).show()
         }
         super.onStart()
@@ -105,9 +104,9 @@ class StaffManagementFragment : Fragment() {
             .setView(_addOrEditStaffBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
                 _managementViewModel.addStaffToDatabase(
-                    surname = _addOrEditStaffBinding.surnameEditText.text.toString(),
-                    name = _addOrEditStaffBinding.nameEditText.text.toString(),
-                    lastname = _addOrEditStaffBinding.lastnameEditText.text.toString()
+                    surname = _addOrEditStaffBinding.surnameEditText.text.toString().trim(),
+                    name = _addOrEditStaffBinding.nameEditText.text.toString().trim(),
+                    lastname = _addOrEditStaffBinding.lastnameEditText.text.toString().trim()
                 )
 
                 _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
@@ -138,9 +137,9 @@ class StaffManagementFragment : Fragment() {
             .setPositiveButton("Готово") { _, _ ->
                 _managementViewModel.updateStaffInDatabase(
                     id = staffElement.id,
-                    surname = _addOrEditStaffBinding.surnameEditText.text.toString(),
-                    name = _addOrEditStaffBinding.nameEditText.text.toString(),
-                    lastname = _addOrEditStaffBinding.lastnameEditText.text.toString()
+                    surname = _addOrEditStaffBinding.surnameEditText.text.toString().trim(),
+                    name = _addOrEditStaffBinding.nameEditText.text.toString().trim(),
+                    lastname = _addOrEditStaffBinding.lastnameEditText.text.toString().trim()
                 )
 
                 _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/action_hint">
+        <item
+            android:id="@+id/select"
+            android:enabled="false"
+            android:title="@string/choose_action_menu_text" />
+    </group>
+
+    <group android:id="@+id/action">
+        <item
+            android:id="@+id/add_action"
+            android:title="@string/add_menu_text" />
+
+        <item
+            android:id="@+id/edit_action"
+            android:title="@string/edit_menu_text" />
+    </group>
+
+    <item
+        android:id="@+id/delete_action"
+        android:title="@string/delete_menu_text" />
+
+</menu>

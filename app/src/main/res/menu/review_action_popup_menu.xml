@@ -2,18 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/action">
         <item
-            android:id="@+id/select"
             android:enabled="false"
-            android:title="Выберите действие:" />
+            android:title="@string/choose_action_text" />
     </group>
 
     <item
         android:id="@+id/edit_action"
-        android:title="Редактировать"/>
+        android:title="@string/edit_menu_text"/>
 
     <item android:id="@+id/delete_action"
-        android:title="Удалить"/>
+        android:title="@string/delete_menu_text"/>
 
     <item android:id="@+id/archive_action"
-        android:title="Сдано"/>
+        android:title="@string/arсhived_menu_text"/>
 </menu>
