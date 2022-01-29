@@ -70,7 +70,7 @@ class HardwareFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
+    override fun onResume() {
         _reviewViewModel.hardwareItems.observe(viewLifecycleOwner) { hardwareItemsList ->
             _itemRecyclerAdapter.submitList(hardwareItemsList)
         }
@@ -83,7 +83,7 @@ class HardwareFragment : Fragment() {
             _localStaffList =
                 it.map { staff -> staff.surname + " " + staff.name + " " + staff.lastname[0] + "." }
         }
-        super.onStart()
+        super.onResume()
     }
 
     private fun setupRecyclerView() {

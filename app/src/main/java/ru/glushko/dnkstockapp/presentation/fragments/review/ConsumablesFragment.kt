@@ -54,7 +54,7 @@ class ConsumablesFragment : Fragment() {
         return _consumablesFragmentBinding.root
     }
 
-    override fun onStart() {
+    override fun onResume() {
         _reviewViewModel.consumablesItems.observe(viewLifecycleOwner) { consumablesItemsList ->
             _itemRecyclerAdapter.submitList(consumablesItemsList)
         }
@@ -67,7 +67,7 @@ class ConsumablesFragment : Fragment() {
             _localStaffList =
                 it.map { staff -> staff.surname + " " + staff.name + " " + staff.lastname[0] + "." }
         }
-        super.onStart()
+        super.onResume()
     }
 
     private fun setupToolbarButtons() {

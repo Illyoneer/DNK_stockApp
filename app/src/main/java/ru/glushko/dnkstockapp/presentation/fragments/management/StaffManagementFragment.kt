@@ -38,16 +38,12 @@ class StaffManagementFragment : Fragment() {
         return _staffManagementFragmentBinding.root
     }
 
-    override fun onStart() {
+    override fun onResume() {
         _managementViewModel.allStaff.observe(viewLifecycleOwner) { staffList ->
             _staffItemRecyclerAdapter.submitList(staffList)
+            if (staffList.isNullOrEmpty())
+                showEmptyAttentionDialog()
         }
-        super.onStart()
-    }
-
-    override fun onResume() {
-        if (_staffItemRecyclerAdapter.itemCount < 1)
-            showEmptyAttentionDialog()
         super.onResume()
     }
 

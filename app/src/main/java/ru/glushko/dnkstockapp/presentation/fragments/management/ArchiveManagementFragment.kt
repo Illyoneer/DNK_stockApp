@@ -37,11 +37,11 @@ class ArchiveManagementFragment : Fragment() {
         return  _archiveManagementFragmentBinding.root
     }
 
-    override fun onStart() {
+    override fun onResume() {
         _managementViewModel.allArchiveItems.observe(viewLifecycleOwner) { archiveItemsList ->
             _archiveItemRecyclerAdapter.submitList(archiveItemsList)
         }
-        super.onStart()
+        super.onResume()
     }
 
     private fun setupRecyclerView() {

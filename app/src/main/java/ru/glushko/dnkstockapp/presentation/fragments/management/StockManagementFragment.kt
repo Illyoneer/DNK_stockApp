@@ -42,16 +42,13 @@ class StockManagementFragment : Fragment() {
         return _stockManagementFragmentBinding.root
     }
 
-    override fun onStart() {
+    override fun onResume() {
         _managementViewModel.allStockItems.observe(viewLifecycleOwner) { stockItemList ->
             _stockItemRecyclerAdapter.submitList(stockItemList)
+            if (stockItemList.isNullOrEmpty())
+                showEmptyAttentionDialog()
         }
-        super.onStart()
-    }
 
-    override fun onResume() {
-        if (_stockItemRecyclerAdapter.itemCount < 1)
-            showEmptyAttentionDialog()
         super.onResume()
     }
 
@@ -62,6 +59,7 @@ class StockManagementFragment : Fragment() {
             .setPositiveButton("Добавить") { _, _ -> showAddStockItemDialog() }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
+
     }
 
     private fun setupToolbarFunctional() {
