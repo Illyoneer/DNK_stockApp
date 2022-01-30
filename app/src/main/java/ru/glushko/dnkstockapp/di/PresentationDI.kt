@@ -9,13 +9,15 @@ import ru.glushko.dnkstockapp.presentation.viewmodels.ReviewViewModel
 val presentationModule = module {
     viewModel {
         ReviewViewModel(
-            _addItemUseCase = get(),
-            _deleteItemUseCase = get(),
-            _updateItemUseCase = get(),
+            _addItemWithUpdateStock = get(),
+            _deleteItemWithUpdateStockUseCase = get(),
+            _updateItemWithUpdateStockUseCases = get(),
             _loadConsumablesItemsUseCase = get(),
             _loadHardwareItemsUseCase = get(),
             _loadAllStockItemsUseCase = get(),
-            _loadAllStaffUseCase = get()
+            _loadAllStaffUseCase = get(),
+            _addArchiveItemUseCase = get(),
+            _addStaffUseCase = get()
         )
     }
 
@@ -28,7 +30,10 @@ val presentationModule = module {
             _loadAllStaffUseCase = get(),
             _addStaffUseCase = get(),
             _deleteStaffUseCase = get(),
-            _updateStaffUseCase = get()
+            _updateStaffUseCase = get(),
+            _deleteArchiveItemUseCase = get(),
+            _loadAllArchiveItemsUseCase = get(),
+            _updateStockItemBalanceUseCase = get()
         )
     }
 }

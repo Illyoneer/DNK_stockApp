@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.glushko.dnkstockapp.databinding.StaffRecyclerItemBinding
-import ru.glushko.dnkstockapp.domain.entity.Staff
+import ru.glushko.dnkstockapp.domain.model.Staff
 
 class StaffRecyclerAdapter : ListAdapter<Staff, StaffViewHolder>(StaffDiffCallback()) {
 

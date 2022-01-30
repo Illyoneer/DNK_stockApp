@@ -1,29 +1,29 @@
 package ru.glushko.dnkstockapp.di
 
 import org.koin.dsl.module
+import ru.glushko.dnkstockapp.domain.usecases.archive.AddArchiveItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.archive.DeleteArchiveItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.archive.LoadAllArchiveItemsUseCase
 import ru.glushko.dnkstockapp.domain.usecases.item.*
 import ru.glushko.dnkstockapp.domain.usecases.staff.AddStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.DeleteStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.LoadAllStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.UpdateStaffUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.AddStockItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.DeleteStockItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.LoadAllStockItemsUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.UpdateStockItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.stockitem.*
 
 val domainModule = module {
 
-    //------------------------Items-----------------------------
+    //------------------------Items-----------------------------//
     factory {
         AddItemUseCase(_itemRepository  = get())
     }
 
     factory {
-        DeleteItemUseCase(_itemRepository = get())
+        DeleteItemWithUpdateStockUseCase(_itemRepository = get())
     }
 
     factory {
-        UpdateItemUseCase(_itemRepository = get())
+        UpdateItemWithUpdateStockUseCases(_itemRepository = get())
     }
 
     factory {
@@ -34,7 +34,11 @@ val domainModule = module {
         LoadHardwareItemsUseCase(_itemRepository  = get())
     }
 
-    //----------------Stock Items----------------------------
+    factory {
+        AddItemWithUpdateStockUseCase(_itemRepository = get())
+    }
+
+    //----------------Stock Items----------------------------//
     factory {
         AddStockItemUseCase(_stockItemRepository = get())
     }
@@ -51,7 +55,11 @@ val domainModule = module {
         LoadAllStockItemsUseCase(_stockItemRepository = get())
     }
 
-    //-----------------Staff-------------------------
+    factory {
+        UpdateStockItemBalanceUseCase (_stockItemRepository = get())
+    }
+
+    //---------------------Staff-------------------------//
     factory {
         LoadAllStaffUseCase(_staffRepository = get())
     }
@@ -66,6 +74,19 @@ val domainModule = module {
 
     factory {
         DeleteStaffUseCase(_staffRepository = get())
+    }
+
+    //---------------------Archive Item-------------------------//
+    factory {
+        DeleteArchiveItemUseCase(_archiveItemRepository = get())
+    }
+
+    factory {
+        AddArchiveItemUseCase(_archiveItemRepository = get())
+    }
+
+    factory {
+        LoadAllArchiveItemsUseCase(_archiveItemRepository = get())
     }
 
 }

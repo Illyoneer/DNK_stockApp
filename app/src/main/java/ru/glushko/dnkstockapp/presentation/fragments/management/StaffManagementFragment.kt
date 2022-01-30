@@ -13,13 +13,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.glushko.dnkstockapp.R
 import ru.glushko.dnkstockapp.databinding.FragmentAddOrEditStaffBinding
 import ru.glushko.dnkstockapp.databinding.FragmentStaffManagementBinding
-import ru.glushko.dnkstockapp.domain.entity.Staff
+import ru.glushko.dnkstockapp.domain.model.Staff
 import ru.glushko.dnkstockapp.presentation.viewmodels.ManagementViewModel
 import ru.glushko.dnkstockapp.presentation.viewutils.recyclerAdapters.management.staff.StaffRecyclerAdapter
 
 class StaffManagementFragment : Fragment() {
     private lateinit var _staffManagementFragmentBinding: FragmentStaffManagementBinding
-    private lateinit var _addOrEditStaffBinding: FragmentAddOrEditStaffBinding
+    private lateinit var staffFBinding: FragmentAddOrEditStaffBinding
 
     private val _managementViewModel by viewModel<ManagementViewModel>()
     private var _staffItemRecyclerAdapter = StaffRecyclerAdapter()
@@ -27,16 +27,24 @@ class StaffManagementFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _staffManagementFragmentBinding =
             FragmentStaffManagementBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
-
         setupToolbarFunctional()
 
         return _staffManagementFragmentBinding.root
+    }
+
+    override fun onResume() {
+        _managementViewModel.allStaff.observe(viewLifecycleOwner) { staffList ->
+            _staffItemRecyclerAdapter.submitList(staffList)
+            if (staffList.isNullOrEmpty())
+                showEmptyAttentionDialog()
+        }
+        super.onResume()
     }
 
     private fun setupToolbarFunctional() {
@@ -45,11 +53,16 @@ class StaffManagementFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
-        _managementViewModel.allStaff.observe(viewLifecycleOwner, { staffList ->
-            _staffItemRecyclerAdapter.submitList(staffList)
-        })
+    private fun showEmptyAttentionDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Внимание!")
+            .setMessage("Для начала работы вам необходимо добавить хотя бы одного человека.")
+            .setPositiveButton("Добавить") { _, _ -> showAddStaffDialog() }
+            .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
+            .show()
+    }
 
+    private fun setupRecyclerView() {
         _staffManagementFragmentBinding.recyclerView.adapter = _staffItemRecyclerAdapter
 
         setupOnActionButtonClick(_staffItemRecyclerAdapter)
@@ -68,7 +81,6 @@ class StaffManagementFragment : Fragment() {
     private fun showPopupMenu(view: View, staffElement: Staff, @MenuRes menuRes: Int) {
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
-        //TODO: Намутить свап записей.
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete_action -> {
@@ -84,7 +96,7 @@ class StaffManagementFragment : Fragment() {
     }
 
     private fun showAddStaffDialog() {
-        _addOrEditStaffBinding =
+        staffFBinding =
             FragmentAddOrEditStaffBinding.inflate(
                 LayoutInflater.from(requireContext()),
                 null,
@@ -93,31 +105,35 @@ class StaffManagementFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Добавить новую запись") //Добавление заголовка.
-            .setView(_addOrEditStaffBinding.root) //Присвоение View полученного ранее.
+            .setView(staffFBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Добавить") { _, _ ->
+                val surname = staffFBinding.surnameEditText.text.toString().trim()
+                val name = staffFBinding.nameEditText.text.toString().trim()
+                val lastname = staffFBinding.lastnameEditText.text.toString().trim()
+
                 _managementViewModel.addStaffToDatabase(
-                    surname = _addOrEditStaffBinding.surnameEditText.text.toString(),
-                    name = _addOrEditStaffBinding.nameEditText.text.toString(),
-                    lastname = _addOrEditStaffBinding.lastnameEditText.text.toString()
+                    surname = surname,
+                    name = name,
+                    lastname = lastname
                 )
 
-                _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
     }
 
     private fun showEditStaffDialog(staffElement: Staff) {
-        _addOrEditStaffBinding =
+        staffFBinding =
             FragmentAddOrEditStaffBinding.inflate(
                 LayoutInflater.from(requireContext()),
                 null,
                 false
             )
 
-        with(_addOrEditStaffBinding) {
+        with(staffFBinding) {
             surnameEditText.setText(staffElement.surname)
             nameEditText.setText(staffElement.name)
             lastnameEditText.setText(staffElement.lastname)
@@ -125,18 +141,22 @@ class StaffManagementFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Редактировать запись") //Добавление заголовка.
-            .setView(_addOrEditStaffBinding.root) //Присвоение View полученного ранее.
+            .setView(staffFBinding.root) //Присвоение View полученного ранее.
             .setPositiveButton("Готово") { _, _ ->
+                val surname = staffFBinding.surnameEditText.text.toString().trim()
+                val name = staffFBinding.nameEditText.text.toString().trim()
+                val lastname = staffFBinding.lastnameEditText.text.toString().trim()
+
                 _managementViewModel.updateStaffInDatabase(
                     id = staffElement.id,
-                    surname = _addOrEditStaffBinding.surnameEditText.text.toString(),
-                    name = _addOrEditStaffBinding.nameEditText.text.toString(),
-                    lastname = _addOrEditStaffBinding.lastnameEditText.text.toString()
+                    surname = surname,
+                    name = name,
+                    lastname = lastname
                 )
 
-                _managementViewModel.transactionStatus.observe(viewLifecycleOwner, { status ->
+                _managementViewModel.transactionStatus.observe(viewLifecycleOwner) { status ->
                     Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()

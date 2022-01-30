@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.glushko.dnkstockapp.databinding.ReviewRecyclerItemBinding
-import ru.glushko.dnkstockapp.domain.entity.Item
+import ru.glushko.dnkstockapp.domain.model.Item
 
 class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
 
@@ -25,7 +25,7 @@ class ItemRecyclerAdapter : ListAdapter<Item, ItemViewHolder>(ItemDiffCallback()
         with(holder.reviewRecyclerItem) {
             countText.text = "${position+1}"
             itemName.text = itemElement.name
-            countItem.text = itemElement.count + " шт."
+            countItem.text = itemElement.count.toString() + " шт."
             moreButton.setOnClickListener {
                 onPopupButtonClickListener?.invoke(itemElement, it)
             }

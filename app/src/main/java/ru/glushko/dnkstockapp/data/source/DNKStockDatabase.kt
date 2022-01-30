@@ -4,14 +4,19 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import ru.glushko.dnkstockapp.data.dao.ArchiveItemDao
+import ru.glushko.dnkstockapp.data.dao.ItemDao
+import ru.glushko.dnkstockapp.data.dao.StaffDao
+import ru.glushko.dnkstockapp.data.dao.StockItemDao
+import ru.glushko.dnkstockapp.data.model.DBArchiveItem
 import ru.glushko.dnkstockapp.data.model.DBItem
 import ru.glushko.dnkstockapp.data.model.DBStaff
 import ru.glushko.dnkstockapp.data.model.DBStockItem
 
 @Database(
-    entities = [DBItem::class, DBStockItem::class, DBStaff::class],
+    entities = [DBItem::class, DBStockItem::class, DBStaff::class, DBArchiveItem::class],
 
-    version = 7
+    version = 11
 )
 abstract class DNKStockDatabase : RoomDatabase() {
 
@@ -42,4 +47,5 @@ abstract class DNKStockDatabase : RoomDatabase() {
     abstract fun itemDao(): ItemDao
     abstract fun stockItemDao(): StockItemDao
     abstract fun staffDao(): StaffDao
+    abstract fun archiveDao() : ArchiveItemDao
 }

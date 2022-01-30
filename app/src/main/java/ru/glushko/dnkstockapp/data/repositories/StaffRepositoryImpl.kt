@@ -2,9 +2,9 @@ package ru.glushko.dnkstockapp.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import ru.glushko.dnkstockapp.data.dao.StaffDao
 import ru.glushko.dnkstockapp.data.mappers.StaffMapper
-import ru.glushko.dnkstockapp.data.source.StaffDao
-import ru.glushko.dnkstockapp.domain.entity.Staff
+import ru.glushko.dnkstockapp.domain.model.Staff
 import ru.glushko.dnkstockapp.domain.repositories.StaffRepository
 
 class StaffRepositoryImpl(

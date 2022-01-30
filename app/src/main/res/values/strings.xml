@@ -4,6 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_item">На кого</string>
     <string name="count_item">Количество</string>
+    <string name="stock_start_count_item">Начальное кол-во</string>
+    <string name="stock_balance_count_item">Остаток на складе</string>
     <string name="name_item">Название</string>
     <string name="date_item">Дата выдачи</string>
     <string name="type_item">Тип</string>
@@ -22,9 +24,18 @@
     <string name="lastname_staff">Отчество</string>
     <string name="name_staff">Имя</string>
     <string name="surname_staff">Фамилия</string>
-
-    <string-array name="spinnerTypes">
-        <item>Расходник</item>
-        <item>Оборудование</item>
-    </string-array>
+    <string name="archive_date_item">Дата сдачи</string>
+    <string name="archive_user_item">Сдал</string>
+    <string name="add_menu_text">Добавить</string>
+    <string name="edit_menu_text">Редактировать</string>
+    <string name="delete_menu_text">Удалить</string>
+    <string name="choose_action_menu_text">Выберите действие:</string>
+    <string name="sort_by_name_text">Названию</string>
+    <string name="sort_by_surname_text">Фамилии</string>
+    <string name="sort_by_date_text">Дате</string>
+    <string name="sort_by_text">Сортировать по:</string>
+    <string name="choose_action_text">Выберите действие:</string>
+    <string name="arсhived_menu_text">Сдано</string>
+    <string name="stock_item_incoming">Кол-во поступившего</string>
+    <string name="position_text">Позиция</string>
 </resources>

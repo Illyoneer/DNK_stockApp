@@ -1,7 +1,7 @@
 package ru.glushko.dnkstockapp.data.mappers
 
 import ru.glushko.dnkstockapp.data.model.DBItem
-import ru.glushko.dnkstockapp.domain.entity.Item
+import ru.glushko.dnkstockapp.domain.model.Item
 
 class ItemMapper {
 

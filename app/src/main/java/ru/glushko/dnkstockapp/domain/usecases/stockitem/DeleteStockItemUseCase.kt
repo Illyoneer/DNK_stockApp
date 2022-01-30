@@ -1,6 +1,6 @@
 package ru.glushko.dnkstockapp.domain.usecases.stockitem
 
-import ru.glushko.dnkstockapp.domain.entity.StockItem
+import ru.glushko.dnkstockapp.domain.model.StockItem
 import ru.glushko.dnkstockapp.domain.repositories.StockItemRepository
 
 class DeleteStockItemUseCase (private val _stockItemRepository: StockItemRepository){

@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.presentation.fragments
+package ru.glushko.dnkstockapp.presentation.fragments.management
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +22,7 @@ class ManagementFragment : Fragment() {
 
         _managementFragmentBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_management, container, false)
+
         val pagerAdapter = ManagementTabAdapter(this)
         _managementFragmentBinding.viewPager2.adapter = pagerAdapter
 

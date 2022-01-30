@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="main">#AA8C32</color>
     <color name="error">#FF6363</color>
+    <color name="helper_text">#F68888</color>
     <color name="gray_background">#FF424242</color>
     <color name="background">#303030</color>
     <color name="secondTextColor">#979797</color>

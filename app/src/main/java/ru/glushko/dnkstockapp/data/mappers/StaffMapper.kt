@@ -1,7 +1,7 @@
 package ru.glushko.dnkstockapp.data.mappers
 
 import ru.glushko.dnkstockapp.data.model.DBStaff
-import ru.glushko.dnkstockapp.domain.entity.Staff
+import ru.glushko.dnkstockapp.domain.model.Staff
 
 class StaffMapper {
 

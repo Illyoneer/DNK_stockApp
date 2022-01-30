@@ -1,4 +1,4 @@
-package ru.glushko.dnkstockapp.data.source
+package ru.glushko.dnkstockapp.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -9,7 +9,7 @@ interface StockItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addStockItem(dbStockItem: DBStockItem)
 
-    @Query("SELECT * FROM stock_items")
+    @Query("SELECT * FROM stock_items2")
     fun loadAllStockItems(): LiveData<List<DBStockItem>>
 
     @Delete
@@ -17,4 +17,7 @@ interface StockItemDao {
 
     @Update
     suspend fun updateStockItem(dbStockItem: DBStockItem)
+
+    @Query("UPDATE stock_items2 SET stock_item_balance = (stock_item_balance + :incoming_count) WHERE stock_item_name = :stock_item_name")
+    suspend fun updateStockItemBalance(incoming_count: Int, stock_item_name:String)
 }

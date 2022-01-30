@@ -1,7 +1,7 @@
 package ru.glushko.dnkstockapp.domain.repositories
 
 import androidx.lifecycle.LiveData
-import ru.glushko.dnkstockapp.domain.entity.Staff
+import ru.glushko.dnkstockapp.domain.model.Staff
 
 interface StaffRepository {
     fun loadAllStaff(): LiveData<List<Staff>>
