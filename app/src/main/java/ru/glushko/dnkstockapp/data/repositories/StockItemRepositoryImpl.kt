@@ -26,4 +26,7 @@ class StockItemRepositoryImpl(
     override suspend fun updateStockItem(stockItem: StockItem) =
         _stockItemDao.updateStockItem(_mapper.mapEntityToDBStockItem(stockItem))
 
+    override suspend fun updateStockItemBalance(incoming_count: Int, stock_item_name:String) =
+        _stockItemDao.updateStockItemBalance(incoming_count, stock_item_name)
+
 }

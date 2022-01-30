@@ -17,4 +17,7 @@ interface StockItemDao {
 
     @Update
     suspend fun updateStockItem(dbStockItem: DBStockItem)
+
+    @Query("UPDATE stock_items2 SET stock_item_balance = (stock_item_balance + :incoming_count) WHERE stock_item_name = :stock_item_name")
+    suspend fun updateStockItemBalance(incoming_count: Int, stock_item_name:String)
 }

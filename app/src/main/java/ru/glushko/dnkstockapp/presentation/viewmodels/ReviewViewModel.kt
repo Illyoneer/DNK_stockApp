@@ -11,6 +11,7 @@ import ru.glushko.dnkstockapp.domain.model.Staff
 import ru.glushko.dnkstockapp.domain.model.StockItem
 import ru.glushko.dnkstockapp.domain.usecases.archive.AddArchiveItemUseCase
 import ru.glushko.dnkstockapp.domain.usecases.item.*
+import ru.glushko.dnkstockapp.domain.usecases.staff.AddStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.LoadAllStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.stockitem.LoadAllStockItemsUseCase
 
@@ -22,7 +23,8 @@ class ReviewViewModel(
     private val _loadHardwareItemsUseCase: LoadHardwareItemsUseCase,
     private val _loadAllStockItemsUseCase: LoadAllStockItemsUseCase,
     private val _loadAllStaffUseCase: LoadAllStaffUseCase,
-    private val _addArchiveItemUseCase: AddArchiveItemUseCase
+    private val _addArchiveItemUseCase: AddArchiveItemUseCase,
+    private val _addStaffUseCase: AddStaffUseCase
 ) : ViewModel() {
 
     val transactionStatus = MutableLiveData<String>()
@@ -99,5 +101,21 @@ class ReviewViewModel(
             )
         )
         _deleteItemWithUpdateStockUseCase.deleteItemWithUpdateStock(item)
+    }
+
+    fun addStaffToDatabase(surname: String, name: String, lastname: String) {
+        if (surname.isNotEmpty() && name.isNotEmpty()) {
+            viewModelScope.launch {
+                _addStaffUseCase.addStaff(
+                    Staff(
+                        surname = surname,
+                        name = name,
+                        lastname = lastname
+                    )
+                )
+            }
+            transactionStatus.postValue("Запись успешно добавлена!")
+        } else
+            transactionStatus.postValue("Ошибка. Введите все данные!")
     }
 }

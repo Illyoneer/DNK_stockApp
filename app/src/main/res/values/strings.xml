@@ -36,4 +36,6 @@
     <string name="sort_by_text">Сортировать по:</string>
     <string name="choose_action_text">Выберите действие:</string>
     <string name="arсhived_menu_text">Сдано</string>
+    <string name="stock_item_incoming">Кол-во поступившего</string>
+    <string name="position_text">Позиция</string>
 </resources>

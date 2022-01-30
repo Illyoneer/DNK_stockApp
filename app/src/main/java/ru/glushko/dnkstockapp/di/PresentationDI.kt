@@ -16,7 +16,8 @@ val presentationModule = module {
             _loadHardwareItemsUseCase = get(),
             _loadAllStockItemsUseCase = get(),
             _loadAllStaffUseCase = get(),
-            _addArchiveItemUseCase = get()
+            _addArchiveItemUseCase = get(),
+            _addStaffUseCase = get()
         )
     }
 
@@ -31,7 +32,8 @@ val presentationModule = module {
             _deleteStaffUseCase = get(),
             _updateStaffUseCase = get(),
             _deleteArchiveItemUseCase = get(),
-            _loadAllArchiveItemsUseCase = get()
+            _loadAllArchiveItemsUseCase = get(),
+            _updateStockItemBalanceUseCase = get()
         )
     }
 }

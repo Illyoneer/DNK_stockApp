@@ -14,10 +14,7 @@ import ru.glushko.dnkstockapp.domain.usecases.staff.AddStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.DeleteStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.LoadAllStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.UpdateStaffUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.AddStockItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.DeleteStockItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.LoadAllStockItemsUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.UpdateStockItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.stockitem.*
 
 class ManagementViewModel(
     private val _deleteStockItemUseCase: DeleteStockItemUseCase,
@@ -30,6 +27,7 @@ class ManagementViewModel(
     private val _deleteStaffUseCase: DeleteStaffUseCase,
     private val _loadAllArchiveItemsUseCase: LoadAllArchiveItemsUseCase,
     private val _deleteArchiveItemUseCase: DeleteArchiveItemUseCase,
+    private val _updateStockItemBalanceUseCase: UpdateStockItemBalanceUseCase
 ) : ViewModel() {
 
     val transactionStatus = MutableLiveData<String>()
@@ -76,8 +74,20 @@ class ManagementViewModel(
             transactionStatus.postValue("Ошибка. Введите все данные!")
     }
 
+    fun updateStockItemBalanceInDatabase(incoming_count: Int, stock_item_name: String) {
+        if (incoming_count > 0 && stock_item_name.isNotEmpty()) {
+            viewModelScope.launch {
+                _updateStockItemBalanceUseCase.updateStockItemBalance(
+                    incoming_count = incoming_count,
+                    stock_item_name = stock_item_name)
+            }
+            transactionStatus.postValue("Поступление успешно добавлено!")
+        } else
+            transactionStatus.postValue("Ошибка. Введите все данные!")
+    }
+
     fun addStaffToDatabase(surname: String, name: String, lastname: String) {
-        if (surname.isNotEmpty() && name.isNotEmpty() && lastname.isNotEmpty()) {
+        if (surname.isNotEmpty() && name.isNotEmpty()) {
             viewModelScope.launch {
                 _addStaffUseCase.addStaff(
                     Staff(

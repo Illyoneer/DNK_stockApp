@@ -9,10 +9,7 @@ import ru.glushko.dnkstockapp.domain.usecases.staff.AddStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.DeleteStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.LoadAllStaffUseCase
 import ru.glushko.dnkstockapp.domain.usecases.staff.UpdateStaffUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.AddStockItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.DeleteStockItemUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.LoadAllStockItemsUseCase
-import ru.glushko.dnkstockapp.domain.usecases.stockitem.UpdateStockItemUseCase
+import ru.glushko.dnkstockapp.domain.usecases.stockitem.*
 
 val domainModule = module {
 
@@ -56,6 +53,10 @@ val domainModule = module {
 
     factory {
         LoadAllStockItemsUseCase(_stockItemRepository = get())
+    }
+
+    factory {
+        UpdateStockItemBalanceUseCase (_stockItemRepository = get())
     }
 
     //---------------------Staff-------------------------//

@@ -8,4 +8,5 @@ interface StockItemRepository {
     suspend fun addStockItem(stockItem: StockItem)
     suspend fun deleteStockItem(stockItem: StockItem)
     suspend fun updateStockItem(stockItem: StockItem)
+    suspend fun updateStockItemBalance(incoming_count: Int, stock_item_name:String)
 }

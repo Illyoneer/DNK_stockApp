@@ -65,7 +65,7 @@ class ConsumablesFragment : Fragment() {
 
         _reviewViewModel.allStaff.observe(viewLifecycleOwner) {
             _localStaffList =
-                it.map { staff -> staff.surname + " " + staff.name + " " + staff.lastname[0] + "." }
+                it.map { staff -> "${staff.surname} ${staff.name} ${staff.lastname}".trim()}
         }
         super.onResume()
     }
@@ -310,7 +310,40 @@ class ConsumablesFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Внимание!")
             .setMessage("Введенного вами пользователя нет в вашей базе. Желаете добавить новую запись?")
-            .setPositiveButton("Да") { dialog, _ -> dialog.cancel() }
+            .setPositiveButton("Да") { _, _ ->
+                val splitedUserFIO = user.split(' ').toTypedArray()
+                when (splitedUserFIO.size) {
+                    2 -> {
+                        _reviewViewModel.addStaffToDatabase(name = splitedUserFIO[1], surname = splitedUserFIO[0], lastname = "")
+                        if (action == "add")
+                            addItemToDatabase(name = name, count = count, date = date, user = user)
+                        else
+                            updateItemInDatabase(
+                                id = id,
+                                name = name,
+                                count = count,
+                                date = date,
+                                user = user,
+                                start_count = start_count
+                            ) //TODO: Переделать
+                    }
+                    3 -> {
+                        _reviewViewModel.addStaffToDatabase(name = splitedUserFIO[1], surname = splitedUserFIO[0], lastname = splitedUserFIO[2])
+                        if (action == "add")
+                            addItemToDatabase(name = name, count = count, date = date, user = user)
+                        else
+                            updateItemInDatabase(
+                                id = id,
+                                name = name,
+                                count = count,
+                                date = date,
+                                user = user,
+                                start_count = start_count
+                            ) //TODO: Переделать
+                    }
+                    else -> Toast.makeText(requireContext(), "Ошибка. Имя введено не верно!", Toast.LENGTH_SHORT).show()
+                }
+            }
             .setNeutralButton("Нет") { _, _ ->
                 if (action == "add")
                     addItemToDatabase(name = name, count = count, date = date, user = user)
@@ -322,7 +355,7 @@ class ConsumablesFragment : Fragment() {
                         date = date,
                         user = user,
                         start_count = start_count
-                    )
+                    ) //TODO: Переделать
             }
             .show()
     }
